@@ -1,0 +1,24 @@
+<form (ngSubmit)="submitOrder()">
+  <label>Client:</label>
+  <select [(ngModel)]="order.clientId" name="clientId" required>
+    <option *ngFor="let c of clients" [value]="c.id">{{ c.name }}</option>
+  </select>
+
+  <label>Date de commande:</label>
+  <input type="date" [(ngModel)]="order.orderDate" name="orderDate" required />
+
+  <label>Mode de paiement:</label>
+  <select [(ngModel)]="order.paymentMethod" name="paymentMethod">
+    <option value="Carte">Carte</option>
+    <option value="Espèces">Espèces</option>
+    <option value="Virement">Virement</option>
+  </select>
+
+  <div *ngFor="let p of products">
+    <input type="checkbox" [(ngModel)]="p.selected" [name]="'select_' + p.id" />
+    {{ p.name }}
+    <input type="number" [(ngModel)]="p.quantity" [name]="'quantity_' + p.id" placeholder="Quantité" min="1" />
+  </div>
+
+  <button type="submit">Passer commande</button>
+</form>
