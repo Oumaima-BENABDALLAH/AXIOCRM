@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "bDpcm5jibcUNMTkNW9ZFPj7WyzUCCrFcqyvfOZDr60k=",
+  "Source": "ProductManager.API",
+  "BasePath": "_content/ProductManager.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
