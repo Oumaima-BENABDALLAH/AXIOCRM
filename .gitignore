@@ -1,0 +1,18 @@
+# AXIOCRM .gitignore
+
+# .NET Core
+Backend/bin/
+Backend/obj/
+Backend/.vs/
+*.user
+*.suo
+
+# Angular
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.angular/cache/
+
+# IDE & OS
+.vscode/
+*.DS_Store
+
