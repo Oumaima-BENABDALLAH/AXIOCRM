@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from 'src/app/models/product.model';
+import { ClientDto } from 'src/app/models/client-product.model';
 import { ClientProduct } from 'src/app/models/client-product.model';
 import { map } from 'rxjs/operators';
 
@@ -41,7 +42,11 @@ getAll(): Observable<Client[]> {
     })
   );
 }
-
+ getClients(): Observable<ClientDto[]> {
+  return this.http
+    .get<{ $id: string; $values: ClientDto[] }>(this.apiURL)
+    .pipe(map(resp => resp.$values || []));
+}
     getById(id : number) : Observable<Client>{
       return this.http.get<Client>(`${this.apiURL}/${id}`);
     }

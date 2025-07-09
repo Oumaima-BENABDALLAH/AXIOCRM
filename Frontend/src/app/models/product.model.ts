@@ -4,3 +4,10 @@ export interface Product{
   name :string;
   price: number;
 }
+export interface ProductDto {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  stockQuantity: number;
+}

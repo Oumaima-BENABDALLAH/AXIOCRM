@@ -8,9 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClientListComponent } from './components/client-list/client-list.component';
-import { OrderListComponent } from './components/order-list/order-list.component';
-import { OrderCreateComponent } from './components/order-create/order-create.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OrderListComponent } from './components/order-list/order-list.component';
+import { ClientProductListComponent } from './components/client-product-list/client-product-list.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ProductListComponent,
     ClientListComponent,
     OrderListComponent,
-    OrderCreateComponent,
+    ClientProductListComponent,
+
   ],
   imports: [
     BrowserModule,

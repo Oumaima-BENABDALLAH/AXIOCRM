@@ -1,64 +1,166 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderService } from 'src/app/services/order.service';
 import { OrderDto } from 'src/app/models/order.model';
+import { OrderService } from 'src/app/services/order.service';
+import { ClientDto } from 'src/app/models/client-product.model';
+import { ProductDto } from 'src/app/models/product.model';
 import { ClientService } from 'src/app/services/client.service';
 import { ProductService } from 'src/app/services/product.service';
-import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+declare var $: any;
+
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
   styleUrls: ['./order-list.component.css']
 })
 export class OrderListComponent implements OnInit {
-   orders: OrderDto[] = [];
-   selectedOrder?: OrderDto;
-   filteredOrders: OrderDto[] = [];
-   filter = new FormControl('');
+  orders: OrderDto[] = [];
+  filteredOrders$: Observable<OrderDto[]> = of([]);
+  filter = new FormControl('');
+  selectedOrder: OrderDto | null = null;
+  orderForm!: FormGroup;
+  clients: ClientDto[] = [];
+  products: ProductDto[] = [];
 
-    clients: any[] = [];
-   products: any[] = [];
 
- constructor(private http: HttpClient ,private orderService: OrderService) {}
+  constructor(private orderService: OrderService ,private fb: FormBuilder,
+     private clientService: ClientService,
+      private productService: ProductService
+  ) {}
 
-loadOrders() {
-    this.orderService.getOrders().subscribe({
-      next: data => {
-          this.orders = data.filter(order => order && order.orderDate);
-          this.filteredOrders = [...this.orders];  // IMPORTANT
-          console.log('Commandes chargées', this.orders);
+ ngOnInit(): void {
+  // Charger les données
+  this.loadOrders();
+  this.loadClients();
+  this.loadProducts();
+
+  // Initialiser le formulaire de commande
+  this.orderForm = this.fb.group({
+    id: [null],
+    clientId: [null, Validators.required],
+    orderDate: ['', Validators.required],
+    paymentMethod: ['', Validators.required],
+    productId: [null, Validators.required],
+    quantity: [1, [Validators.required, Validators.min(1)]]
+  });
+
+  // Mettre en place le filtre pour les commandes
+  this.filteredOrders$ = this.filter.valueChanges.pipe(
+    startWith(''),
+    map(value => this.applyFilter(value || ''))
+  );
+}
+
+loadOrders(): void {
+  this.orderService.getOrders().subscribe({
+    next: (data) => {
+      this.orders = data; // ✅ data est déjà un tableau pur
+      console.log('Commandes chargées', data);
+
+      this.filteredOrders$ = this.filter.valueChanges.pipe(
+        startWith(''),
+        map(value => this.applyFilter(value || ''))
+      );
+    },
+    error: (err) => {
+      console.error('Erreur chargement commandes', err);
+    }
+  });
+}
+   loadClients(): void {
+    this.clientService.getClients().subscribe({
+      next: (data) => {
+        this.clients = data;
+        console.log('Clients chargés', data);
       },
-      error: err => {
-        console.error('Erreur lors du chargement des commandes', err);
+      error: (err) => {
+        console.error('Erreur chargement clients', err);
       }
     });
   }
 
-  ngOnInit(): void {
-   this.loadOrders();
-   this.filter.valueChanges.pipe(debounceTime(300)).subscribe(val => {
-      this.applyFilter(val);
+  loadProducts(): void {
+    this.productService.getProducts().subscribe({
+      next: (data) => {
+        this.products = data;
+        console.log('Produits chargés', data);
+      },
+      error: (err) => {
+        console.error('Erreur chargement produits', err);
+      }
     });
   }
-  applyFilter(searchText: string) {
-    if (!searchText) {
-      this.filteredOrders = [...this.orders];
-      return;
-    }
-    const lower = searchText.toLowerCase();
-    this.filteredOrders = this.orders.filter(order => {
-    const paymentMethod = order.paymentMethod ? order.paymentMethod.toLowerCase() : '';
-    const paymentMatch = paymentMethod.includes(lower);
-    const productMatch = order.products ? order.products.some(p => {
-    const productName = p.productName ? p.productName.toLowerCase() : '';
-    return productName.includes(lower);
-  }) : false;
+  applyFilter(value: string): OrderDto[] {
+    const filterValue = value.toLowerCase();
+    return this.orders.filter(order =>
+      order.paymentMethod.toLowerCase().includes(filterValue) ||
+      order.orderDate.toLowerCase().includes(filterValue)
+    );
+  }
 
-    return paymentMatch || productMatch;
-    });
-  }
-  selectOrder(order: OrderDto) {
+  selectOrder(order: OrderDto): void {
     this.selectedOrder = order;
+  }
+
+  onAdd(): void {
+   this.orderForm.reset();
+  ($('#orderModal') as any).modal('show'); // ou ta méthode modale
+  }
+
+  onEdit(): void {
+  if (this.selectedOrder) {
+     const product = this.selectedOrder.products && this.selectedOrder.products.length > 0
+     ? this.selectedOrder.products[0]
+     : null;
+
+    this.orderForm.patchValue({
+    id: this.selectedOrder.id,
+    clientId: this.selectedOrder.clientId,
+    orderDate: this.selectedOrder.orderDate,
+    paymentMethod: this.selectedOrder.paymentMethod,
+    productId: product ? product.productId : null,
+    quantity: product ? product.quantity : 1
+});
+
+      ($('#orderModal') as any).modal('show');
+    }
+  }
+
+  onDelete(): void {
+    if (this.selectedOrder) {
+      // logique de suppression à implémenter
+      console.log('Supprimer commande', this.selectedOrder);
+    }
+  }
+saveOrder(): void {
+  const order: OrderDto = {
+      id: this.orderForm.value.id,
+      clientId: this.orderForm.value.clientId,
+      orderDate: this.orderForm.value.orderDate,
+      paymentMethod: this.orderForm.value.paymentMethod,
+      products: [
+        {
+          productId: this.orderForm.value.productId,
+          quantity: this.orderForm.value.quantity
+        }
+      ]
+    };
+
+    this.orderService.createOrder(order).subscribe(() => {
+      this.loadOrders();
+      this.closeModal();
+    });
+}
+closeModal(): void {
+  ($('#orderModal') as any).modal('hide');
+}
+
+  highlight(text: string, search: string): string {
+    if (!search) return text;
+    const regex = new RegExp(`(${search})`, 'gi');
+    return text.replace(regex, `<mark>$1</mark>`);
   }
 }

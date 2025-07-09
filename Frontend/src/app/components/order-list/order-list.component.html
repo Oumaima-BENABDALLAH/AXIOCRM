@@ -1,128 +1,115 @@
-<div class="d-flex align-items-center mb-3 toolbar-actions">
+<!-- Toolbar -->
+<div class="toolbar d-flex justify-content-between align-items-center mb-3">
   <div class="d-flex align-items-center">
     <button class="btn btn-outline-primary me-2" (click)="onAdd()">
-      <i class="fas fa-shopping-cart"></i> Passer une commande
+      <i class="fa fa-shopping-cart"></i>
+
+                        Passer une commande
     </button>
     <button class="btn btn-outline-primary me-2" [disabled]="!selectedOrder" (click)="onEdit()">
-      <i class="fas fa-edit me-2"></i>Modifier une commande
+      <i class="fas fa-edit me-2"></i> Modifier commande
     </button>
-    
+    <button class="btn btn-outline-primary me-2" [disabled]="!selectedOrder" (click)="onDelete()">
+      <i class="fas fa-trash-alt me-2"></i> Supprimer
+    </button>
   </div>
 
   <div class="d-flex align-items-center fixed-search-box">
-    <label for="order-search" class="col-form-label me-2">Recherche :</label>
-    <input id="order-search" class="form-control" type="text" [formControl]="filter" style="max-width: 300px;" />
+    <label for="order-filtering-search" class="col-form-label me-2">Recherche :</label>
+    <input id="order-filtering-search" class="form-control" type="text" [formControl]="filter" style="max-width: 300px;" />
   </div>
 </div>
 
+<!-- Table des commandes -->
 <table class="table table-striped table-bordered mt-3">
   <thead class="table-light">
     <tr>
       <th>#</th>
       <th>Date</th>
       <th>Mode de paiement</th>
+      <th>Montant total</th>
       <th>Produits</th>
     </tr>
   </thead>
-<tbody>
-  <tr *ngIf="filteredOrders.length === 0">
-    <td colspan="4" class="text-center text-muted">Aucune commande trouvée</td>
-  </tr>
-
-  <ng-container *ngFor="let order of filteredOrders; let i = index">
-    <tr *ngIf="order?.orderDate"
-        [class.table-active]="selectedOrder === order"
-        (click)="selectOrder(order)">
+  <tbody>
+    <tr *ngFor="let order of filteredOrders$ | async; let i = index"
+      [class.table-active]="selectedOrder === order"
+      (click)="selectOrder(order)">
       <td>{{ i + 1 }}</td>
-      <td>{{ order?.orderDate | date:'short' }}</td>
-      <td [innerHTML]="highlight ? highlight(order?.paymentMethod, filter.value) : order?.paymentMethod"></td>
-
+      <td [innerHTML]="highlight(order.orderDate, filter.value)"></td>
+      <td [innerHTML]="highlight(order.paymentMethod, filter.value)"></td>
+      <td>{{ order.totalAmount | currency:'EUR' }}</td>
       <td>
-        <ul class="mb-0">
-       <li *ngFor="let p of order?.products ? order.products : []">
-            {{ p.productName }} (x{{ p.quantity }})
+        <ul *ngIf="order.products?.length > 0; else aucunProduit">
+          <li *ngFor="let p of order.products">
+            {{ p.productName || ('Produit #' + p.productId) }} (x{{ p.quantity }})
           </li>
         </ul>
+        <ng-template #aucunProduit>
+          Aucun produit
+        </ng-template>
       </td>
     </tr>
-  </ng-container>
-</tbody>
-
+    <tr *ngIf="(filteredOrders$ | async)?.length === 0">
+      <td colspan="5" class="text-center text-muted">Aucune commande trouvée</td>
+    </tr>
+  </tbody>
 </table>
 
-
-<!-- Modal d'ajout/modification -->
+<!-- 💬 Modale Ajouter / Modifier -->
 <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form (ngSubmit)="saveOrder()">
+      <form [formGroup]="orderForm" (ngSubmit)="saveOrder()">
         <div class="modal-header">
-          <h5 class="modal-title" id="orderModalLabel">{{ editingOrder?.id ? 'Modifier' : 'Ajouter' }} Commande</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
+          <h5 class="modal-title" id="orderModalLabel">
+            {{ orderForm.get('id')?.value ? 'Modifier' : 'Ajouter' }} Commande
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fermer" (click)="closeModal()">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Date</label>
-            <input type="datetime-local" class="form-control" [(ngModel)]="editingOrder.orderDate" name="orderDate" required />
-          </div>
-          <div class="form-group">
-            <label>Mode de paiement</label>
-            <input type="text" class="form-control" [(ngModel)]="editingOrder.paymentMethod" name="paymentMethod" required />
-          </div>
-          <!-- Ajout de la gestion des produits si besoin -->
-        </div>
+
+     <div class="modal-body">
+  <div class="form-group">
+    <label>Client</label>
+    <select formControlName="clientId" class="form-control">
+      <option *ngFor="let client of clients" [value]="client.id">
+        {{ client.name }} {{ client.lastName }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Date</label>
+    <input type="date" formControlName="orderDate" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label>Mode de paiement</label>
+    <input type="text" formControlName="paymentMethod" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label>Produit</label>
+    <select formControlName="productId" class="form-control">
+      <option *ngFor="let product of products" [value]="product.id">
+        {{ product.name }} - {{ product.price | currency }}
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Quantité</label>
+    <input type="number" formControlName="quantity" min="1" class="form-control" />
+  </div>
+</div>
+
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()">Annuler</button>
+          <button type="submit" class="btn btn-primary" [disabled]="orderForm.invalid">Enregistrer</button>
         </div>
       </form>
     </div>
   </div>
 </div>
-
-<!-- CSS identique aux composants précédents -->
-<style>
-  .toolbar-actions {
-    display: flex;
-    align-items: center;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-  .toolbar-actions > div:first-child {
-    margin-right: auto;
-  }
-  .toolbar-actions .btn {
-    margin-right: 10px;
-  }
-  .toolbar-actions .btn:last-of-type {
-    margin-right: 0;
-  }
-  .fixed-search-box {
-    position: fixed;
-    top: 75px;
-    right: 20px;
-    z-index: 1050;
-    background-color: white;
-    padding: 5px 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .fixed-search-box label.col-form-label {
-    margin-bottom: 0;
-    padding: 0;
-    line-height: normal;
-  }
-  .fixed-search-box input.form-control {
-    margin: 0;
-    padding: .375rem;
-    height: calc(1.5em + .75rem + 2px);
-  }
-  table.table {
-    margin-top: 80px;
-  }
-</style>
