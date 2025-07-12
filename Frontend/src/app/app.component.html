@@ -1,178 +1,23 @@
-<style>
-:host {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: #333;
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-
-.toolbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background-color: #1976d2;
-  color: white;
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  font-weight: 600;
-  z-index: 1000;
-}
-
-.toolbar img {
-  margin-right: 16px;
-  height: 40px;
-}
-
-nav {
-  position: fixed;
-  top: 60px; /* juste en dessous de la toolbar */
-  left: 0;
-  width: 15%;
-  height: calc(100vh - 60px);
-  background-color: #1976d2;
-  color: white;
-  padding: 1rem;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.2);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  border-radius: 0 20px 20px 0;
-  box-sizing: border-box;
-  z-index: 999;
-}
-
-nav .navbar-brand {
-  font-weight: 700;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-}
-
-nav .navbar-nav {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-nav .nav-item {
-  width: 100%;
-}
-
-nav .nav-link {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  padding: 0.5rem 0;
-  border-radius: 5px;
-  transition: background-color 0.2s ease-in-out;
-}
-
-nav .nav-link:hover {
-  background-color: rgba(2, 2, 2, 0.1);
-}
-
-nav .nav-link i {
-  margin-right: 10px;
-}
-
-.container-with-sidebar {
-  display: block;
-  margin-top: 60px; /* pour laisser la place à la toolbar */
-  height: calc(100vh - 60px);
-}
-.navbar-expand-lg .navbar-collapse{
-  display: block;
-  flex-basis: auto;
-}
-.main-content-area {
-  margin-left: 15%; /* décalage pour la sidebar */
-  padding: 20px;
-  flex-grow: 1;
-  overflow-y: auto;
-}
-
-.content {
-  max-width: 960px;
-  margin: 0 auto;
-}
-
-/* Optionnel: styles simples pour h1-h6 et paragraphes */
-h1, h2, h3, h4, h5, h6 {
-  margin: 8px 0;
-}
-
-p {
-  margin: 0 0 1rem 0;
-}
-
-</style>
-
 <!-- Toolbar -->
-<div class="toolbar" role="banner">
-  <img
-    width="40"
-    alt="Angular Logo"
-    src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg=="
-  />
+<div class="toolbar">
+  <img width="40" alt="Angular Logo" src="...">
   <span>Welcome</span>
-
-  
 </div>
-<div class="container-with-sidebar" >
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary main-nav">
-    <a class="navbar-brand" href="#">
-      <i class="fas fa-home"></i> AxioCRM
-    </a>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav"> <li class="nav-item mx-3">
-          <a class="nav-link" routerLink="/product"><i class="fas fa-box"></i> Products</a>
-        </li>
-        <li class="nav-item mx-3">
-          <a class="nav-link" routerLink="/client"><i class="fas fa-users"></i> Clients</a>
-        </li>
-        <li class="nav-item mx-3">
-        <a routerLink="/order" routerLinkActive="active" style="color: white; text-decoration: none;">
-          <span class="material-icons">shopping_cart</span>Commandes</a>
-        </li>
+<div class="container-with-sidebar">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary main-nav">
+    <a class="navbar-brand" href="#"><i class="fas fa-home"></i> AxioCRM</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" routerLink="/home"><i class="fas fa-home"></i> Home</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/product"><i class="fas fa-box"></i> Products</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/client"><i class="fas fa-users"></i> Clients</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/order"><span class="material-icons">shopping_cart</span> Commandes</a></li>
       </ul>
     </div>
   </nav>
-  <div class="spacer"></div> <a aria-label="Angular on twitter" target="_blank" rel="noopener" href="https://twitter.com/angular" title="Twitter">
-    <svg id="twitter-logo" height="24" data-name="Logo — FIXED" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
-      <defs>
-        <style>
-          .cls-1 { fill: none; }
-          .cls-2 { fill: #ffffff; }
-        </style>
-      </defs>
-      <rect class="cls-1" width="400" height="400" />
-      <path class="cls-2" d="M153.62,301.59c94.34,0,145.94-78.16,145.94-145.94,0-2.22,0-4.43-.15-6.63A104.36,104.36,0,0,0,325,122.47a102.38,102.38,0,0,1-29.46,8.07,51.47,51.47,0,0,0,22.55-28.37,102.79,102.79,0,0,1-32.57,12.45,51.34,51.34,0,0,0-87.41,46.78A145.62,145.62,0,0,1,92.4,107.81a51.33,51.33,0,0,0,15.88,68.47A50.91,50.91,0,0,1,85,169.86c0,.21,0,.43,0,.65a51.31,51.31,0,0,0,41.15,50.28,51.21,51.21,0,0,1-23.16.88,51.35,51.35,0,0,0,47.92,35.62,102.92,102.92,0,0,1-63.7,22A104.41,104.41,0,0,1,75,278.55a145.21,145.21,0,0,0,78.62,23" />
-    </svg>
-  </a>
+
   <main class="main-content-area">
     <router-outlet></router-outlet>
   </main>
 </div>
-<div class="container mt-3">
-</div>
-
-
- 
-

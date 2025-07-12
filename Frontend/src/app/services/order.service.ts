@@ -33,4 +33,7 @@ getOrders(): Observable<OrderDto[]> {
   deleteOrder(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  getDashboardStats() {
+  return this.http.get<any>(this.apiUrl + '/dashboard');
+}
 }

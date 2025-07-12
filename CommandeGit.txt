@@ -1,0 +1,23 @@
+/***************************Create new branch for feature************************************/
+git checkout -b feature/nom-fonctionnalite  
+
+/***************************Change branch************************************/
+git checkout main
+git checkout feature/add-client
+
+
+/***************************check all  branchs************************************/
+git branch
+
+/***************************add changes************************************/
+git add .
+
+
+
+/***************************Commit branch************************************/
+git commit -m "Feature: ajouter client backend + frontend"
+
+
+/***************************push branch************************************/
+git push origin feature/add-client
+

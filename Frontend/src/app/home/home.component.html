@@ -1,0 +1,47 @@
+<!-- Dashboard Content -->
+<!-- Dashboard Content -->
+<div class="dashboard-cards">
+  <div class="card">
+    <div class="card-header">
+      <span class="title">Total Earnings</span>
+    </div>
+    <div class="card-content">
+      <h2>$1.2M</h2>
+      <span class="percentage">-25%</span>
+    </div>
+    <div class="card-chart">
+      <apx-chart
+        [series]="chartLineSparkline1Options.series"
+        [chart]="commonLineSparklineOptions.chart"
+        [stroke]="commonLineSparklineOptions.stroke"
+        [tooltip]="commonLineSparklineOptions.tooltip"
+        [xaxis]="commonLineSparklineOptions.xaxis"
+        [dataLabels]="commonLineSparklineOptions.dataLabels"
+      ></apx-chart>
+    </div>
+  </div>
+</div>
+
+
+<div class="button-group">
+  <button class="btn">+ Ajouter</button>
+  <button class="btn">Modifier</button>
+  <button class="btn">Supprimer</button>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Identifiant</th>
+      <th>Nom</th>
+      <th>Prix (€)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>1</td><td>ROUTEUR</td><td>780</td></tr>
+    <tr><td>2</td><td>RADIO</td><td>75</td></tr>
+    <tr><td>3</td><td>FOUR</td><td>315</td></tr>
+    <tr><td>4</td><td>PC PORTABLE</td><td>1500</td></tr>
+    <tr><td>5</td><td>SMART PHONE</td><td>2500</td></tr>
+  </tbody>
+</table>

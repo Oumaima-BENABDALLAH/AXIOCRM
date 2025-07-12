@@ -72,5 +72,19 @@ namespace ProductManager.API.Controllers
 
             return Ok(order);
         }
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> GetDashboardStats()
+        {
+            var totalEarnings = await _orderService.GetTotalEarningsAsync();
+            var totalBalance = await _orderService.GetTotalBalanceAsync();
+            var totalProjects = await _orderService.GetTotalProjectsAsync();
+
+            return Ok(new
+            {
+                totalEarnings,
+                totalBalance,
+                totalProjects
+            });
+        }
     }
 }

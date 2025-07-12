@@ -11,6 +11,8 @@ import { ClientListComponent } from './components/client-list/client-list.compon
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrderListComponent } from './components/order-list/order-list.component';
 import { ClientProductListComponent } from './components/client-product-list/client-product-list.component';
+import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { ClientProductListComponent } from './components/client-product-list/cli
     ClientListComponent,
     OrderListComponent,
     ClientProductListComponent,
+    DashboardHomeComponent,
+    HomeComponent,
 
   ],
   imports: [

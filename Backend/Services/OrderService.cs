@@ -54,6 +54,19 @@ namespace ProductManager.API.Services
             await _context.SaveChangesAsync();
             return true;
         }
+        public async Task <decimal> GetTotalEarningsAsync()
+        {
+            return await _context.Orders.SumAsync(o => o.OrderProducts.Sum(p => p.Quantity * p.UnitPrice));
+        }
+        public async Task<decimal> GetTotalBalanceAsync()
+        {
+            return await _context.Orders.SumAsync(o => o.OrderProducts.Sum(p => p.Quantity * p.UnitPrice)/100);
+        }
+
+        public async Task<int> GetTotalProjectsAsync()
+        {
+            return await _context.Orders.CountAsync();
+        }
 
     }
 }
