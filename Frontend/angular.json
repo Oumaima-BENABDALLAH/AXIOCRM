@@ -114,7 +114,6 @@
       }
     }
   },
-  "defaultProject": "ProductApp",
   "cli": {
     "analytics": "bb18fa50-5c29-45c4-bc6e-efef6a1941e2"
   }

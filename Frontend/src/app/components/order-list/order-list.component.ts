@@ -7,8 +7,8 @@ import { ClientService } from 'src/app/services/client.service';
 import { ProductService } from 'src/app/services/product.service';
 import { Observable, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 declare var $: any;
 
 @Component({
@@ -19,14 +19,14 @@ declare var $: any;
 export class OrderListComponent implements OnInit {
   orders: OrderDto[] = [];
   filteredOrders$: Observable<OrderDto[]> = of([]);
-  filter = new FormControl('');
+  filter = new UntypedFormControl('');
   selectedOrder: OrderDto | null = null;
-  orderForm!: FormGroup;
+  orderForm!: UntypedFormGroup;
   clients: ClientDto[] = [];
   products: ProductDto[] = [];
 
 
-  constructor(private orderService: OrderService ,private fb: FormBuilder,
+  constructor(private orderService: OrderService ,private fb: UntypedFormBuilder,
      private clientService: ClientService,
       private productService: ProductService
   ) {}
