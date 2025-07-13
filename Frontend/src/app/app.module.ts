@@ -11,8 +11,8 @@ import { ClientListComponent } from './components/client-list/client-list.compon
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrderListComponent } from './components/order-list/order-list.component';
 import { ClientProductListComponent } from './components/client-product-list/client-product-list.component';
-import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
-import { HomeComponent } from './home/home.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [
@@ -21,8 +21,7 @@ import { HomeComponent } from './home/home.component';
     ClientListComponent,
     OrderListComponent,
     ClientProductListComponent,
-    DashboardHomeComponent,
-    HomeComponent,
+    DashboardComponent,
 
   ],
   imports: [
@@ -35,7 +34,9 @@ import { HomeComponent } from './home/home.component';
     BrowserAnimationsModule,
 
   ],
-  providers: [],
+  providers: [
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

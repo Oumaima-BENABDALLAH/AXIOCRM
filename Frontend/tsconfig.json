@@ -13,7 +13,7 @@
     "target": "ES2022",
     "allowSyntheticDefaultImports": true,
     "typeRoots": [
-      "node_modules/@types"
+      "node_modules/@types", "node_modules/chart.js/types"
     ],
     "lib": [
       "es2018",
