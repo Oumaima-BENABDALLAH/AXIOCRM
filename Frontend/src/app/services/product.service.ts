@@ -5,6 +5,8 @@ import { ReturnStatement } from '@angular/compiler';
 import { Client } from './client.service';
 import { map } from 'rxjs/operators';
 import { Product } from 'src/app/models/product.model';
+import { ProductDto } from 'src/app/models/product.model';
+
 interface ProductApiResponse  {
   $values: Product[];
 }
@@ -17,9 +19,11 @@ export class ProductService {
   
   constructor( private http : HttpClient) {}
 
-  /* getAll(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiURL);
-  } */
+getProducts(): Observable<ProductDto[]> {
+  return this.http
+    .get<{ $id: string; $values: ProductDto[] }>(this.apiURL)
+    .pipe(map(resp => resp.$values || []));
+}
 getAll(): Observable<ProductApiResponse | Product[]> {
   return this.http.get<ProductApiResponse | Product[]>(this.apiURL);
 }

@@ -10,6 +10,7 @@
         public DateTime OrderDate { get; set; }
 
         public string PaymentMethod { get; set; } = "";
+        public decimal TotalAmount { get; set; }
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }

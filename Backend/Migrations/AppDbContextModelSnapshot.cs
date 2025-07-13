@@ -34,6 +34,10 @@ namespace ProductManager.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -45,21 +49,6 @@ namespace ProductManager.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Clients");
-                });
-
-            modelBuilder.Entity("ProductManager.API.Models.ClientProduct", b =>
-                {
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ClientId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ClientProducts");
                 });
 
             modelBuilder.Entity("ProductManager.API.Models.Order", b =>
@@ -80,6 +69,9 @@ namespace ProductManager.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClientId");
@@ -98,6 +90,9 @@ namespace ProductManager.API.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("OrderId", "ProductId");
 
                     b.HasIndex("ProductId");
@@ -113,42 +108,29 @@ namespace ProductManager.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasPrecision(18, 2)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ProductManager.API.Models.ClientProduct", b =>
-                {
-                    b.HasOne("ProductManager.API.Models.Client", "Client")
-                        .WithMany("ClientProducts")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ProductManager.API.Models.Product", "Product")
-                        .WithMany("ClientProducts")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Client");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("ProductManager.API.Models.Order", b =>
                 {
                     b.HasOne("ProductManager.API.Models.Client", "Client")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -177,7 +159,7 @@ namespace ProductManager.API.Migrations
 
             modelBuilder.Entity("ProductManager.API.Models.Client", b =>
                 {
-                    b.Navigation("ClientProducts");
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("ProductManager.API.Models.Order", b =>
@@ -187,8 +169,6 @@ namespace ProductManager.API.Migrations
 
             modelBuilder.Entity("ProductManager.API.Models.Product", b =>
                 {
-                    b.Navigation("ClientProducts");
-
                     b.Navigation("OrderProducts");
                 });
 #pragma warning restore 612, 618

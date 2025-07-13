@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductManager.API.Data;
 using ProductManager.API.Models;
+using ProductManager.API.Services.Interfaces;
 
 namespace ProductManager.API.Controllers
 {
@@ -12,93 +13,44 @@ namespace ProductManager.API.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        public ProductController (AppDbContext context)
+        private readonly IProductService _productService;
+
+        public ProductController(IProductService productService)
         {
-            _context = context;
+            _productService = productService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() => Ok(await _context.Products.ToListAsync());
+        public async Task<IActionResult> GetAll() => Ok(await _productService.GetAllAsync());
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = await _productService.GetByIdAsync(id);
             return product == null ? NotFound() : Ok(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post (Product product)
+        public async Task<IActionResult> Create(Product product)
         {
 
-           await  _context.Products.AddAsync(product);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = product.Id }, product);
+            var created = await _productService.CreateAsync(product);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id , Product product)
+        public async Task<IActionResult> Update(int id, Product product)
         {
-            var prod = _context.Products.FirstOrDefault(x => x.Id == id);
-
-            if (prod == null) return NotFound();
-
-            prod.Name = product.Name;
-            prod.Price = product.Price;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            var cl = await _productService.UpdateAsync(id, product);
+            return cl == null ? NotFound() : NoContent();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete (int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var prod = await _context.Products.FindAsync(id);
-            if (prod == null) return NotFound();
-            _context.Products.Remove(prod);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            var product = await _productService.DeleteAsync(id);
+            return product ? NoContent() : NotFound();
         }
-        
-        //private static List<Product> _products = new List<Product>();
-        //[HttpGet]
-        //public IActionResult Get() => Ok(_products);
-
-        //[HttpGet("{id}")]
-
-        //public IActionResult Get (int id)
-        //{
-        //    var product = _products.FirstOrDefault(x => x.Id == id);
-        //    return product == null ? NotFound() : Ok(product);
-        //}
-
-        //[HttpPost]
-        //public IActionResult Post (Product product)
-        //{
-        //    product.Id = _products.Count + 1;
-        //    _products.Add(product);
-        //    return CreatedAtAction(nameof(Get), new { id = product.Id }, product);
-
-        //}
-
-        //[HttpPut("{id}")]
-        //public IActionResult Put (int id , Product product)
-        //{
-        //    var prod = _products.FirstOrDefault(x => x.Id == id);
-        //    if (prod == null) return NotFound();
-        //    prod.Name = product.Name;
-        //    prod.Price = product.Price;
-        //    return NoContent();
-        //}
-
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete (int id)
-        //{
-        //    var product = _products.FirstOrDefault(x => x.Id == id);
-        //    if (product == null) return NotFound();
-        //    _products.Remove(product);
-        //    return NoContent();
-        //}
 
     }
 }

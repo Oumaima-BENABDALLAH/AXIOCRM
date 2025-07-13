@@ -1,0 +1,38 @@
+/* dashboard-card.component.scss */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 1rem;
+  width: 200px;
+}
+
+.card-header {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-info h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.card-change {
+  color: #e91e63; /* rose */
+  font-size: 0.8rem;
+}
+
+.card-sparkline {
+  width: 80px;
+}

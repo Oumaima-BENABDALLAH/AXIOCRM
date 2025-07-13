@@ -1,0 +1,23 @@
+/***************************Create new branch for feature************************************/
+git checkout -b feature/nom-fonctionnalite  
+
+/***************************Change branch************************************/
+git checkout main
+git checkout feature/add-client
+
+
+/***************************check all  branchs************************************/
+git branch
+
+/***************************add changes************************************/
+git add .
+
+
+
+/***************************Commit branch************************************/
+git commit -m "feature/Update_version_angular-_cli_from_8_to_17"
+
+
+/***************************push branch************************************/
+git push origin feature/Update_version_angular-_cli_from_8_to_17
+

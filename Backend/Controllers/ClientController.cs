@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProductManager.API.Data;
 using ProductManager.API.Models;
+using ProductManager.API.Services.Interfaces;
 
 namespace ProductManager.API.Controllers
 {
@@ -9,54 +10,43 @@ namespace ProductManager.API.Controllers
     [Route("api/[controller]")]
     public class ClientController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        
-        public ClientController(AppDbContext context)
+        private readonly IClientService _clientService;
+
+        public ClientController(IClientService clientService)
         {
-            _context = context;
+            _clientService = clientService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() => Ok(await _context.Clients.ToListAsync());
+        public async Task<IActionResult> GetAll() => Ok(await _clientService.GetAllAsync());
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var client = await _context.Clients.FindAsync(id);
+            var client = await _clientService.GetByIdAsync(id);
             return client == null ? NotFound() : Ok(client);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Client client)
+        public async Task<IActionResult> Create(Client client)
         {
 
-            await _context.Clients.AddAsync(client);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(Get), new { id = client.Id }, client);
+          var created =  await _clientService.CreateAsync(client);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Client client)
+        public async Task<IActionResult> Update(int id, Client client)
         {
-            var cl = _context.Clients.FirstOrDefault(x => x.Id == id);
-
-            if (cl == null) return NotFound();
-
-            cl.Name = client.Name;
-            cl.Email = client.Email;
-            cl.Phone = client.Phone;
-            await _context.SaveChangesAsync();
-            return NoContent();
+            var cl = await _clientService.UpdateAsync(id,client);
+            return cl == null ? NotFound(): NoContent();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var client = await _context.Clients.FindAsync(id);
-            if (client == null) return NotFound();
-            _context.Clients.Remove(client);
-            await _context.SaveChangesAsync();
-            return NoContent();
+            var client = await _clientService.DeleteAsync(id);
+            return client ? NoContent() : NotFound();
         }
 
     }

@@ -1,7 +1,7 @@
 // src/app/components/client/client-list/client-list.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ClientService, Client } from 'src/app/services/client.service';
-import { FormControl , FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { UntypedFormControl , UntypedFormGroup, Validators, UntypedFormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -13,13 +13,13 @@ declare var $: any;
 })
 export class ClientListComponent implements OnInit {
   clients: Client[] = [];
-  filter = new FormControl('');
+  filter = new UntypedFormControl('');
   filteredClients$!: Observable<Client[]>;
   selectedClient: Client | null = null;
   //editingClient: Client = { id: 0, name: '', email: '',phone :'' };
-    clientForm!: FormGroup;
+    clientForm!: UntypedFormGroup;
 
-  constructor(private clientService: ClientService , private sanitizer: DomSanitizer,private fb: FormBuilder) {}
+  constructor(private clientService: ClientService , private sanitizer: DomSanitizer,private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
      this.loadClient();

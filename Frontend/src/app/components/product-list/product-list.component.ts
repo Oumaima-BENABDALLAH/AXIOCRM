@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
-import  { FormControl } from '@angular/forms';
+import  { UntypedFormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
@@ -16,7 +16,7 @@ declare var $: any; // Pour utiliser jQuery et le modal Bootstrap
 })
 export class ProductListComponent implements OnInit {
   products:Product[] = [];
-  filter = new FormControl('');
+  filter = new UntypedFormControl('');
   filteredProducts$!: Observable<Product[]>;
   selectedProduct: Product | null = null;
   editingProduct: Product = { id: 0, name: '', price: 0 };
