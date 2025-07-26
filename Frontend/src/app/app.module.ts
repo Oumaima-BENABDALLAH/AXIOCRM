@@ -2,7 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { RouterModule, Routes } from '@angular/router';
-
+import { StatCardComponent } from './components/stat-card/stat-card.component';
+import { ChartLineComponent } from './components/chart-line/chart-line.component';
+import { ChartRadialComponent } from './components/chart-radial/chart-radial.component';
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ClientListComponent } from './components/client-list/client-list.component';
@@ -14,7 +16,14 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DashboardMetricCardComponent } from './components/dashboard-metric-card/dashboard-metric-card.component';
+import { SparklineCardComponent } from './components/sparkline-card/sparkline-card.component';
+import {AvailableBalanceCardComponent} from './components/available-balance-card/available-balance-card.component'
+import { HighlightCardComponent } from './components/highlight-card/highlight-card.component';
+import { ChartsSectionComponent } from './components/charts-section/charts-section.component';
+import { TotalProjectsCardComponent} from './components/total-projects-card/total-projects-card.component';
 
+import { NgChartsModule } from 'ng2-charts';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'products', component: ProductListComponent },
@@ -31,6 +40,11 @@ const routes: Routes = [
     OrderListComponent,
     ClientProductListComponent,
     DashboardComponent,
+    ChartLineComponent,
+    ChartRadialComponent,
+    DashboardMetricCardComponent,
+    SparklineCardComponent,
+    ChartsSectionComponent,AvailableBalanceCardComponent 
   ],
   imports: [
     BrowserModule,
@@ -40,6 +54,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     BrowserAnimationsModule,
+    HighlightCardComponent, NgChartsModule,TotalProjectsCardComponent,StatCardComponent
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),

@@ -1,0 +1,42 @@
+.stat-card {
+  background: #7b61ff;
+  color: white;
+  padding: 1.2rem;
+  border-radius: 1rem;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  font-family: sans-serif;
+}
+
+.icon img {
+  width: 24px;
+  height: 24px;
+}
+
+.value {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.label {
+  font-size: 0.85rem;
+}
+
+.arrow .circle {
+  background: #fecdd3;
+  color: #7b61ff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}

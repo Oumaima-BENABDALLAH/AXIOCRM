@@ -1,0 +1,41 @@
+.card {
+  width: 300px;     /* plus large */
+  height: 235px;    /* plus haute */
+  margin-top: 15px;
+  border-color: white;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: white;
+   padding-bottom: 1rem;
+}
+
+/*canvas {
+  margin-top: -65px;
+  width: 340px;
+  height: 230px; 
+  */
+canvas {
+  display: block;
+  margin-left: -35px;
+  margin-top: -25px;
+}
+.title {
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+}
+
+.amount {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.percentage {
+  color: #a855f7;
+  font-weight: bold;
+  font-size: 0.9rem;
+}

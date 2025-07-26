@@ -1,60 +1,147 @@
-<div class="flex h-screen">
-  <!-- Sidebar -->
-  <aside class="w-64 bg-violet-600 text-white flex flex-col p-4">
-    <h1 class="text-2xl font-bold mb-8">myWallet</h1>
-    <nav class="flex flex-col gap-4">
-      <a href="#" class="flex items-center gap-2 hover:bg-violet-500 p-2 rounded">
-        <span class="material-icons">home</span> Home
-      </a>
-      <a href="#" class="flex items-center gap-2 hover:bg-violet-500 p-2 rounded">
-        <span class="material-icons">folder</span> Files
-      </a>
-      <!-- Ajoute d'autres liens -->
-    </nav>
-    <div class="mt-auto">
-      <button class="bg-white text-violet-600 font-bold p-2 w-full rounded">Upgrade</button>
-    </div>
-  </aside>
 
-  <!-- Main content -->
-  <main class="flex-1 bg-gray-50 p-8 overflow-auto">
-    <header class="flex justify-between items-center mb-8">
-      <h2 class="text-3xl font-bold">Dashboard</h2>
-      <input type="text" placeholder="Search" class="border px-4 py-2 rounded">
-    </header>
-
-    <!-- Info Cards -->
-   <div class="card">
-  <div class="card-header">
-    <span class="card-title">Total Earnings</span>
+<div class="dashboard-header">
+  <div class="header-left">
+    <h1>Dashboard</h1>
+    <p > {{franceTime}}</p>
   </div>
-  <div class="card-body">
-    <div class="card-info">
-      <h2>$1.2M</h2>
-      <span class="card-change">-25%</span>
+
+  <div class="header-right">
+    <div class="search-container">
+      <input type="text" placeholder="Search">
+      <i class="fas fa-search search-icon"></i>
     </div>
-    <div class="card-sparkline">
-      <apx-chart
-        [series]="chartOptions.series"
-        [chart]="chartOptions.chart"
-        [stroke]="chartOptions.stroke"
-        [colors]="chartOptions.colors"
-        [tooltip]="chartOptions.tooltip"
-      ></apx-chart>
+
+    <button class="bell-button">
+      <i class="fas fa-bell"></i>
+    </button>
+
+  <img src="https://i.pravatar.cc/40" alt="Profile" class="avatar">
+
+  </div>
+</div>
+
+
+<div class="p-6 space-y-6 bg-gray-50 min-h-screen ml-0 lg:ml-[260px]">
+  <!-- 🔹 Statistiques principales -->
+<div class="flex flex-wrap gap-6 items-start mt-8">
+ <div class="stats-row">
+  <div class="card-group" >
+  <app-sparkline-card 
+    title="Monthly Invoices"
+    value="1.1K"
+    change="+8%"
+    [data]="[10, 12, 11, 14, 13, 15, 17]"
+    changeColor="green">
+  </app-sparkline-card>
+
+  <app-sparkline-card
+    title="Projects Completed"
+    value="10K"
+    change="+12%"
+    [data]="[1000, 1200, 1150, 1300, 1280, 1400, 1500]"
+    changeColor="green">
+  </app-sparkline-card>
+
+  <app-sparkline-card
+    title="New Clients"
+    value="350"
+    change="-5%"
+    [data]="[380, 370, 360, 355, 350, 345, 340]"
+    changeColor="red">
+  </app-sparkline-card>
+
+  <app-sparkline-card
+    title="Pending Tasks"
+    value="45"
+    change="+2%"
+    [data]="[40, 42, 43, 44, 46, 45, 45]"
+    changeColor="green">
+  </app-sparkline-card>
+
+    <app-sparkline-card
+     title="Monthly Revenue"
+     value="$18.5K"
+     change="-3%"
+     [data]="[20000, 19500, 19000, 18800, 18500, 18300, 18000]"
+     changeColor="red">
+</app-sparkline-card>
+  </div>
+    <div class="highlight-wrapper" style="width: 430px; height: 260px;">
+     <app-highlight-card
+       [value]="'3.4K'"
+       [label]="'This Month'"
+       [data]="[100, 150, 130, 170, 160, 200, 267]">
+     </app-highlight-card>
     </div>
   </div>
 </div>
 
-    <!-- Graphs section -->
-    <div class="grid grid-cols-2 gap-4">
-      <div class="bg-white p-4 rounded shadow">
-        <!-- Chart.js ici -->
-        <canvas id="projectsChart"></canvas>
-      </div>
-      <div class="bg-white p-4 rounded shadow">
-        <!-- Autre graphique -->
-        <canvas id="analyticsChart"></canvas>
+  <!-- 🔹 Graphiques -->
+<!--<div class="chart-grid grid grid-cols-1 xl:grid-cols-3 gap-6 mt-6">-->
+  <!-- La section graphique qui prend 2 colonnes -->
+<div class="chart-row">
+  <app-charts-section class="charts-section"></app-charts-section>
+
+  <div class="chart-card performance-card">
+    <div class="card-stack">
+      <div class="card-back"></div>
+      <div class="card-middle"></div>
+      <div class="card-front">
+        <p class="top-text">Your earning of this month</p>
+        <h4 class="main-amount">$677,000</h4>
+        <div class="circle-progress">
+          <span>85%</span>
+        </div>
+        <div class="bottom-info">
+          <div class="bottom-col">
+            <p class="label">Estimated</p>
+            <p class="value">$455K</p>
+          </div>
+          <div class="bottom-col">
+            <p class="label">Calculated</p>
+            <p class="value">$546K</p>
+          </div>
+        </div>
       </div>
     </div>
-  </main>
+  </div>
+</div>
+
+
+<div class="summary-cards-row">
+<app-sparkline-card
+  title="Total Sales"
+  value="$1.2M"
+  change="+7%"
+  [data]="[5, 8, 6, 9, 12, 10, 13, 11, 15, 17, 14, 16, 19, 18, 21]"
+  color="#8B5CF6"
+  variant="gradient"
+  [compact]="true"
+  highlightValue="true">
+</app-sparkline-card>
+<app-sparkline-card
+  title="Total Balance"
+  value="$1,534"
+  change="+17%"
+  [data]="[5, 8, 6, 9, 12, 10, 13, 11, 15, 17, 14, 16, 19, 18, 21]"
+  color="#0ff"
+  variant="balance"
+  [compact]="true"
+  highlightValue="true">
+  </app-sparkline-card>
+  <div class="card-row">
+
+  <app-available-balance-card></app-available-balance-card>
+  <app-total-projects-card></app-total-projects-card>
+<app-stat-card
+  [value]="'1.1K'"
+  [label]="'Monthly Invoices'"
+></app-stat-card>
+
+<app-stat-card
+  [value]="'10K'"
+  [label]="'Projects Completed'"
+></app-stat-card>
+</div>
+</div>
 </div>

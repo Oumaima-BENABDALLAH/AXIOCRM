@@ -1,17 +1,24 @@
-/* dashboard-card.component.scss */
-.card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  padding: 1rem;
-  width: 200px;
+/* dashboard-card.component.css */
+.card-container-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* espace entre les cartes */
+  align-items: center; /* centrer les cartes horizontalement */
+}
+
+.card:hover {
+  transform: translateY(-4px);
 }
 
 .card-header {
-  font-size: 0.8rem;
-  color: #888;
+    padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+     font-size: 0.8rem;
+     color: #888;
+    margin-bottom: 0;
+   /*  color: var(--bs-card-cap-color);
+    background-color: var(--bs-card-cap-bg); */
+    border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
 }
-
 .card-body {
   display: flex;
   align-items: center;
@@ -33,6 +40,560 @@
   font-size: 0.8rem;
 }
 
-.card-sparkline {
-  width: 80px;
+
+body {
+  font-family: Arial, sans-serif;
+ /* background-color: #f9f9f9;*/
+ background-color: fdfafa;
+  margin: 0;
+  padding: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+ /* background-color: #fdfafa;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);*/
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  margin-bottom: 20px;
+}
+.header-left h1 {
+  font-size: 24px;
+  font-weight: bolder;
+  margin: 0;
+}
+
+.header-left p {
+  font-size: 18px;
+  color: #888;
+  margin: 4px 0 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-container {
+  position: relative;
+  width : 300px;
+  height: 40px;
+}
+
+.search-container input {
+  width: 100%;
+  height: 100%;
+  padding: 10px 35px 10px 40px;
+  border: 1px solid #ccc;
+  border-radius: 999px;
+  font-size: 16px;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 16px;
+}
+
+.bell-button {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 24px;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bell-button:hover {
+  color: #9155fd;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+/* STATS SECTION */
+.stats-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.stat-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  flex: 1 1 200px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.stat-card p {
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.stat-card h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.stat-card .positive {
+  color: green;
+  font-size: 14px;
+}
+
+.stat-card .negative {
+  color: red;
+  font-size: 14px;
+}
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* Carte highlight à droite */
+
+/*.highlight-wrapper {
+   width: 320px;       
+  height: 190px;     
+  display: flex;
+  align-items: stretch;
+
+}*/
+
+.highlight-wrapper {
+  margin-left: auto;
+  width: 470px !important;   /* ✅ Agrandit la largeur */
+  height: 185px !important;  /* ✅ Agrandit la hauteur */
+  display: flex;
+  align-items: stretch;
+  flex-shrink: 0;            /* ✅ Empêche le rétrécissement */
+}
+::ng-deep app-highlight-card {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep app-highlight-card > * {
+  width: 100%;
+  height: 100%;
+}
+/* Empêche les cartes de se casser à la ligne */
+
+/* Ajuste l’espacement externe du bloc complet si nécessaire */
+.flex.flex-wrap.gap-6.items-start.mt-8 {
+  padding: 0 16px;
+}
+
+
+.chart-grid {
+   display: grid;
+   grid-template-columns: 2fr 1fr; /* mobile par défaut */
+   gap: 24px;
+   align-items: start; 
+   flex: 1;
+   min-width: 0;
+
+    
+}
+
+.card-stack {
+  position: relative;
+  width: 200px;
+  height: 280px;
+}
+
+.card-back, .card-middle, .card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  transform: rotate(-4deg);
+  background: linear-gradient(135deg, #3a2dff, #865dff);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-middle {
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  transform: rotate(-2deg);
+}
+
+.card-front {
+  top: 20px;
+  left: 20px;
+  z-index: 2;
+  background: #2d2dff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 20px;
+}
+
+.circle-progress {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: conic-gradient(#ffcc80 0% 85%, #fff 85% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+  background-color: white;
+}
+
+.card-info {
+  text-align: center;
+  color: white;
+}
+
+.card-info h4 {
+  margin: 10px 0;
+  font-size: 20px;
+}
+
+.card-info .sub {
+  font-size: 13px;
+  color: #ccc;
+}
+.charts-wrapper {
+ display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    row-gap: 20px;
+    justify-content: flex-start;
+}
+
+.performance-card {
+
+  background: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;        
+  left:190px;    
+  margin-bottom: 0;
+  position: relative;   
+  padding: 20px;
+  min-height: 350px;   
+  width: auto;
+  max-width: 360px;
+  height: 425px; 
+  top: 10px;    
+   /*height: 410px; */
+}
+.card-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.card-back,
+.card-middle,
+.card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  transform: rotate(-0.1deg);
+  background: linear-gradient(135deg, #5715a2, #a77ecc);
+
+}
+
+.card-back {
+  background: linear-gradient(135deg, #1b019b, #d3b8e9);
+   transform: rotate(-13deg);
+}
+
+.card-middle {
+  background: linear-gradient(135deg, #ccccff, #d3b8e9);
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+   transform: rotate(-6deg);
+}
+
+
+.card-front[_ngcontent-ng-c3654393658] {
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+    background: #5715a2;
+    display: flex;
+    transform: rotate(-0.1deg);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    padding: 20px;
+}
+.top-text {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.main-amount {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.circle-progress {
+ position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: conic-gradient(from -90deg, #f8a5c2 0% 85%, #eaeaea 85% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  background-color: #fff;
+ /* box-shadow: 0 0 0 10px #fff inset;*/
+  transition: background 1s ease-in-out;
+
+}
+.circle-progress::after {
+  content: "";
+  position: absolute;
+  width: 94px;  /* ⬅️ Ajuste ici au pixel près */
+  height: 94px;
+  border-radius: 50%;
+  background-color: white;
+  z-index: 1;
+}
+
+.circle-progress span {
+   position: absolute;
+   z-index: 2;
+   font-size: 22px;
+   font-weight: bold;
+   color: #d04ac9;
+}
+.bottom-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.bottom-col {
+  text-align: center;
+  flex: 1;
+}
+
+
+
+.app-charts-section {
+  grid-column: span 2;
+  display: flex;
+  grid-template-columns: repeat(2, 1fr); /* Deux colonnes égales */
+  gap: 20px;
+
+}
+
+::ng-deep app-charts-section .chart-card {
+  min-height: 400px;   
+  width: 880px;
+  min-width: 600px;
+  /*max-width: 880px;*/
+  height: 410px; 
+  top: 35px;    
+}
+
+
+.chart-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-top: 20px;
+  margin-left: 30px;
+}
+
+
+.card-group {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1px;
+  /*padding-bottom: 5px;*/
+}
+
+.card-group app-sparkline-card {
+  /*flex: 0 0 150px;       
+  height: 180px; 
+  padding-top :10px;      */
+  flex: 0 0 260px;
+  height: 160px;
+  max-width: none;
+  max-height: none;
+
+}
+
+::ng-deep app-sparkline-card {
+  padding: 20px; /* optionnel : ajuster selon ton design */
+  padding-top: 15px;
+   margin: 0 !important;
+
+}
+.bottom-row[_ngcontent-ng-c3974503086] {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.bottom-card-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 20px;
+  padding: 16px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.bottom-card-group app-sparkline-card {
+  flex: 1 1 200px;
+  height: 160px;
+  border-radius: 12px;
+}
+
+.sparkline-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.sparkline-card.compact {
+  width: 160px;
+  height: 160px;
+  padding: 12px;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.sparkline-card.compact .title {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.sparkline-card.compact .value {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.sparkline-card.compact .change {
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.sparkline-card .change.positive {
+  color: #22c55e;
+}
+.sparkline-card .change.negative {
+  color: #ef4444;
+}
+
+.full-chart {
+  width: 100%;
+  height: auto;
+}
+
+.bottom-row {
+  margin-top: 12px;
+}
+.sparkline-card.large-card {
+  width: 480px;
+  height: 280px;
+  padding: 20px;
+}
+.large-sparkline {
+  max-width: 360px !important;
+  width: 100% !important;
+  min-height: 180px !important;
+}
+.bottom-card {
+  max-width: 220px;
+  height: 220px;
+  padding: 0;
+  align-self: flex-start;
+}
+.summary-cards-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 58px;
+  flex-wrap: wrap; /* au cas où l’écran est petit */
+  margin-left: 12px;
+}
+
+app-sparkline-card {
+  margin: 0 !important;
+  width: 250px;
+  box-sizing: border-box;
+}
+.card[_ngcontent-ng-c1608755989] {
+    /* gap: 16px; */
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px #0000000d;
+    text-align: center;
+    width: 300px;
+    height: 260px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+    justify-content: space-between;
+}
+.card-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap; /* optionnel : pour responsive */
+}
+.charts-wrapper[_ngcontent-ng-c1482413128] {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    row-gap: 20px;
+    justify-content: flex-start;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
 }
