@@ -1,0 +1,19 @@
+<div class="highlight-card">
+  <div class="value" style="font-weight :bolder;font-size: xx-large;">{{ value }}</div>
+  <div class="label">{{ label }}</div>
+
+  <apx-chart
+    [series]="[{ data: data }]"
+    [chart]="chart"
+    [stroke]="stroke"
+    [tooltip]="tooltip"
+    [markers]="markers"
+    [dataLabels]="dataLabels"
+    [xaxis]="xaxis"
+    [colors]="['#ffffff']">
+  </apx-chart>
+  <button class="action-button">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+</div>
+

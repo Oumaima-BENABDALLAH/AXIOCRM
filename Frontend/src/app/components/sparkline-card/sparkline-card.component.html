@@ -1,0 +1,67 @@
+<div class="sparkline-card" [ngClass]="{ 'compact': compact }">
+
+  <div class="card-left">
+   <div class="card-header">
+     <div class="title">{{ title }}</div>
+        <div
+          class="percentage"
+           [ngClass]="{ 'positive': isPositive(), 'negative': !isPositive() }"
+           *ngIf="highlightValue">
+         {{ change }}
+         </div>
+      </div>
+
+  <div 
+  class="value" 
+  [ngClass]="{
+    'highlighted': highlightValue,
+    'custom-value': highlightValue && compact && variant === 'gradient'
+  }">
+  {{ value }}
+</div>
+
+    <div class="bottom-row">
+      <!-- 🔹 Variante standard (ApexCharts) -->
+      <ng-container *ngIf="variant === 'default'">
+        
+        <!-- Sparkline par défaut -->
+        <div class="sparkline" *ngIf="chartType !== 'pie'">
+          <apx-chart
+            [series]="series"
+            [chart]="chart"
+            [stroke]="stroke"
+            [tooltip]="tooltip"
+            [colors]="[color]">
+          </apx-chart>
+        </div>
+
+        <!-- Graphique circulaire (pie chart) -->
+        <div class="sparkline" *ngIf="chartType === 'pie'">
+          <apx-chart
+            [series]="pieSeries"
+            [chart]="pieChart"
+            [labels]="pieLabels"
+            [colors]="pieColors"
+            [responsive]="pieResponsive">
+          </apx-chart>
+        </div>
+
+        <!-- Variation -->
+       
+      </ng-container>
+
+      <!-- 🔸 Variante personnalisée (Canvas) -->
+      <ng-container *ngIf="variant === 'gradient' || variant === 'balance'">
+       <div class="full-chart" [ngClass]="{ 'large-chart': title === 'Total Revenue' }">
+         <canvas
+          
+          #customCanvas
+          [attr.width]="compact ? 450 : 400"
+          [attr.height]="compact ? 180 : 300"
+
+        ></canvas>
+  </div>
+</ng-container>
+    </div>
+  </div>
+</div>

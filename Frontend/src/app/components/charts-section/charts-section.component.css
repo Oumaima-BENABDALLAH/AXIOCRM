@@ -1,0 +1,15 @@
+.charts-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  row-gap: 20px;
+  justify-content:  flex-start;
+}
+
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: calc(35% - 10px); /* deux cartes par ligne */
+}

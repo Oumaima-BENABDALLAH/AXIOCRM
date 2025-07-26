@@ -1,9 +1,15 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component ,OnInit  } from '@angular/core';
+import { SparklineCardComponent } from '../sparkline-card/sparkline-card.component';
+
+
+import { NgApexchartsModule } from 'ng-apexcharts';
 import {
   ApexAxisChartSeries,
   ApexChart,
   ApexStroke,
   ApexTooltip
+   
+
 } from 'ng-apexcharts';
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -17,8 +23,9 @@ export type ChartOptions = {
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent  implements OnInit {
   public chartOptions: ChartOptions;
+   franceTime: string = '';
 
   constructor() {
     this.chartOptions = {
@@ -46,4 +53,26 @@ export class DashboardComponent {
       }
     };
   }
+ 
+ ngOnInit(): void {
+    this.updateTimes();
+    setInterval(() => this.updateTimes(), 1000); // mise à jour chaque seconde
+  } 
+
+ updateTimes() {
+    const options: Intl.DateTimeFormatOptions = {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour12: false
+    };
+
+    this.franceTime = new Date().toLocaleString('fr-FR', {
+      ...options,
+      timeZone: 'Europe/Paris'
+    });
+  } 
 }

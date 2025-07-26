@@ -5,10 +5,71 @@
   box-sizing: border-box;
 }
 
-:host, body {
+:host {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background: #f5f6fa;
   color: #333;
+}
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+}
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+.modern-sidebar {
+  width: 330px;
+  height: 100vh;
+  background-color: #a66cff;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  border-radius: 0 20px 20px 0;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.sidebar-header {
+  font-size: 1.6rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 80px;
+  margin-top: 40px;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.nav-links li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  padding: 10px;
+ /* border: 2px solid;  Vert */
+   border: none;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.nav-links li a:hover {
+  background-color: white;
+  color: #a66cff;
 }
 
 .toolbar {
@@ -30,25 +91,42 @@
   margin-right: 16px;
   height: 40px;
 }
-
-nav {
+.main-nav {
   position: fixed;
-  top: 60px;
+  top: 0;
   left: 0;
-  width: 200px;
-  height: calc(100vh - 60px);
-  background: #0056b3;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  padding: 30px 15px;
+  right: 0;
+  height: 60px;
+  z-index: 1000;
+  background-color: #1976d2;
 }
 
+nav[_ngcontent-ng-c1653844408]
+ {
+    position: fixed;
+    top: 1px;
+    left: 0;
+    width: 270px;
+    height: calc(100vh - 60px);
+    background: #A66CFF;
+    color: #fff;
+    display: flex
+;
+    flex-direction: column;
+    padding: 30px 15px;
+    border-radius: 20px;
+}
+*[_ngcontent-ng-c1653844408] {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 nav .navbar-brand {
   font-size: 1.4rem;
   font-weight: bold;
-  margin-bottom: 40px;
-  display: flex;
+ /* margin-bottom: 40px;*/
+  flex-basis: auto;
+  display: contents;
   align-items: center;
 }
 
@@ -62,6 +140,11 @@ nav .navbar-nav {
   flex-direction: column;
   gap: 20px;
 }
+
+    .navbar-expand-lg .navbar-collapse {
+        display: contents;
+        flex-basis: auto;
+    }
 
 nav .nav-link {
   color: #fff;
@@ -83,11 +166,26 @@ nav .nav-link i, nav .nav-link span {
 }
 
 .main-content-area {
-  margin-left: 200px;
-  margin-top: 60px;
-  padding: 40px;
+   flex-grow: 1;
+  padding: 30px;
+  background-color: #f9f9f9;
+   overflow-y: auto;
 }
-
+.sidebar {
+  position: fixed;
+  top: 60px; /* sous la barre de navigation du haut */
+  left: 0;
+  width: 300px;
+  height: calc(100vh - 60px);
+  background: #A66CFF;
+  padding: 30px 15px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  border-radius: 0 20px 20px 0;
+  z-index: 999;
+}
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -133,6 +231,9 @@ nav .nav-link i, nav .nav-link span {
   cursor: pointer;
   transition: background 0.2s ease;
 }
+.bg-violet {
+    background-color: #A66CFF !important;
+}
 
 .btn:hover {
   background: #0056b3;
@@ -164,3 +265,4 @@ table tbody tr:nth-child(even) {
 table tbody tr:hover {
   background: #e0e7ff;
 }
+
