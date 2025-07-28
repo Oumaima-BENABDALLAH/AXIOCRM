@@ -44,7 +44,7 @@ const routes: Routes = [
     ChartRadialComponent,
     DashboardMetricCardComponent,
     SparklineCardComponent,
-    ChartsSectionComponent,AvailableBalanceCardComponent 
+    ChartsSectionComponent,AvailableBalanceCardComponent ,StatCardComponent
   ],
   imports: [
     BrowserModule,
@@ -54,7 +54,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     BrowserAnimationsModule,
-    HighlightCardComponent, NgChartsModule,TotalProjectsCardComponent,StatCardComponent
+    HighlightCardComponent, NgChartsModule,TotalProjectsCardComponent
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),

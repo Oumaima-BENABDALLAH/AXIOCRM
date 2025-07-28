@@ -1,13 +1,12 @@
 <div class="stat-card">
   <div class="icon">
-    <img src="assets/icons/invoice.svg" alt="icon" />
+    <i [class]="iconClass"></i>
   </div>
-  <div class="value">1.1K</div>
-  <div class="label">Monthly Invoices</div>
+  <div class="value">{{ value }}</div>
+  <div class="label">{{ label }}</div>
   <div class="arrow">
     <div class="circle">
-      <span>&#8599;</span> <!-- arrow icon -->
+      <span>&#8599;</span>
     </div>
   </div>
 </div>
-

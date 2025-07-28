@@ -7,6 +7,12 @@
   height: 100%;
 
 }
+.apexcharts-canvas {
+    margin-bottom: 23px;
+    position: relative;
+    direction: ltr !important;
+    user-select: none;
+}
 
 /*.sparkline-card {
   /*background: #fff;
@@ -64,6 +70,7 @@
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 4px;
+  color:#494747;
 }
 
 .value {
@@ -76,7 +83,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
+  margin-top: 1px;
+  margin-left: 0px;
+  margin-right: -9px;
 }
 
 .sparkline {
@@ -88,11 +97,11 @@
 }
 
 .positive {
-  color: #22c55e;
+  color: #9155fd;
 }
 
 .negative {
-  color: #ef4444;
+  color: #9155fd;
 }
 .canvas-chart-wrapper {
   width: 100%;
@@ -101,10 +110,10 @@
 
 /* Couleur des variations */
 .change.positive {
-  color: #22c55e;
+  color: #9155fd;
 }
 .change.negative {
-  color: #ef4444;
+  color: #9155fd;
 }
 /* 🌟 Version compacte */
 .sparkline-card.compact {
@@ -186,11 +195,11 @@
 
 
 .percentage.positive {
-  color: #22c55e; /* vert */
+  color: #9155fd; /* vert */
 }
 
 .percentage.negative {
-  color: #ef4444; /* rouge */
+  color: #9155fd; /* rouge */
 }
 .full-chart.large-chart canvas {
   width: 100%;
@@ -259,7 +268,7 @@ canvas {
     margin-left: 18px;*/
     padding: 0px;
 }
-.card-header[_ngcontent-ng-c3372783706] {
+/*.card-header[_ngcontent-ng-c3372783706] {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -267,6 +276,18 @@ canvas {
     margin-right: 10px;
     font-size: larger;
     margin-left: 10px;
+}*/
+.card-header[_ngcontent-ng-c3372783706][_ngcontent-ng-c3372783706] {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+    margin-right: 10px;
+    font-size: larger;
+    font-weight: 500;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 4px;
 }
 .sparkline-card.compact[_ngcontent-ng-c3372783706][_ngcontent-ng-c3372783706] {
     width: 280px;

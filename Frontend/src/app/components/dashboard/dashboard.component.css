@@ -15,10 +15,11 @@
      font-size: 0.8rem;
      color: #888;
     margin-bottom: 0;
-   /*  color: var(--bs-card-cap-color);
-    background-color: var(--bs-card-cap-bg); */
+   /*  color: var(--bs-card-cap-color);*/
+    background-color: var(--bs-card-cap-bg); 
     border-bottom: var(--bs-card-border-width) solid var(--bs-card-border-color);
 }
+
 .card-body {
   display: flex;
   align-items: center;
@@ -36,7 +37,7 @@
 }
 
 .card-change {
-  color: #e91e63; /* rose */
+  color: #9155fd; /* rose */
   font-size: 0.8rem;
 }
 
@@ -152,12 +153,12 @@ body {
 }
 
 .stat-card .positive {
-  color: green;
+  color: #9155fd;
   font-size: 14px;
 }
 
 .stat-card .negative {
-  color: red;
+  color: #9155fd;
   font-size: 14px;
 }
 .stats-row {
@@ -176,15 +177,17 @@ body {
   align-items: stretch;
 
 }*/
-
-.highlight-wrapper {
-  margin-left: auto;
-  width: 470px !important;   /* ✅ Agrandit la largeur */
-  height: 185px !important;  /* ✅ Agrandit la hauteur */
-  display: flex;
-  align-items: stretch;
-  flex-shrink: 0;            /* ✅ Empêche le rétrécissement */
+.highlight-wrapper[_ngcontent-ng-c1208073385] {
+    margin-bottom: 30px;
+    margin-top: -12px;
+    margin-left: auto;
+    width: 470px !important;
+    height: 185px !important;
+    display: flex;
+    align-items: stretch;
+    flex-shrink: 0;
 }
+
 ::ng-deep app-highlight-card {
   display: block;
   width: 100%;
@@ -215,26 +218,33 @@ body {
 }
 
 .card-stack {
-  position: relative;
+  /*position: relative;*/
   width: 200px;
   height: 280px;
 }
 
-.card-back, .card-middle, .card-front {
+ /*.card-middle, .card-front {
   position: absolute;
   width: 100%;
   height: 100%;
   border-radius: 20px;
-  transform: rotate(-4deg);
+  transform: rotate(10deg);
   background: linear-gradient(135deg, #3a2dff, #865dff);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.card-middle {
-  top: 10px;
-  left: 10px;
-  z-index: 1;
-  transform: rotate(-2deg);
+.card-middle[_ngcontent-ng-c762692969] {
+    margin-top: 13px;
+    margin-left: 15px;
+     min-height: 350px;   
+   
+     max-width: 300px;
+     height: 348px;
+    background: linear-gradient(-28deg, #ccf, #d3b8e9);
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+    transform: rotate(9deg);
 }
 
 .card-front {
@@ -248,8 +258,78 @@ body {
   justify-content: center;
   color: white;
   padding: 20px;
+  width :300px;
+}*/
+.card-stack-multi {
+  /*position: relative;*/
+  width: 300px;
+  height: 390px;
+  margin :0 auto;
 }
 
+.card-middle[_ngcontent-ng-c2708689901], .card-front[_ngcontent-ng-c2708689901] {
+   
+    margin-top: -56px;
+    position: absolute;
+    width: 276px;
+    height: 347px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px #00000026;
+    transform: rotate(-.1deg);
+    background: linear-gradient(135deg, #5715a2, #a77ecc);
+}
+
+/* Base commune */
+
+.card-back[_ngcontent-ng-c2770834286] {
+    border-radius: 20px;
+    background: #130aa9;
+    transform: rotate(15deg);
+    z-index: 0;
+    margin-top: -59px;
+    left: 48px;
+    height: 375px;
+    width: 240px;
+    margin-left: 127px;
+    top: 9px;
+}
+
+/* Carte du milieu */
+
+.card-middle[_ngcontent-ng-c2708689901][_ngcontent-ng-c2708689901] {
+    background: linear-gradient(135deg, #ccf, #d3b8e9);
+    top: 1px;
+    left: 67px;
+    z-index: 1;
+    transform: rotate(9deg);
+    width: 239px;
+    height: 336px;
+}
+/*.card-middle[_ngcontent-ng-c1208073385] {
+    margin-left: 56px;
+    margin-top: -44px;
+    height: 267px;
+    width: 225px;
+    background: linear-gradient(135deg, #ccf, #d3b8e9);
+    top: 8px;
+    left: 8px;
+    z-index: 1;
+    transform: rotate(19deg);
+}*/
+/* Carte du devant */
+.card-front {
+  background: linear-gradient(to bottom, #7f3cd3, #a370f1);
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20px;
+  margin-top: -35px;
+}
 .circle-progress {
   width: 100px;
   height: 100px;
@@ -280,10 +360,10 @@ body {
   color: #ccc;
 }
 .charts-wrapper {
- display: flex;
+    display: flex;
     flex-wrap: wrap;
     gap: 25px;
-    row-gap: 20px;
+    row-gap: 65px;
     justify-content: flex-start;
 }
 
@@ -299,9 +379,9 @@ body {
   padding: 20px;
   min-height: 350px;   
   width: auto;
-  max-width: 360px;
-  height: 425px; 
-  top: 10px;    
+  max-width: 300px;
+  height: 395px; 
+  top: 80px;    
    /*height: 410px; */
 }
 .card-stack {
@@ -310,30 +390,30 @@ body {
   height: 100%;
 }
 
-.card-back,
+
 .card-middle,
 .card-front {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transform: rotate(-0.1deg);
-  background: linear-gradient(135deg, #5715a2, #a77ecc);
+    padding:32px;
+    position: absolute;
+    width: 276px;
+    height: 347px;
+    margin-top: -56px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px #00000026;
+    transform: rotate(-.1deg);
+    background: linear-gradient(135deg, #5715a2, #a77ecc);
 
 }
 
-.card-back {
-  background: linear-gradient(135deg, #1b019b, #d3b8e9);
-   transform: rotate(-13deg);
-}
 
 .card-middle {
-  background: linear-gradient(135deg, #ccccff, #d3b8e9);
-  top: 8px;
-  left: 8px;
-  z-index: 1;
-   transform: rotate(-6deg);
+    background: linear-gradient(135deg, #ccf, #d3b8e9);
+    top: 1px;
+    left: 67px;
+    z-index: 1;
+    transform: rotate(9deg);
+    width: 250px;
+    height: 336px;
 }
 
 
@@ -355,11 +435,12 @@ body {
   opacity: 0.9;
   margin-bottom: 6px;
   text-align: center;
+  margin-top: 10px;
 }
 
 .main-amount {
   font-size: 22px;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 12px;
 }
 
@@ -403,6 +484,7 @@ body {
   width: 100%;
   gap: 12px;
   margin-top: auto;
+  font-weight: 500;
 }
 
 .bottom-col {
@@ -566,8 +648,8 @@ app-sparkline-card {
   width: 250px;
   box-sizing: border-box;
 }
-.card[_ngcontent-ng-c1608755989] {
-    /* gap: 16px; */
+/*.card[_ngcontent-ng-c1608755989] {
+    /* gap: 16px; 
     background: #fff;
     border-radius: 12px;
     padding: 1rem;
@@ -579,21 +661,57 @@ app-sparkline-card {
     flex-direction: column;
     margin-left: 25px;
     justify-content: space-between;
-}
+}*/
+
+
 .card-row {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap; /* optionnel : pour responsive */
 }
-.charts-wrapper[_ngcontent-ng-c1482413128] {
+/*.charts-wrapper[_ngcontent-ng-c1482413128] {
     display: flex;
     flex-wrap: wrap;
-    gap: 25px;
-    row-gap: 20px;
+    gap: 20px;
+    row-gap: 60px;
     justify-content: flex-start;
-}
+}*/
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
 }
+.card-container {
+    margin-left: 80px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+.custom-projects-style {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .text-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    .title {
+      font-weight: 500;
+      font-size: 14px;
+      border-bottom: 1px solid #eee; 
+      padding-bottom: 4px;
+    }
+
+    .value {
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .change {
+      color: #a855f7; 
+      font-size: 14px;
+    }
+  }
+}
+  
