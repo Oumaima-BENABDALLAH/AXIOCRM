@@ -27,26 +27,27 @@
  <div class="stats-row">
   <div class="card-group" >
   <app-sparkline-card 
-    title="Monthly Invoices"
-    value="1.1K"
-    change="+8%"
-    [data]="[10, 12, 11, 14, 13, 15, 17]"
+    title="Total Earnings"
+    value="$1.2M"
+    change="+25%"
+    [data]="[100, 92, 110, 105, 115, 97, 125, 130, 110, 140, 120, 145, 135, 150, 140]"
+    changeColor="green"
+    customStyle="custom-projects-style">
+  </app-sparkline-card>
+
+  <app-sparkline-card
+    title="Total Projects"
+    value="$1.1M"
+    change="+7%"
+    [data]="[320, 370, 360, 390, 310, 410, 400, 430, 390, 450, 400, 570, 360, 590, 480, 510, 530]"
     changeColor="green">
   </app-sparkline-card>
 
   <app-sparkline-card
-    title="Projects Completed"
-    value="10K"
-    change="+12%"
-    [data]="[1000, 1200, 1150, 1300, 1280, 1400, 1500]"
-    changeColor="green">
-  </app-sparkline-card>
-
-  <app-sparkline-card
-    title="New Clients"
-    value="350"
+    title="Total Clients"
+    value="35K"
     change="-5%"
-    [data]="[380, 370, 360, 355, 350, 345, 340]"
+    [data]="[701,300,680,440,610,580,520, 470, 560, 455,100, 350, 540, 400,290,200,150,290,130,20]"
     changeColor="red">
   </app-sparkline-card>
 
@@ -54,7 +55,7 @@
     title="Pending Tasks"
     value="45"
     change="+2%"
-    [data]="[40, 42, 43, 44, 46, 45, 45]"
+    [data]="[10,150,30,120,200,70,320, 370, 60, 390, 310, 410, 740, 430, 310, 450, 400, 570, 360, 590, 480, 800, 530]"
     changeColor="green">
   </app-sparkline-card>
 
@@ -62,15 +63,15 @@
      title="Monthly Revenue"
      value="$18.5K"
      change="-3%"
-     [data]="[20000, 19500, 19000, 18800, 18500, 18300, 18000]"
+    [data]="[901,300,780,440,610,580,520, 470, 560, 455,100, 350, 540, 40,290,500,150,90,630,20]"
      changeColor="red">
 </app-sparkline-card>
   </div>
-    <div class="highlight-wrapper" style="width: 430px; height: 260px;">
+    <div class="highlight-wrapper" style="width: 430px; height: 160px;margin-left: 23px;">
      <app-highlight-card
        [value]="'3.4K'"
        [label]="'This Month'"
-       [data]="[100, 150, 130, 170, 160, 200, 267]">
+       [data]="[100, 150, 130, 170, 160, 200, 267,100, 150, 130, 170,130, 200, 360, 100, 217,141, 150,210,360,145,178,125,145,123,275]">
      </app-highlight-card>
     </div>
   </div>
@@ -83,10 +84,19 @@
   <app-charts-section class="charts-section"></app-charts-section>
 
   <div class="chart-card performance-card">
-    <div class="card-stack">
-      <div class="card-back"></div>
-      <div class="card-middle"></div>
-      <div class="card-front">
+   <div class="card-stack-multi">
+          <div class="card-back" style ="  border-radius: 20px;
+    background: #130aa9;
+    transform: rotate(15deg);
+    z-index: 0;
+    margin-top: -90px;
+    left: 48px;
+    height: 325px;
+    width: 240px;
+    margin-left: 96px;
+    top: 9px;"></div>
+        <div class="card-middle layer"></div>
+        <div class="card-front layer">
         <p class="top-text">Your earning of this month</p>
         <h4 class="main-amount">$677,000</h4>
         <div class="circle-progress">
@@ -133,15 +143,19 @@
 
   <app-available-balance-card></app-available-balance-card>
   <app-total-projects-card></app-total-projects-card>
+  <div class="card-container">
 <app-stat-card
-  [value]="'1.1K'"
-  [label]="'Monthly Invoices'"
+  iconClass="fas fa-file-invoice"
+  value="1.1K"
+  label="Monthly Invoices"
 ></app-stat-card>
 
 <app-stat-card
-  [value]="'10K'"
-  [label]="'Projects Completed'"
+  iconClass="fa-regular fa-folder-closed"
+  value="10K"
+  label="Project Completed"
 ></app-stat-card>
+</div>
 </div>
 </div>
 </div>

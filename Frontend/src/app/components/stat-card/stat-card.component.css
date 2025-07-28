@@ -1,20 +1,24 @@
 .stat-card {
-  background: #7b61ff;
+  background: #6a5acd;
   color: white;
   padding: 1.2rem;
   border-radius: 1rem;
-  width: 150px;
-  height: 150px;
+  width: 200px;
+  height: 235px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
   font-family: sans-serif;
+  margin-top:20px;
+  margin-left:65px;
 }
 
-.icon img {
-  width: 24px;
-  height: 24px;
+.stat-card .icon i {
+  font-size: 27px;
+  margin-right: 8px;
+  color: white; /* ou autre */
+
 }
 
 .value {
@@ -24,13 +28,16 @@
 
 .label {
   font-size: 0.85rem;
+  padding: 3.2rem;
+  margin-left: -45px;
+  margin-top: -68px;
 }
 
 .arrow .circle {
   background: #fecdd3;
   color: #7b61ff;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
