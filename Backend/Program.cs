@@ -3,6 +3,7 @@ using ProductManager.API.Data;
 using ProductManager.API.Middleware;
 using ProductManager.API.Services.Interfaces;
 using ProductManager.API.Services;
+using ProductManager.API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services.AddDbContext <AppDbContext> (options => options.UseSqlServer(bu
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
     {
@@ -20,7 +22,9 @@ builder.Services.AddCors(options =>
             {
                 policy.WithOrigins("http://localhost:4200", "https://localhost:7063")//("http://localhost:4200", "https://localhost:7063")
                       .AllowAnyHeader()
-                      .AllowAnyMethod();
+                      .AllowAnyMethod()
+                      .AllowCredentials();
+                     
             });
     });
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -46,6 +50,7 @@ app.UseRouting();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.UseAuthorization();
 

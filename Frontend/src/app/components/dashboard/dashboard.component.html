@@ -3,15 +3,16 @@
   <div class="header-left">
     <h1>Dashboard</h1>
     <p > {{franceTime}}</p>
+    
   </div>
-
-  <div class="header-right">
     <div class="search-container">
       <input type="text" placeholder="Search">
       <i class="fas fa-search search-icon"></i>
     </div>
+  <div class="header-right">
+    
 
-    <button class="bell-button">
+    <button class="bell-button"  (click)="toggleNotifications()">
       <i class="fas fa-bell"></i>
     </button>
 
@@ -158,4 +159,8 @@
 </div>
 </div>
 </div>
+</div>
+<div class="notifications-container" *ngIf="showNotifications">
+  <app-notification-toast *ngFor="let msg of notifications" [caption]="msg"  [title]="'Notification'">
+  </app-notification-toast>
 </div>
