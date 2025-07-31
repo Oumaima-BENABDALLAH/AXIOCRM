@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using ProductManager.API.Data;
+using ProductManager.API.Hubs;
 using ProductManager.API.Models;
 using ProductManager.API.Services.Interfaces;
 
@@ -13,12 +15,13 @@ namespace ProductManager.API.Controllers
     {
         private readonly IOrderService _orderService;
         private readonly IClientService _clientService;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-
-        public OrderController(IOrderService orderService, IClientService clientService)
+        public OrderController(IOrderService orderService, IClientService clientService , IHubContext<NotificationHub> hubContext)
         {
             _orderService = orderService;
             _clientService = clientService;
+            _hubContext = hubContext;
         }
 
 

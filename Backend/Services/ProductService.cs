@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using ProductManager.API.Data;
+using ProductManager.API.Hubs;
 using ProductManager.API.Models;
 using ProductManager.API.Services.Interfaces;
 
@@ -10,9 +12,11 @@ namespace ProductManager.API.Services
 
         private readonly AppDbContext _context;
 
+
         public ProductService(AppDbContext context)
         {
             _context = context;
+           
         }
 
         public async Task<IEnumerable<Product>> GetAllAsync()
@@ -52,7 +56,6 @@ namespace ProductManager.API.Services
             return true;
         }
 
-
-    
-}
+       
+    }
 }

@@ -1,6 +1,6 @@
 import { Component ,OnInit  } from '@angular/core';
 import { SparklineCardComponent } from '../sparkline-card/sparkline-card.component';
-
+import { NotificationService } from '../../services/notification.service';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {
@@ -25,9 +25,10 @@ export type ChartOptions = {
 })
 export class DashboardComponent  implements OnInit {
   public chartOptions: ChartOptions;
-   franceTime: string = '';
-
-  constructor() {
+  franceTime: string = '';
+  notifications: string[] = [];
+  showNotifications: boolean = false;
+  constructor(private notificationService: NotificationService) {
     this.chartOptions = {
       series: [
         {
@@ -57,6 +58,12 @@ export class DashboardComponent  implements OnInit {
  ngOnInit(): void {
     this.updateTimes();
     setInterval(() => this.updateTimes(), 1000); // mise à jour chaque seconde
+    this.notificationService.notification$.subscribe((message) => {
+      if (message) {
+        this.notifications.push(message);
+      }
+    });
+  
   } 
 
  updateTimes() {
@@ -74,5 +81,8 @@ export class DashboardComponent  implements OnInit {
       ...options,
       timeZone: 'Europe/Paris'
     });
-  } 
+  }
+  toggleNotifications() {
+  this.showNotifications = !this.showNotifications;
+} 
 }

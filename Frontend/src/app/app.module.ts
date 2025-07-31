@@ -22,6 +22,7 @@ import {AvailableBalanceCardComponent} from './components/available-balance-card
 import { HighlightCardComponent } from './components/highlight-card/highlight-card.component';
 import { ChartsSectionComponent } from './components/charts-section/charts-section.component';
 import { TotalProjectsCardComponent} from './components/total-projects-card/total-projects-card.component';
+import { NotificationCardComponent} from './components/notification-toast/notification-toast.component';
 
 import { NgChartsModule } from 'ng2-charts';
 const routes: Routes = [
@@ -44,7 +45,7 @@ const routes: Routes = [
     ChartRadialComponent,
     DashboardMetricCardComponent,
     SparklineCardComponent,
-    ChartsSectionComponent,AvailableBalanceCardComponent ,StatCardComponent
+    ChartsSectionComponent,AvailableBalanceCardComponent ,StatCardComponent,NotificationCardComponent
   ],
   imports: [
     BrowserModule,

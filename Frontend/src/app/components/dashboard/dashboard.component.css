@@ -83,6 +83,7 @@ body {
   position: relative;
   width : 300px;
   height: 40px;
+   margin-left: -391px;
 }
 
 .search-container input {
@@ -93,6 +94,7 @@ body {
   border-radius: 999px;
   font-size: 16px;
   outline: none;
+  margin-left: -391px;
 }
 
 .search-icon {
@@ -102,6 +104,7 @@ body {
   transform: translateY(-50%);
   color: #999;
   font-size: 16px;
+  margin-left: -390px;
 }
 
 .bell-button {
@@ -120,7 +123,18 @@ body {
 .bell-button:hover {
   color: #9155fd;
 }
-
+.notifications-container {
+  position: absolute;
+  top: 85px; /* ajustable */
+  right: 180px;
+  height: 90px;
+  width: 350px;
+  background: white;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 10px;
+  z-index: 100;
+}
 .avatar {
   width: 50px;
   height: 50px;
@@ -686,6 +700,7 @@ app-sparkline-card {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 }
+
 .custom-projects-style {
   display: flex;
   align-items: center;

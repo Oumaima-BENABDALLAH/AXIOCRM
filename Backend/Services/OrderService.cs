@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using ProductManager.API.Data;
+using ProductManager.API.Hubs;
 using ProductManager.API.Models;
 using ProductManager.API.Services.Interfaces;
 
@@ -8,10 +10,11 @@ namespace ProductManager.API.Services
     public class OrderService :IOrderService
     {
         private readonly AppDbContext _context;
-
-        public OrderService(AppDbContext context)
+        private readonly IHubContext<NotificationHub> _hubContext;
+        public OrderService(AppDbContext context , IHubContext<NotificationHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         public async Task<IEnumerable<Order>> GetAllAsync()
@@ -28,6 +31,7 @@ namespace ProductManager.API.Services
         {
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
+            await AddOrder(order);
             return order;
         }
 
@@ -66,6 +70,15 @@ namespace ProductManager.API.Services
         public async Task<int> GetTotalProjectsAsync()
         {
             return await _context.Orders.CountAsync();
+        }
+
+
+        // Notifier les clients connectés via SignalR
+
+        public async Task AddOrder(Order order)
+        {
+            // Envoie un message à tous les clients connectés au hub
+            await _hubContext.Clients.All.SendAsync("ReceiveNotification", $"📁 pRODUCT ajouté: {order.OrderDate}");
         }
 
     }
