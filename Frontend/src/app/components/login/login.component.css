@@ -1,0 +1,237 @@
+/* Layout global */
+
+.login-page {
+ /* height: 110vh;
+  background: linear-gradient(to right, #6c4fe0, #745af3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;*/
+  height: 100vh;
+  width: 100vw; /* Ajouté */
+  background-color: #f5f5f5; /* Ajouté pour voir l'arrière-plan vert clair */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+  margin: 0; /* Important pour éviter les décalages */
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.login-container {
+  /*display: flex;
+  width: 80%;
+  max-width: 1100px;
+  background-color: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);*/
+   flex: 1;
+  max-width: none; /* Supprimé la limite */
+  height: 100%;
+  display: flex;
+  background-color: white;
+  border-radius: 0; /* Plus de bord arrondi si tu veux du full height */
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Partie gauche */
+.login-left {
+  flex: 1;
+  background: linear-gradient(to left, #440494, #9465db);
+  color: white;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-left h1.brand {
+  font-size: 88px;
+  margin-bottom: 20px;
+  font-weight: 500;
+    margin-left: 30px;
+}
+
+.login-left h2 {
+    font-size: 46px;
+    margin-top: 41px;
+    margin-bottom: 20px;
+    margin-left: 30px;
+}
+.login-welcome{
+    color:#1c2795;
+    font-size: 46px;
+    font-weight: 500;
+    margin-top: 41px;
+    margin-bottom: 20px;
+    margin-left: -1px; 
+
+}
+.login-left .subtitle {
+  font-size: 18px;
+  margin-bottom: 40px;
+  font-weight: 500;
+  margin-top: 41px;
+  margin-left: 40px;
+}
+
+.login-left .description {
+  font-size: 16px;
+  opacity: 0.9;
+  margin-left:40px;
+}
+
+/* Partie droite */
+
+.login-right {
+    background-color: #fbf4f4;
+    flex: 1;
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 25px;
+    width: 650px;
+    margin-left: 1450px;
+    margin-top: -360px;
+    /* height: 400px; */
+}
+
+.login-data-left{
+    margin-top: 250px;
+}
+
+.login-right h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.login-right .small {
+  font-size: 14px;
+  margin-bottom: 30px;
+  color: #555;
+}
+
+/* Formulaire */
+.login-form input {
+  width: 525px;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.forgot-link {
+  display: block;
+  text-align: right;
+  font-size: 13px;
+  color: #1c2795;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+/* Bouton de connexion */
+.login-btn {
+  width: 100%;
+  background-color: #745af3;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.login-btn:disabled {
+  background-color: #bcbcf3;
+  cursor: not-allowed;
+}
+
+/* OU */
+.or-divider {
+  text-align: center;
+  margin: 20px 0;
+  color: #aaa;
+  position: relative;
+}
+.or-divider::before,
+.or-divider::after {
+  content: "";
+  position: absolute;
+  width: 40%;
+  height: 1px;
+  background: #ddd;
+  top: 50%;
+}
+.or-divider::before {
+  left: 0;
+}
+.or-divider::after {
+  right: 0;
+}
+
+/* Réseaux sociaux */
+.social-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.google-btn,
+.facebook-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.google-btn {
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.facebook-btn {
+  background-color: #1c2795;
+  color: white;
+}
+
+/* Sign up */
+.signup-link {
+    color: #292828;
+  font-size: 13px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.signup-link a {
+  color: #745af3;
+  text-decoration: none;
+}
+
+/* Erreur */
+.error-msg {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+.pconnect{
+    margin-left:40px;
+    font-weight: 700;
+
+
+}
+.login-form[_ngcontent-ng-c3371059376] input[_ngcontent-ng-c3371059376] {
+    width: 525px;
+    padding: 12px 16px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 14px;
+}

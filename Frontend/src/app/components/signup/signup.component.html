@@ -1,0 +1,32 @@
+<div class="signup-page">
+  <div class="signup-left">
+    <h1 class="brand">AXIOCRM</h1>
+    <h2 class="hello">Hey, Hello!</h2>
+    <p class="subtitle">
+      Join AXIOCRM ! It is your all-in-one modular CRM platform designed for modern businesses!
+    </p>
+    <p class="description">
+      We simplify your financial operations, customer tracking, and project workflows — all with minimal setup and maximum flexibility.
+    </p>
+    <p class="pconnect">
+      Let go to create your account !
+    </p>
+  </div>
+
+  <div class="signup-container">
+    <h2>Create Your Account</h2>
+    <form (ngSubmit)="onSubmit()" #signupForm="ngForm" class="signup-form">
+      <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
+      <input type="password" name="password" [(ngModel)]="password" placeholder="Password" required />
+      <select name="role" [(ngModel)]="role" required>
+        <option value="" disabled selected>Select a role</option>
+        <option value="User">User</option>
+        <option value="Admin">Admin</option>
+      </select>
+      <button type="submit" class="signup-btn" [disabled]="signupForm.invalid">Sign Up</button>
+      <div *ngIf="signupError" class="error-msg">
+        {{ signupError }}
+      </div>
+    </form>
+  </div>
+</div>

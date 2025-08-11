@@ -1,19 +1,22 @@
 <div class="app-container">
-<aside class="modern-sidebar">
-  <div class="sidebar-header">
-    <i class="fas fa-wallet"></i>
-    <span>AxioCRM</span>
-  </div>
+  <!-- ✅ La sidebar uniquement quand showSidebar est true -->
+  <aside class="modern-sidebar" *ngIf="showSidebar">
+    <div class="sidebar-header">
+      <i class="fas fa-wallet"></i>
+      <span>AxioCRM</span>
+    </div>
 
-  <ul class="nav-links">
-    <li><a routerLink="/dashboard"><i class="fas fa-home"></i> Home</a></li>
-    <li><a routerLink="/product"><i class="fas fa-box"></i> Products</a></li>
-    <li><a routerLink="/client"><i class="fas fa-users"></i> Clients</a></li>
-    <li><a routerLink="/order"><i class="fas fa-shopping-cart"></i> Commandes</a></li>
-  </ul>
-</aside>
+    <ul class="nav-links">
+      <li><a routerLink="/dashboard"><i class="fas fa-home"></i> Home</a></li>
+      <li><a routerLink="/product"><i class="fas fa-box"></i> Products</a></li>
+      <li><a routerLink="/client"><i class="fas fa-users"></i> Clients</a></li>
+      <li><a routerLink="/order"><i class="fas fa-shopping-cart"></i> Commandes</a></li>
+    </ul>
+  </aside>
 
-<main class="main-content-area">
-  <router-outlet></router-outlet>
-</main>
+  <main class="main-content-area">
+    <router-outlet></router-outlet>
+  </main>
 </div>
+
+
