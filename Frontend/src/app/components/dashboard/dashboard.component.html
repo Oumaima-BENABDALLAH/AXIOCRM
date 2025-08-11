@@ -17,7 +17,14 @@
     </button>
 
   <img src="https://i.pravatar.cc/40" alt="Profile" class="avatar">
-
+    <div class="user-info">
+          <div class="dropdown">
+         <button class="logout-button" (click)="toggleLogout()">
+           <i class="fas fa-sign-out-alt me-2"></i>
+           <span *ngIf="showLogoutText" class="logout-text">Logout</span>
+         </button>
+  </div>
+</div>
   </div>
 </div>
 

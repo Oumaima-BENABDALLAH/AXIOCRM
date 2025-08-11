@@ -11,6 +11,7 @@ import {
    
 
 } from 'ng-apexcharts';
+import { Router } from '@angular/router';
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -28,7 +29,9 @@ export class DashboardComponent  implements OnInit {
   franceTime: string = '';
   notifications: string[] = [];
   showNotifications: boolean = false;
-  constructor(private notificationService: NotificationService) {
+  showLogoutText = false;
+
+  constructor(private notificationService: NotificationService,private router :Router) {
     this.chartOptions = {
       series: [
         {
@@ -84,5 +87,17 @@ export class DashboardComponent  implements OnInit {
   }
   toggleNotifications() {
   this.showNotifications = !this.showNotifications;
+}
+toggleLogout() {
+    this.showLogoutText = !this.showLogoutText;
+     if (this.showLogoutText){
+      setTimeout(()=>{
+        this.toggleLogout();
+      },1000)
+     }
+  // Effacer le token
+  localStorage.removeItem('token');
+  // Redirection vers la page de login
+  this.router.navigate(['/login']);
 } 
 }

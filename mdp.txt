@@ -1,0 +1,5 @@
+{
+  "email": "oumaimabenabdallah26@gmail.com",
+  "password": "Mypassword123*",
+  "role": "Admin"
+}

@@ -1,0 +1,55 @@
+<div class="login-page">
+  <div class="login-container">
+    <div class="login-left">
+    <div class="login-data-left">
+      <h1 class="brand">AXIOCRM</h1>
+      <h2>Hey, Hello!</h2>
+      <p class="subtitle">Join AXIOCRM ! It is your all-in-one modular CRM platform designed for modern businesses!</p>
+      <p class="description">
+       We simplify your financial operations, customer tracking, and project workflows — all with minimal setup and maximum flexibility.
+      </p>
+      <p class="pconnect">
+         Login to get started !
+      </p>
+   </div>
+    <div class="login-right">
+      <h3 class="login-welcome">Welcome Back !</h3>
+      <p class="small">Let's get started with your 30 days free trial.</p>
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
+        <input type="text" name="email" [(ngModel)]="email" placeholder="Username" required />
+       <div class="input-container" style="position: relative; padding-right: 35px;">
+         <input [type]="passwordType" name="password" [(ngModel)]="password" placeholder="Password" required />
+             <i class="fa password-toggle"  [ngClass]="{'fa-eye': passwordType === 'password', 'fa-eye-slash': passwordType === 'text'}"(click)="togglePasswordVisibility()"style="position: absolute;
+                                                                         top: 50%; 
+                                                                         right: 10px; 
+                                                                         transform: translateY(-50%); 
+                                                                         cursor: pointer;
+                                                                         color: #040404;margin-right: 19px;">
+                </i>
+                </div> 
+        <a class="forgot-link" routerLink="/forgot-password">Forgot Password?</a>
+
+        <button type="submit" class="login-btn" [disabled]="loginForm.invalid">Login</button>
+
+        <div class="or-divider">
+          <span>OR</span>
+        </div>
+
+        <div class="social-buttons">
+          <button type="button" class="google-btn">Google</button>
+          <button type="button" class="facebook-btn">Facebook</button>
+        </div>
+
+        <p class="signup-link">
+          Don’t have an account? <a routerLink="/signup">Sign Up</a>
+        </p>
+
+        <div *ngIf="loginError" class="error-msg">
+          {{ loginError }}
+        </div>
+      </form>
+      </div>
+     </div>
+  </div>
+</div>
+

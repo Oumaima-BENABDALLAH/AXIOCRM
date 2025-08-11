@@ -23,15 +23,17 @@ import { HighlightCardComponent } from './components/highlight-card/highlight-ca
 import { ChartsSectionComponent } from './components/charts-section/charts-section.component';
 import { TotalProjectsCardComponent} from './components/total-projects-card/total-projects-card.component';
 import { NotificationCardComponent} from './components/notification-toast/notification-toast.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './AuthJwt/jwt.interceptor';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { ResetPasswordComponent  } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent   } from './components/forgot-password/forgot-password.component';
+import { AppRoutingModule } from './app-routing.module';
+
 
 import { NgChartsModule } from 'ng2-charts';
-const routes: Routes = [
-  { path: '', component: DashboardComponent },
-  { path: 'products', component: ProductListComponent },
-  { path: 'clients', component: ClientListComponent },
-  { path: 'orders', component: OrderListComponent },
-  { path: 'client-products', component: ClientProductListComponent },
-];
+
 
 @NgModule({
   declarations: [
@@ -45,11 +47,10 @@ const routes: Routes = [
     ChartRadialComponent,
     DashboardMetricCardComponent,
     SparklineCardComponent,
-    ChartsSectionComponent,AvailableBalanceCardComponent ,StatCardComponent,NotificationCardComponent
-  ],
+    ChartsSectionComponent,AvailableBalanceCardComponent ,StatCardComponent,NotificationCardComponent,LoginComponent,SignupComponent,ResetPasswordComponent,ForgotPasswordComponent  ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
-    RouterModule.forRoot(routes),
     NgApexchartsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -59,6 +60,7 @@ const routes: Routes = [
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
+     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
 })

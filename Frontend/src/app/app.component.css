@@ -166,10 +166,16 @@ nav .nav-link i, nav .nav-link span {
 }
 
 .main-content-area {
-   flex-grow: 1;
-  padding: 30px;
+  flex-grow: 1;
+  /*padding: 30px;*/
   background-color: #f9f9f9;
    overflow-y: auto;
+}
+.main-content-area[_ngcontent-ng-c1322472800] {
+    flex-grow: 1;
+    /* padding: 30px; */
+    background-color: #f9f9f9;
+    overflow-y: auto;
 }
 .sidebar {
   position: fixed;
