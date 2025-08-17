@@ -1,7 +1,7 @@
 import { Component ,OnInit  } from '@angular/core';
 import { SparklineCardComponent } from '../sparkline-card/sparkline-card.component';
 import { NotificationService } from '../../services/notification.service';
-
+import { AuthService } from '../../services/auth.service';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {
   ApexAxisChartSeries,
@@ -30,8 +30,9 @@ export class DashboardComponent  implements OnInit {
   notifications: string[] = [];
   showNotifications: boolean = false;
   showLogoutText = false;
+  profilePictureUrl: string = '';
 
-  constructor(private notificationService: NotificationService,private router :Router) {
+  constructor(private notificationService: NotificationService,private router :Router,private authService :AuthService) {
     this.chartOptions = {
       series: [
         {
@@ -66,7 +67,8 @@ export class DashboardComponent  implements OnInit {
         this.notifications.push(message);
       }
     });
-  
+
+    this.profilePictureUrl = this.authService.getProfilePicture();
   } 
 
  updateTimes() {
@@ -88,16 +90,18 @@ export class DashboardComponent  implements OnInit {
   toggleNotifications() {
   this.showNotifications = !this.showNotifications;
 }
-toggleLogout() {
+ toggleLogout() {
     this.showLogoutText = !this.showLogoutText;
      if (this.showLogoutText){
       setTimeout(()=>{
         this.toggleLogout();
       },1000)
      }
+       //this.authService.logout();
   // Effacer le token
   localStorage.removeItem('token');
   // Redirection vers la page de login
-  this.router.navigate(['/login']);
+   this.authService.logout();
+
 } 
 }

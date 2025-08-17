@@ -2,6 +2,8 @@
 using System.Security.Claims;
 using System.Text;
 using System.Web;
+using Google.Apis.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -68,11 +70,13 @@ namespace ProductManager.API.Controllers
             var jwtSettings = _configuration.GetSection("Jwt");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
             var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+                  {
+            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email!),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim("fullName", user.FullName ?? ""),
+            new Claim("profilePictureUrl", user.ProfilePictureUrl ?? "")
+    };
             var roles = await _userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -116,6 +120,81 @@ namespace ProductManager.API.Controllers
                 return BadRequest("Le lien est invalide ou a expiré.");
 
             return Ok("Mot de passe réinitialisé avec succès.");
+        }
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
+        {
+            try
+            {
+                var settings = new GoogleJsonWebSignature.ValidationSettings
+                {
+                    Audience = new[] { "1018179724908-d7l8b3kcqgubkg6vnco23jq0g9igrh23.apps.googleusercontent.com" }
+                };
+
+                var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken, settings);
+                var user = await _userManager.FindByEmailAsync(payload.Email);
+                if( user == null)
+                {
+                    user = new ApplicationUser
+                    {
+                        UserName = payload.Email,
+                        Email = payload.Email,
+                        FullName = payload.Name, 
+                        ProfilePictureUrl = payload.Picture, 
+                        Role = "User"
+
+                    };
+                    var createResult = await _userManager.CreateAsync(user);
+                    if (!createResult.Succeeded)
+                    {
+                        return BadRequest(createResult.Errors);
+                    }
+
+
+                    await _userManager.AddToRoleAsync(user, user.Role);
+                }
+
+                else
+                {
+                    // Mettre à jour la photo si elle a changé
+                    if (user.ProfilePictureUrl != payload.Picture)
+                    {
+                        user.ProfilePictureUrl = payload.Picture;
+                        await _userManager.UpdateAsync(user);
+                    }
+                }
+
+                    var token = await GenerateJwtToken(user);
+
+                return Ok(new { 
+                    token,
+                    fullName = user.FullName,
+                    profilePictureUrl = user.ProfilePictureUrl
+
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Invalid Google token", error = ex.Message });
+            }
+        }
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier) ??
+                         User.FindFirstValue(JwtRegisteredClaimNames.Sub);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(new
+            {
+                fullName = user.FullName,
+                profilePictureUrl = user.ProfilePictureUrl
+            });
         }
 
     }

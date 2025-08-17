@@ -36,7 +36,9 @@ namespace ProductManager.API.Services
             client.LastName = updated.LastName;
             client.Email = updated.Email;
             client.Phone = updated.Phone;
-
+            client.Designation = updated.Designation;
+            client.Status = updated.Status;
+            client.ProfilePic = updated.ProfilePic;
             await _context.SaveChangesAsync();
             return client;
         }

@@ -30,6 +30,8 @@ initForm() {
     this.clientForm = this.fb.group({
       id: [0],
       name: ['', Validators.required],
+      designation: ['', Validators.required], 
+      status: ['', Validators.required], 
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s\-]{7,15}$/)]]
     });
@@ -80,17 +82,19 @@ initForm() {
     this.clientForm.reset({id :0, name :'', email:'', phone : ''})
     $('#clientModal').modal('show'); 
 }
-  onEdit() {
-  if (this.selectedClient) {
+  onEdit( client : Client) {
     this.clientForm.setValue ({
-      id: this.selectedClient.id,
-      name:this.selectedClient.name,
-      email: this.selectedClient.email,
-        phone: this.selectedClient.phone
+      id: client.id,
+      name:client.name,
+      email: client.email,
+      phone: client.phone,
+      designation: client.designation, 
+      status: client.status 
+
 
     });
     $('#clientModal').modal('show'); 
-  }
+  
 }
   saveClient() {
     if (this.clientForm.invalid) {
@@ -117,12 +121,11 @@ initForm() {
       });
     }
   }
-onDelete() {
-  if (this.selectedClient && confirm("Voulez-vous supprimer ce client ?")) {
-    this.clientService.delete(this.selectedClient.id).subscribe(() => {
-      this.clients = this.clients.filter(p => p !== this.selectedClient);
+onDelete(client : Client) {
+  if (client && confirm("Voulez-vous supprimer ce client ?")) {
+    this.clientService.delete(client.id).subscribe(() => {
+      this.clients = this.clients.filter(p => p !== client);
       this.filter.setValue(this.filter.value); // rafraîchir le filtre
-      this.selectedClient = null;
     });
   }
   

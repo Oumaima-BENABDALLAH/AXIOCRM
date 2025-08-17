@@ -1,4 +1,4 @@
-<div class="d-flex align-items-center mb-3 toolbar-actions">
+<!--<div class="d-flex align-items-center mb-3 toolbar-actions">
   <div class="d-flex align-items-center">
     <button class="btn btn-outline-primary me-2" (click)="onAdd()"><i class="fas fa-plus me-2"></i>Ajouter</button>
     <button class="btn btn-outline-primary me-2" [disabled]="!selectedClient" (click)="onEdit()"><i class="fas fa-edit me-2"></i>Modifier</button>
@@ -38,7 +38,7 @@
 <div class="modal fade" id="clientModal" tabindex="-1" role="dialog" aria-labelledby="clientModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <!-- Lier le formulaire à ton FormGroup -->
+   
       <form [formGroup]="clientForm" (ngSubmit)="saveClient()">
         <div class="modal-header">
           <h5 class="modal-title" id="clientModalLabel">{{ clientForm.get('id')?.value ? 'Modifier' : 'Ajouter' }} Client</h5>
@@ -165,4 +165,68 @@ table.table { /* Cibler directement le tableau */
 }
 */
  
-</style>
+</style> -->
+<div class="header-container d-flex align-items-center justify-content-between p-3">
+  <div class="d-flex align-items-center">
+    <button class="btn btn-primary" (click)="onAdd()">
+      <i class="fas fa-plus"></i>
+      Ajouter
+    </button>
+  </div>
+  <div class="d-flex align-items-center">
+    <div class="search-box me-2">
+      <input type="text" placeholder="Search Employees" class="form-control" [formControl]="filter" />
+    </div>
+    <div class="filter-box me-2">
+      <select class="form-select">
+        <option>Filter</option>
+      </select>
+    </div>
+    <div class="position-box me-2">
+      <select class="form-select">
+        <option>Position</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<table class="table client-table">
+  <thead>
+    <tr>
+      <th>NAME</th>
+      <th>DESIGNATION</th>
+      <th>MAIL</th>
+      <th>MOBILE</th>
+      <th>STATUS</th>
+      <th>ACTIONS</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let client of filteredClients$ | async; let i = index">
+      <td>
+        <div class="d-flex align-items-center">
+          <img class="profile-pic rounded-circle me-2" [src]="client.profilePic" alt="" />
+          <div>{{ client.name }}</div>
+        </div>
+      </td>
+      <td>{{ client.designation }}</td>
+      <td><a [href]="'mailto:' + client.email">{{ client.email }}</a></td>
+      <td>{{ client.phone }}</td>
+      <td>
+        <span class="status-dot me-1" [ngClass]="{ 'status-active': client.status === 'Active', 'status-away': client.status.startsWith('Away'), 'status-offline': client.status.startsWith('Offline') }"></span>
+        {{ client.status }}
+      </td>
+      <td>
+        <div class="dropdown">
+          <button class="btn btn-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-ellipsis-v"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="onEdit(client)">Modifier</a></li>
+            <li><a class="dropdown-item" (click)="onDelete(client)">Supprimer</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

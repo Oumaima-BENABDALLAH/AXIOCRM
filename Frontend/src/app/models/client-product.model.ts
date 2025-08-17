@@ -8,6 +8,8 @@ export interface ClientDto {
   lastName: string;
   email: string;
   phone: string;
+  designation: string; 
+  status: 'Active' | 'Offline' | 'Away'; 
   // Optionnel : si tu veux inclure les commandes
   // orders?: OrderDto[];
 }

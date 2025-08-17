@@ -60,18 +60,31 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.TokenValidationParameters = new TokenValidationParameters
+    options.Authority = "http://localhost:8080/realms/MyAppRealm";
+    options.RequireHttpsMetadata = false; // mettre true en prod avec HTTPS
+
+ /*   options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
+        ValidIssuer = "http://localhost:8080/realms/MyAppRealm",
         ValidateAudience = true,
+        ValidAudience = "APP_ANGULAR", // Client ID
         ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key),
-        ClockSkew = TimeSpan.Zero // pour que le token expire exactement au bon moment
-    };
+        ClockSkew = TimeSpan.Zero // pas de délai de grâce
+    };*/
+     options.TokenValidationParameters = new TokenValidationParameters
+     {
+         ValidateIssuer = true,
+         ValidateAudience = true,
+         ValidateLifetime = true,
+         ValidateIssuerSigningKey = true,
+         ValidIssuer = jwtSettings["Issuer"],
+         ValidAudience = jwtSettings["Audience"],
+         IssuerSigningKey = new SymmetricSecurityKey(key),
+         ClockSkew = TimeSpan.Zero // pour que le token expire exactement au bon moment
+     };
 });
+
 
 var app = builder.Build();
 
@@ -82,7 +95,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseMiddleware<LoggingMiddleware>();
-
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Remove("Cross-Origin-Opener-Policy");
+    context.Response.Headers.Remove("Cross-Origin-Embedder-Policy");
+    await next();
+});
 app.UseRouting();
 
 app.UseHttpsRedirection();

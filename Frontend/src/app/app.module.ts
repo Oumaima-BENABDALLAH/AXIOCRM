@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule ,APP_INITIALIZER  } from '@angular/core';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { RouterModule, Routes } from '@angular/router';
 import { StatCardComponent } from './components/stat-card/stat-card.component';
@@ -29,11 +29,14 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ResetPasswordComponent  } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent   } from './components/forgot-password/forgot-password.component';
+import { GoogleLoginComponent   } from './components/google-login/google-login.component';
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import keycloakConfig from './keycloak.config';
+import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 
 import { NgChartsModule } from 'ng2-charts';
-
 
 @NgModule({
   declarations: [
@@ -47,8 +50,9 @@ import { NgChartsModule } from 'ng2-charts';
     ChartRadialComponent,
     DashboardMetricCardComponent,
     SparklineCardComponent,
-    ChartsSectionComponent,AvailableBalanceCardComponent ,StatCardComponent,NotificationCardComponent,LoginComponent,SignupComponent,ResetPasswordComponent,ForgotPasswordComponent  ],
+    ChartsSectionComponent,AvailableBalanceCardComponent ,StatCardComponent,NotificationCardComponent,LoginComponent,SignupComponent,ResetPasswordComponent,ForgotPasswordComponent,GoogleLoginComponent  ],
   imports: [
+        HttpClientModule,
     AppRoutingModule,
     BrowserModule,
     NgApexchartsModule,
@@ -56,12 +60,21 @@ import { NgChartsModule } from 'ng2-charts';
     ReactiveFormsModule,
     NgbModule,
     BrowserAnimationsModule,
-    HighlightCardComponent, NgChartsModule,TotalProjectsCardComponent
+    HighlightCardComponent, NgChartsModule,TotalProjectsCardComponent/*, KeycloakAngularModule*/
   ],
-  providers: [
-    provideHttpClient(withInterceptorsFromDi()),
-     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+   providers: [
+   /* {
+      provide: APP_INITIALIZER,
+      useFactory: initializeKeycloak,
+      multi: true,
+      deps: [KeycloakService]
+    },*/
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

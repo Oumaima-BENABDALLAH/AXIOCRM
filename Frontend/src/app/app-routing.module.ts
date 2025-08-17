@@ -8,7 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ResetPasswordComponent  } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent   } from './components/forgot-password/forgot-password.component';
-
+import { AppAuthGuard } from './auth-guard.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
