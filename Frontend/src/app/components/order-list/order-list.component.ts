@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { OrderDto } from 'src/app/models/order.model';
 import { OrderService } from 'src/app/services/order.service';
-import { ClientDto } from 'src/app/models/client-product.model';
 import { ProductDto } from 'src/app/models/product.model';
+import { Client } from 'src/app/services/client.service';
 import { ClientService } from 'src/app/services/client.service';
 import { ProductService } from 'src/app/services/product.service';
 import { Observable, of } from 'rxjs';
@@ -22,7 +22,7 @@ export class OrderListComponent implements OnInit {
   filter = new UntypedFormControl('');
   selectedOrder: OrderDto | null = null;
   orderForm!: UntypedFormGroup;
-  clients: ClientDto[] = [];
+  clients: Client[] = [];
   products: ProductDto[] = [];
 
 
@@ -71,7 +71,7 @@ loadOrders(): void {
   });
 }
    loadClients(): void {
-    this.clientService.getClients().subscribe({
+    this.clientService.getAll().subscribe({
       next: (data) => {
         this.clients = data;
         console.log('Clients chargés', data);

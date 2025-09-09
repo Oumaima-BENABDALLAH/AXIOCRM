@@ -37,7 +37,23 @@ import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
 
 
 import { NgChartsModule } from 'ng2-charts';
-
+export function loadGoogleScript(doc: Document) {
+  return () =>
+    new Promise<void>((resolve) => {
+      const scriptId = 'google-client-script';
+      if (doc.getElementById(scriptId)) {
+        resolve(); // déjà chargé
+        return;
+      }
+      const script = doc.createElement('script');
+      script.id = scriptId;
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.async = true;
+      script.defer = true;
+      script.onload = () => resolve();
+      doc.head.appendChild(script);
+    });
+}
 @NgModule({
   declarations: [
     AppComponent,

@@ -18,7 +18,11 @@ namespace ProductManager.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _clientService.GetAllAsync());
+        public async Task<ActionResult<IEnumerable<Client>>> GetAll()
+        {
+            var clients = await _clientService.GetAllAsync();
+            return Ok(clients);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -27,6 +31,12 @@ namespace ProductManager.API.Controllers
             return client == null ? NotFound() : Ok(client);
         }
 
+        [HttpGet("{id}/details")]
+        public async Task<IActionResult> GetClientDetails(int id)
+        {
+            var client = await _clientService.GetClientWithOrdersAsync(id);
+            return client == null ? NotFound() : Ok(client);
+        }
         [HttpPost]
         public async Task<IActionResult> Create(Client client)
         {

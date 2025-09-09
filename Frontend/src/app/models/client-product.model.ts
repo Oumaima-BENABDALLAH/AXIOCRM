@@ -2,7 +2,7 @@ export interface ClientProduct {
   clientId: number;
   productId: number;
 }
-export interface ClientDto {
+export interface Client {
   id: number;
   name: string;
   lastName: string;

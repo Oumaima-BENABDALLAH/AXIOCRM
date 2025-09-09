@@ -10,18 +10,23 @@ declare const google: any;
 export class GoogleLoginComponent implements AfterViewInit {
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngAfterViewInit(): void {
-    google.accounts.id.initialize({
-      client_id: '1018179724908-d7l8b3kcqgubkg6vnco23jq0g9igrh23.apps.googleusercontent.com',
-      callback: (response: any) => this.handleGoogleResponse(response)
-    });
+ngAfterViewInit(): void {
+  const interval = setInterval(() => {
+    if (typeof google !== 'undefined' && google.accounts) {
+      clearInterval(interval);
 
-    google.accounts.id.renderButton(
-      document.getElementById('googleButton'),
-      { theme: 'outline', size: 'large' }
-    );
-  }
-  
+      google.accounts.id.initialize({
+        client_id: '1018179724908-d7l8b3kcqgubkg6vnco23jq0g9igrh23.apps.googleusercontent.com',
+        callback: (response: any) => this.handleGoogleResponse(response)
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById('googleButton'),
+        { theme: 'outline', size: 'large' }
+      );
+    }
+  }, 100);
+}
   handleGoogleResponse(response: any) {
     const idToken = response.credential
     this.authService.googleLogin(idToken).subscribe({
