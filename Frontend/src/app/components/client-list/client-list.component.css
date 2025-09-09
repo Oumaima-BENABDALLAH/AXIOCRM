@@ -1,0 +1,418 @@
+/* Styles pour le conteneur principal de la page */
+/* src/app/components/client/client-list/client-list.component.css */
+
+/* Styles pour le conteneur principal de la page */
+.header-top {
+  background-color: white; /* Couleur de fond grise */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+}
+
+/* Styles pour le titre et les boutons de l'en-tête */
+.title-container h5 {
+    font-size: 20px;
+  font-weight: 700;
+  color: #333;
+}
+
+.title-container .btn {
+  background-color: transparent;
+  border: none;
+  color: #888;
+}
+
+.actions-container .btn {
+  border-radius: 50px;
+  padding: 8px 12px;
+}
+
+.actions-container .btn-primary {
+  background-color: #745af3;
+  border-color: #745af3;
+}
+.client-table .btn-link {
+    color: #6c757d;
+    text-decoration: none;
+    padding: 0;
+}
+
+.client-table .btn-link i {
+    font-size: 1rem; /* Ajustez la taille de l'icône si nécessaire */
+}
+
+/* Styles pour le champ de recherche */
+.search-box input {
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  border: none;
+  padding-left: 15px;
+  width: 200px; /* Ajustez la largeur si nécessaire */
+}
+
+/* Styles pour les menus déroulants de filtre et de position */
+.filter-box select,
+.position-box select {
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  border: none;
+  padding-left: 15px;
+  width: 150px; /* Ajustez la largeur si nécessaire */
+}
+
+/* Styles pour le tableau */
+.client-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.client-table thead {
+  background-color: white;
+}
+
+.client-table th {
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 15px 20px;
+  border-bottom: none;
+}
+
+.client-table tbody tr {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.client-table tbody tr:last-child td {
+    border-bottom: none;
+}
+.client-table td {
+  padding: 15px 20px;
+  vertical-align: middle;
+  border-bottom: none;
+}
+
+/* Styles pour les images de profil dans le tableau */
+.profile-pic {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border: 1px solid #eee;
+}
+
+/* Styles pour les points de statut (actif, absent, hors ligne) */
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+}
+
+.status-active {
+  background-color: #28a745;
+}
+
+.status-away {
+  background-color: #ffc107;
+}
+
+.status-offline {
+  background-color: #dc3545;
+}
+
+/* Styles pour le bouton de menu déroulant (trois points) */
+.btn-link {
+  color: #6c757d;
+  text-decoration: none;
+  padding: 0;
+}
+
+/* Styles pour les liens dans le tableau */
+.client-table a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.client-table a:hover {
+  text-decoration: underline;
+}
+.dropdown-menu {
+  min-width: 160px; /* largeur du menu */
+}
+
+.dropdown-item i {
+  width: 20px;
+  text-align: center;
+}
+
+.dropdown-menu li {
+    list-style: none;
+    padding: 0;
+}
+
+
+.dropdown-menu .dropdown-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0 5px; 
+}
+
+.dropdown-menu.show {
+    display: flex;
+    flex-direction: row;
+    padding: 5px; 
+}
+
+/* Cache les icônes d'action par défaut */
+.actions-container .action-icons {
+    display: none;
+}
+
+/* Affiche les icônes d'action et cache les trois points quand la div parente a la classe 'active' */
+.actions-container.active .ellipsis-icon {
+    display: none;
+}
+
+.actions-container.active .action-icons {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    margin-left: -100px;
+
+}
+.main-content-area[_ngcontent-ng-c1322472800], .main-content-area[_ngcontent-ng-c1322472800][_ngcontent-ng-c1322472800] {
+    flex-grow: 1;
+    background-color: white;
+}
+.table-responsive {
+    margin-right: 25px;
+    margin-left: 15px;
+    -webkit-overflow-scrolling: touch;
+}
+/* Styling for the Detail View Modal */
+.modal-content {
+   border-radius: 10px;
+    overflow: hidden; /* Ensures content stays within rounded corners */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 850px;
+    color: var(--bs-modal-color);
+    pointer-events: auto;
+    background-color: var(--bs-modal-bg);
+    background-clip: padding-box;
+    border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+    border-radius: var(--bs-modal-border-radius);
+    outline: 0;
+
+}
+
+.modal-header {
+  border-bottom: 1px solid #dee2e6;
+  background-color: #f8f9fa; /* Ajoute un fond plus clair à l'en-tête */
+}
+
+.modal-header .modal-title {
+  font-weight: 600; /* Rend le titre plus visible */
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+/* Section Headings (e.g., General Information) */
+.modal-body h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #f8f9fa; /* Subtle underline */
+  padding-bottom: 0.5rem;
+}
+
+/* Form Group Layout */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+/* Style for Labels */
+.form-group label {
+  font-weight: 500;
+  color: #555;
+  display: block; /* Ensures label is on its own line */
+  margin-bottom: 0.25rem;
+}
+
+/* Style for Inputs */
+.form-control {
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #745af3; /* Purple border on focus */
+  box-shadow: 0 0 0 0.25rem rgba(116, 90, 243, 0.25);
+}
+
+/* Style for Read-only Inputs (e.g., Full Name) */
+.form-control[readonly] {
+  background-color: #e9ecef;
+  opacity: 1;
+}
+
+/* Modal Footer Buttons */
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  padding: 1rem;
+}
+
+.modal-footer .btn {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.5rem 1.5rem;
+}
+
+.modal-footer .btn-primary {
+  background-color: #745af3;
+  border-color: #745af3;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+.modal-body .row {
+  margin-bottom: 1rem;
+}
+
+/* Forcer les inputs à avoir la même hauteur */
+.modal-body .form-control {
+  height: calc(2.5rem + 2px);
+}
+
+/* Labels */
+.modal-body .form-group label {
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+}
+
+/* Alignement et style des sections (General Information, etc.) */
+.modal-body h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #eee;
+}
+
+/* Boutons en pied de modal */
+.modal-footer .btn {
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.modal-footer .btn-primary {
+  background-color: #745af3;
+  border-color: #745af3;
+}
+
+.modal-footer .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+
+}
+
+.general-info .avatar-preview img {
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+}
+.general-info small {
+  display: block; 
+  margin-top: 2px; 
+}
+.avatar-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+.avatar-preview {
+  position: relative;
+  width: 80px;   /* taille du cercle */
+  height: 80px;
+  border: 2px solid rgb(177, 173, 173);  /* cercle rouge */
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  background: rgb(177, 173, 173);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.avatar-icon {
+  color: white;
+}
+.modal-body[_ngcontent-ng-c2577273309] .row[_ngcontent-ng-c2577273309] {
+    margin-bottom: 15px;
+    margin-left: -113px;
+    margin-top: 3px;
+}
+.modal-body[_ngcontent-ng-c4001505694] h3[_ngcontent-ng-c4001505694] {
+    margin-bottom: 9px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #eee;
+}
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-active {
+  background-color: green;
+}
+.status-inactive {
+  background-color: red;
+}
+.status-away {
+  background-color: orange; /* jaune/orangé */
+}
+.status-offline {
+  background-color: gray;
+}

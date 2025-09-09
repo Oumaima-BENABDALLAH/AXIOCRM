@@ -176,20 +176,16 @@
 }
 
 /* Réseaux sociaux */
-.social-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
 
-.google-btn,
-.facebook-btn {
+
+.google-btn{
   flex: 1;
   padding: 10px;
   border: none;
   border-radius: 10px;
   font-size: 14px;
   cursor: pointer;
+   width: 525px;
 }
 
 .google-btn {

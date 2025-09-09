@@ -30,6 +30,7 @@ namespace ProductManager.API.Data
                 .HasOne(op => op.Product)
                 .WithMany(p => p.OrderProducts)
                 .HasForeignKey(op => op.ProductId);
+   
         }
     }
 }

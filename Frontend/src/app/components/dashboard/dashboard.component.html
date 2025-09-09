@@ -16,7 +16,8 @@
       <i class="fas fa-bell"></i>
     </button>
 
-  <img src="https://i.pravatar.cc/40" alt="Profile" class="avatar">
+  <img [src]="profilePictureUrl" alt="Profile" class="avatar">
+
     <div class="user-info">
           <div class="dropdown">
          <button class="logout-button" (click)="toggleLogout()">
