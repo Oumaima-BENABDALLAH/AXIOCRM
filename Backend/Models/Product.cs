@@ -24,7 +24,7 @@
             }
         }
 
-        // public ICollection<ClientProduct> ClientProducts { get; set; } = new List<ClientProduct>();
+      
         public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 
 
