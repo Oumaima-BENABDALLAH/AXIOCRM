@@ -5,7 +5,7 @@
   </div>
 
   <div class="actions-container d-flex align-items-center">
-   <div class="d-flex mb-3">
+   <div class="d-flex mb-3" style="margin-right: 25px;">
   <input type="text" class="form-control me-2" placeholder="Search name/email" [formControl]="filter">
 
   <select class="form-select me-2" [formControl]="statusFilter">
@@ -20,7 +20,7 @@
 </div>
 
 
-    <button class="btn btn-primary" (click)="onAdd()" style="background-color: #745af3;">
+    <button class="btn btn-primary" (click)="onAdd()" style="background-color: #745af3;margin-top: -15px;">
       <i class="fas fa-plus"></i>
     </button>
   </div>
@@ -346,7 +346,7 @@
    </div>
       <div class="modal-footer" style="border-top: 1px solid #dee2e6;background-color: #f8f9fa; padding: 1rem;margin-top: -35px;">
                 <button type="button" class="btn btn-secondary" (click)="closeModal()"
-                  style="margin-top: -2px">Cancel</button>
+                  style="margin-top: -2px">{{ isViewMode ? 'Close' : 'Cancel' }}</button>
                 <button type="submit" class="btn btn-primary" [disabled]="isSaving"
                   style="margin-top: -2px"> {{ isSaving ? 'Saving…' : 'Save' }}</button>
         </div>

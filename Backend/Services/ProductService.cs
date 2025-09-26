@@ -41,7 +41,8 @@ namespace ProductManager.API.Services
             product.Description = updated.Description;
             product.Price = updated.Price;
             product.StockQuantity = updated.StockQuantity;
-
+            product.Sales = updated.Sales;
+   
             await _context.SaveChangesAsync();
             return product;
         }

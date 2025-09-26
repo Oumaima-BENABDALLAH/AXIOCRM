@@ -4,11 +4,10 @@ import { Observable } from 'rxjs';
 import { ReturnStatement } from '@angular/compiler';
 import { Client } from './client.service';
 import { map } from 'rxjs/operators';
-import { Product } from 'src/app/models/product.model';
 import { ProductDto } from 'src/app/models/product.model';
 
 interface ProductApiResponse  {
-  $values: Product[];
+  $values: ProductDto[];
 }
 
 @Injectable({
@@ -19,26 +18,30 @@ export class ProductService {
   
   constructor( private http : HttpClient) {}
 
-getProducts(): Observable<ProductDto[]> {
-  return this.http
-    .get<{ $id: string; $values: ProductDto[] }>(this.apiURL)
-    .pipe(map(resp => resp.$values || []));
+getAll(): Observable<ProductDto[]> {
+  return this.http.get<ProductApiResponse | ProductDto[]>(this.apiURL).pipe(
+    map((resp: ProductApiResponse | ProductDto[]) => {
+      if (Array.isArray(resp)) {
+        return resp;
+      }
+      if (resp && Array.isArray(resp.$values)) {
+        return resp.$values;
+      }
+      return [];
+    })
+  );
 }
-getAll(): Observable<ProductApiResponse | Product[]> {
-  return this.http.get<ProductApiResponse | Product[]>(this.apiURL);
-}
-
-  getById(id : number) : Observable<Product>{
-    return this.http.get<Product>(`${this.apiURL}/${id}`);
+  getById(id : number) : Observable<ProductDto>{
+    return this.http.get<ProductDto>(`${this.apiURL}/${id}`);
   }
 
-  create(product: Product) : Observable<Product>
+  create(product: ProductDto) : Observable<ProductDto>
    {
-     return this.http.post<Product>(this.apiURL, product);
+     return this.http.post<ProductDto>(this.apiURL, product);
 
    }
-  update(product: Product) {
-  return this.http.put(`${this.apiURL}/${product.id}`, product);
+update(product: ProductDto): Observable<ProductDto> {
+  return this.http.put<ProductDto>(`${this.apiURL}/${product.id}`, product);
 }
    delete (id : number): Observable<void> {
     return this.http.delete<void>(`${this.apiURL}/${id}`);

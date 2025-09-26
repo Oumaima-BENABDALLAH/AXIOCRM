@@ -21,9 +21,6 @@ constructor(
       console.log('Clients chargés', data);
     });
 
-    this.productService.getProducts().subscribe(data => {
-      this.products = data;
-      console.log('Produits chargés', data);
-    });
+    
   }
 }

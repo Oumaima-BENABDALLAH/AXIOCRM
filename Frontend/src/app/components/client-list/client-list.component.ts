@@ -8,7 +8,7 @@ import { map, startWith } from 'rxjs/operators';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as bootstrap from 'bootstrap';
 import { CountryService, Country } from "src/app/services/countryService"
-
+declare var $: any;
 
 @Component({
   selector: 'app-client-list',
@@ -27,6 +27,7 @@ export class ClientListComponent implements OnInit {
   clientForm!: UntypedFormGroup;
   avatarUrl: string | null = null;
   isSaving = false;
+  isViewMode = false;
   countries: Country[] = [];
   statusList: string[] = ["Active", "Inactive", "Away", "Offline"];
   designationList: string[] = [
@@ -176,6 +177,8 @@ onAdd() {
   this.openModal();
 }
 onEdit(client: Client) {
+  this.isViewMode = false;
+  this.clientForm.enable();
   this.clientForm.patchValue({
     id: client.id,
     name: client.name,
@@ -317,10 +320,39 @@ closeModal() {
   const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
   modal.hide();
 }
-onView(client: any) {
-  console.log("Voir client :", client);
-  // logique pour affichage des détails
-}  
+ onView(client: Client) {
+  this.isViewMode = true;
+
+  this.clientForm.patchValue({
+    id: client.id,
+    name: client.name,
+    lastName: client.lastName ?? '',
+    fullName: client.fullName ?? '',
+    email: client.email,
+    designation: client.designation,
+    status: client.status,
+    profilePic: client.profilePic,
+    dateOfBirth: client.dateOfBirth ?? '',
+    address: client.address ?? '',
+    city: client.city ?? '',
+    province: client.province ?? '',
+    postalCode: client.postalCode ?? '',
+    country: client.country ?? '',
+    jobTitle: client.jobTitle ?? '',
+    hireDate: client.hireDate ?? null,
+    workReferenceNumber: client.workReferenceNumber ?? '',
+    occupationGroup: client.occupationGroup ?? '',
+    department: client.department ?? '',
+    division: client.division ?? '',
+    phone: client.phone ?? ''
+  });
+
+
+  // ✅ rendre le formulaire désactivé
+  this.clientForm.disable();
+
+  $('#clientModal').modal('show');
+} 
  toggleActions(event: Event) {
     event.stopPropagation();
     const target = event.currentTarget as HTMLElement;

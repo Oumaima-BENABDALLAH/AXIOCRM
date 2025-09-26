@@ -1,0 +1,168 @@
+/* ===== En-tête (header top) ===== */
+.header-top {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+.title-container h5 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+}
+
+.title-container .btn {
+  background-color: transparent;
+  border: none;
+  color: #888;
+}
+
+.actions-container .btn {
+  border-radius: 50px;
+  padding: 8px 12px;
+}
+
+.actions-container .btn-primary {
+  background-color: #745af3;
+  border-color: #745af3;
+}
+
+/* ===== Table Produits ===== */
+.client-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.client-table thead {
+  background-color: white;
+}
+
+.client-table th {
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 15px 20px;
+  border-bottom: none;
+}
+
+.client-table tbody tr {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.client-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.client-table td {
+  padding: 15px 20px;
+  vertical-align: middle;
+  border-bottom: none;
+}
+
+/* ===== Icône produit (dans cercle gris) ===== */
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  background: #e0e0e0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== Status dots (stock / rupture / restock) ===== */
+.status-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.status-active {
+  background-color: green;      /* In Stock */
+}
+
+.status-inactive {
+  background-color: red;        /* Out of Stock */
+}
+
+.status-Restock {
+  background-color: orange;     /* Restock */
+}
+
+
+
+
+/* ===== Boutons actions (edit/delete/view) ===== */
+.client-table .btn-link {
+  color: #6c757d;
+  text-decoration: none;
+  padding: 0;
+}
+
+.client-table .btn-link i {
+  font-size: 1rem;
+}
+
+.actions-container .action-icons {
+  display: none;
+}
+
+.actions-container.active .ellipsis-icon {
+  display: none;
+}
+
+.actions-container.active .action-icons {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== Responsive table ===== */
+.table-responsive {
+  margin-right: 25px;
+  margin-left: 15px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.actions-container {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ellipsis-icon {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.action-icons {
+  display: inline-flex;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.action-icons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.modal-body h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #f8f9fa; /* Subtle underline */
+  padding-bottom: 0.5rem;
+}

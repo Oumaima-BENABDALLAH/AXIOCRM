@@ -83,15 +83,7 @@ loadOrders(): void {
   }
 
   loadProducts(): void {
-    this.productService.getProducts().subscribe({
-      next: (data) => {
-        this.products = data;
-        console.log('Produits chargés', data);
-      },
-      error: (err) => {
-        console.error('Erreur chargement produits', err);
-      }
-    });
+  
   }
   applyFilter(value: string): OrderDto[] {
     const filterValue = value.toLowerCase();

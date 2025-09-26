@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from 'src/app/models/product.model';
+import { ProductDto } from 'src/app/models/product.model';
 import { ClientProduct } from 'src/app/models/client-product.model';
 import { map } from 'rxjs/operators';
 
@@ -37,7 +37,7 @@ export interface Client{
   notes: string;
   orders: any[];
 
-  products?:Product[];
+  products?:ProductDto[];
 }
 
 interface ClientApiResponse  {
