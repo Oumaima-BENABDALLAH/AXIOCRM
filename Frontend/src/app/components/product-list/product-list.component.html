@@ -1,152 +1,197 @@
-<div class="d-flex align-items-center mb-3 toolbar-actions">
-  <div class="d-flex align-items-center">
-    <button class="btn btn-outline-primary me-2" (click)="onAdd()"><i class="fas fa-plus me-2"></i>Ajouter</button>
-    <button class="btn btn-outline-primary me-2" [disabled]="!selectedProduct" (click)="onEdit()"><i class="fas fa-edit me-2"></i>Modifier</button>
-    <button class="btn btn-outline-primary me-2" [disabled]="!selectedProduct" (click)="onDelete()"><i class="fas fa-trash-alt me-2"></i>Supprimer</button>
+<div class="header-top d-flex align-items-center justify-content-between p-3">
+  <!-- Titre + bouton refresh -->
+  <div class="title-container d-flex align-items-center">
+    <h5 class="mb-0">Produits</h5>
+    <button class="btn btn-sm btn-light ms-3" (click)="loadProducts()">
+      <i class="fas fa-redo"></i>
+    </button>
   </div>
 
-  <div class="d-flex align-items-center fixed-search-box">
-    <label for="table-filtering-search" class="col-form-label me-2">Recherche :</label>
-    <input id="table-filtering-search" class="form-control" type="text" [formControl]="filter" style="max-width: 300px;" />
+  <!-- Actions (recherche + filtres + ajout) -->
+  <div class="actions-container d-flex align-items-center">
+    <div class="d-flex mb-3" style ="margin-top:19px">
+      <input
+        type="text"
+        class="form-control me-2"
+        placeholder="Search product/price"
+        [formControl]="filter"
+      />
+
+      <select class="form-select me-2" [formControl]="statusFilter">
+        <option value="">All Status</option>
+        <option *ngFor="let s of statusList" [value]="s">{{ s }}</option>
+      </select>
+    </div>
+
+      <button class="btn btn-primary me-2" (click)="onAdd()">
+      <i class="fas fa-plus"></i> Ajouter
+    </button>
   </div>
 </div>
 
-<table class="table table-striped table-bordered mt-3">
-  <thead class="table-light">
-    <tr>
-      <th>Identifiant</th>
-      <th>Nom</th>
-      <th>Prix (€)</th>
-    </tr>
-  </thead>
-<tbody>
-  <tr
-    *ngFor="let product of filteredProducts$ | async; let i = index"
-    [class.table-active]="selectedProduct === product"
-    (click)="selectProduct(product)">
-    <td>{{ i + 1 }}</td>
-    <td [innerHTML]="highlight(product.name, filter.value)"></td>
-    <td [innerHTML]="highlight(product.price, filter.value)"></td>
-  </tr>
+<!-- Tableau Produits -->
+<div class="table-responsive">
+  <table class="table client-table">
+    <thead>
+      <tr>
+        <th>Produit</th>
+        <th>Prix (€)</th>
+        <th>Ventes</th>
+        <th>Revenu (€)</th>
+        <th>Stock</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
 
-  <tr *ngIf="(filteredProducts$ | async)?.length === 0">
-    <td colspan="3" class="text-center text-muted">Aucun produit trouvé</td>
-  </tr>
-</tbody>
+    <tbody>
+      <tr *ngFor="let product of filteredProducts$ | async; trackBy: trackById"
+       [class.table-active]="selectedProduct === product"
+       (click)="selectProduct(product)">
+        <td>
+          <div class="d-flex align-items-center">
+            <div
+              class="profile-pic rounded-circle me-2 d-flex align-items-center justify-content-center"
+              style="width:40px; height:40px; background:#e0e0e0;"
+            >
+              <i class="fas fa-box text-muted"></i>
+            </div>
+            <div>{{ product.name }}</div>
+          </div>
+        </td>
 
-</table>
+        <td>{{ product.price | currency:'EUR' }}</td>
+        <td>{{ product.sales }} pcs</td>
+        <td>{{ product.revenue | currency:'EUR' }}</td>
+        <td>{{ product.stockQuantity }}</td>
 
-<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <form (ngSubmit)="saveProduct()">
-        <div class="modal-header">
-          <h5 class="modal-title" id="productModalLabel">{{ editingProduct?.id ? 'Modifier' : 'Ajouter' }} Produit</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
-            <span aria-hidden="true">&times;</span>
+        <td>
+          <span
+            class="status-dot me-1"
+            [ngClass]="{
+              'status-active': product.status === 'In Stock',
+              'status-inactive': product.status === 'Out of Stock',
+              'status-Restock': product.status === 'Restock'
+            }"
+          ></span>
+          {{ product.status }}
+        </td>
+
+     <td class="text-center actions-cell">
+        <div class="actions-container" (click)="toggleActions($event)">
+          <button class="btn btn-link p-0 ellipsis-icon">
+            <i class="fas fa-ellipsis-v"></i>
           </button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>Nom</label>
-            <input type="text" class="form-control" [(ngModel)]="editingProduct.name" name="name" required />
+          <div class="action-icons" (click)="$event.stopPropagation()">
+            <button class="btn btn-link p-0 me-2" (click)="onEdit(product)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-link p-0" (click)="onDelete(product)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+            <button class="btn btn-link p-0 ms-2" (click)="onView(product)">
+              <i class="fas fa-eye"></i>
+            </button>
           </div>
-          <div class="form-group">
-            <label>Prix (€)</label>
-            <input type="number" class="form-control" [(ngModel)]="editingProduct.price" name="price" required />
+        </div>
+      </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #isLoading>
+    <tr>
+      <td colspan="7" class="text-center">Loading...</td>
+    </tr>
+  </ng-template>
+</div>
+
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content" style="width: 950px; height: 800px;">
+      <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+        <!-- Header -->
+         <div class="modal-header" style="border-bottom: 1px solid #dee2e6;background-color: #f8f9fa;height: 70px;">
+          <h5 class="modal-title" id="productModalLabel" style="font: 600 22.62px / 21px Roboto, sans-serif;margin: 0 0 12px;">Product Details</h5>
+         
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body" style="margin-top:8px;height: 650px;">
+          <h4 class="mb-3" style ="font-size: larger;font-weight: 600;"> --- General Informations --- </h4>
+          <div class="row" style="margin-bottom: 20px;">
+             <div class="col-md-8 col-sm-6 col-12" >
+              <div class="form-group ">
+                <input type="hidden" class="form-control" formControlName="id" readonly style="width: 915px"/>
+              </div>
+            </div>
+            <div class="col-md-8 col-sm-6 col-12" >
+              <div class="form-group" style="margin-top: 15px;">
+                <label style="font-size: medium;font-weight: 700;">Product Name</label>
+                <input type="text" class="form-control" formControlName="name" style="width: 915px"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top: 10px;">
+            <label style="font-size: medium;font-weight: 700;">Description</label>
+            <textarea rows="3" class="form-control" formControlName="description"></textarea>
+          </div>
+
+          <h4 class="mt-4 mb-3" style ="font-size: larger;font-weight: 600;margin-bottom: 25px;">--- Stock & Pricing ---</h4>
+          <div class="row">
+            <div class="col-md-4 col-sm-6 col-12">
+              <div class="form-group">
+                <label style="font-size: medium;font-weight: 700;">Price (€)</label>
+                <input type="number" class="form-control" formControlName="price" />
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 col-12">
+              <div class="form-group">
+                <label style="font-size: medium;font-weight: 700;">Stock Quantity</label>
+                <input type="number" class="form-control" formControlName="stockQuantity" />
+              </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 col-12">
+              <div class="form-group">
+                <label style="font-size: medium;font-weight: 700;">Status</label>
+                <select class="form-control" formControlName="status">
+                   <option value="In Stock" >In Stock</option>
+                   <option value="Out of Stock" >Out of Stock</option>
+                   <option value="Restock" >Restock</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <h4 class="mt-4 mb-3" style ="font-size: larger;font-weight: 600;">---Performance---</h4>
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-12">
+              <div class="form-group">
+                <label style="font-size: medium;font-weight: 700;">Sales</label>
+                <input type="number" class="form-control" formControlName="sales" />
+              </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 col-12">
+              <div class="form-group">
+                <label style="font-size: medium;font-weight: 700;">Revenue (€)</label>
+                <input type="number" class="form-control" formControlName="revenue" />
+              </div>
+            </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-          <button type="submit" class="btn btn-primary">Enregistrer</button>
+     
+        <!-- Footer -->
+        <div class="modal-footer" style="border-bottom: 1px solid #dee2e6;background-color: #f8f9fa;">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="font-weight: 600;font-size: x-large;width: 170px;margin-right: 16px;"> {{ isViewMode ? 'Close' : 'Cancel' }}</button>
+          <button type="submit" class="btn btn-primary" style="font-weight: 600;font-size: x-large;width: 170px;" [disabled]="isSaving" *ngIf ="!isViewMode"> {{ isSaving? 'Saving…' : 'Save' }}</button>
+
         </div>
       </form>
     </div>
   </div>
-  <button type="button" class="close" data-dismiss="modal" aria-label="Fermer">
-  <span aria-hidden="true">&times;</span>
-</button>
 </div>
-<style>
-/* Styles pour le conteneur des actions (boutons et recherche) */
-.toolbar-actions {
-  display: flex; /* Assure le comportement flexbox */
-  align-items: center; /* Aligne les éléments verticalement au centre */
-  margin-bottom: 1rem; /* Marge par défaut de mb-3 de Bootstrap */
-  /* Remove flex-wrap if you always want it on one line regardless of screen size */
-  flex-wrap: wrap; /* Permet aux éléments de passer à la ligne sur de petits écrans */
-}
-
-/* IMPORTANT : Ces styles sont pour gérer l'espacement si le champ de recherche n'est PAS fixed */
-/* Si le champ de recherche est fixed, ces règles sur .toolbar-actions peuvent être simplifiées
-   ou ajustées car le div .fixed-search-box sort du flux du document. */
-/* Si vous voulez que les boutons soient à gauche et que le champ de recherche soit *censé* être à droite (s'il n'était pas fixe) */
-.toolbar-actions > div:first-child { /* Le div des boutons */
-    margin-right: auto; /* Pousse les boutons à gauche et le reste à droite si pas de fixed-search-box */
-}
-
-
-/* Styles pour les marges entre les boutons */
-.toolbar-actions .btn {
-  margin-right: 10px; /* Espace entre les boutons */
-}
-
-.toolbar-actions .btn:last-of-type { /* last-of-type est plus sûr que last-child si d'autres éléments suivent */
-  margin-right: 0; /* Pas de marge après le dernier bouton du groupe */
-}
-
-/* Styles pour fixer le champ de recherche */
-.fixed-search-box {
-  position: fixed;
-  top: 75px; /* Ajustez cette valeur pour la position verticale souhaitée */
-  right: 20px; /* Ajustez cette valeur pour la position horizontale souhaitée depuis la droite */
-  z-index: 1050;
-  background-color: white;
-  padding: 5px 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  border-radius: 5px;
-
-  /* NOUVEAUX AJUSTEMENTS POUR L'ALIGNEMENT VERTICAL */
-  display: flex; /* Assure que le label et l'input sont des éléments flex */
-  align-items: center; /* ALIGNE VERTICALEMENT LE LABEL ET L'INPUT AU CENTRE DE LEUR CONTENEUR */
-  gap: 5px; /* Ajoute un petit espace entre le label et l'input si Bootstrap 5 est utilisé */
-}
-
-/* Ajustements spécifiques pour le label et l'input DANS LE BLOC FIXE */
-.fixed-search-box label.col-form-label {
-  /* Réinitialisez les marges/padding de Bootstrap qui pourraient causer le désalignement */
-  margin-bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  line-height: normal; /* Assure une hauteur de ligne normale */
-  /*display: flex;  Pour centrer le texte "Recherche :" avec les deux points */
-  align-items: center; /* Pour que les deux points soient bien alignés avec le texte */
-}
-
-.fixed-search-box input.form-control {
-  /* Réinitialisez les marges/padding qui pourraient causer le désalignement */
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-top: .375rem; /* Valeurs par défaut de Bootstrap pour un input */
-  padding-bottom: .375rem;
-  height: calc(1.5em + .75rem + 2px); /* Hauteur standard d'un input Bootstrap */
-}
-/* IMPORTANT : Ceci est la correction pour le chevauchement du contenu.
-   Votre tableau ou le conteneur de votre contenu principal doit être poussé vers le bas
-   pour ne pas être caché sous la barre de navigation et le champ de recherche fixe. */
-/* Si votre tableau est directement le premier élément après le div .toolbar-actions */
-table.table { /* Cibler directement le tableau */
-    margin-top: 80px; /* Ajustez cette valeur. Environ la hauteur de votre barre d'outils supérieure + un peu d'espace. */
-    /* Si vous avez une barre de navigation principale de 60px et que le top du champ de recherche est 75px,
-       vous devez vous assurer que le contenu principal commence en dessous de 75px. */
-}
-
-/* Si vous avez un conteneur principal comme .main-content-area (vu dans des discussions précédentes),
-   vous pourriez appliquer le padding-top à ce conteneur à la place : */
-/*
-.main-content-area {
-    padding-top: 100px; // Ajustez cette valeur selon la hauteur de vos éléments fixes supérieurs
-}
-*/
- 
-</style>
