@@ -49,7 +49,7 @@ namespace ProductManager.API.Models
         public string Division { get; set; } = string.Empty;
 
 
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

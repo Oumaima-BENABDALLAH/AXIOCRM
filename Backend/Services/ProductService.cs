@@ -34,17 +34,15 @@ namespace ProductManager.API.Services
 
         public async Task<Product> UpdateAsync(int id, Product updated)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null) return null;
+            if (!await _context.Products.AnyAsync(p => p.Id == id))
+                return null;
 
-            product.Name = updated.Name;
-            product.Description = updated.Description;
-            product.Price = updated.Price;
-            product.StockQuantity = updated.StockQuantity;
-            product.Sales = updated.Sales;
-   
+            updated.Id = id;
+            _context.Entry(updated).State = EntityState.Modified;
+
             await _context.SaveChangesAsync();
-            return product;
+            return updated;
+        
         }
 
         public async Task<bool> DeleteAsync(int id)

@@ -1,10 +1,13 @@
 /* ===== En-tête (header top) ===== */
 .header-top {
+  height: 97px;
+  margin-top: 6px;
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
   padding: 15px;
+  margin-left: 10px;
 }
 
 .title-container h5 {

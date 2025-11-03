@@ -13,7 +13,7 @@
     <option *ngFor="let s of statusList" [value]="s">{{ s }}</option>
   </select>
 
-  <select class="form-select" [formControl]="designationFilter">
+  <select class="form-select me-2" [formControl]="designationFilter">
     <option value="">All Positions</option>
     <option *ngFor="let d of designationList" [value]="d">{{ d }}</option>
   </select>
@@ -31,7 +31,7 @@
     <thead>
       <tr>
         <th>NAME</th>
-        <th>DESIGNATION</th>
+        <th>POSITION</th>
         <th>MAIL</th>
         <th>MOBILE</th>
         <th>STATUS</th>

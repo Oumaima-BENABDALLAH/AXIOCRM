@@ -5,7 +5,7 @@ import { Observable,BehaviorSubject,combineLatest   } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ProductDto  } from 'src/app/models/product.model';
-
+import { debounceTime } from 'rxjs/operators';
 
 
 
@@ -21,12 +21,12 @@ export class ProductListComponent implements OnInit {
    private productsSubject = new BehaviorSubject<ProductDto[]>([]);
   products$ = this.productsSubject.asObservable();
   filter = new UntypedFormControl('');
-  statusFilter = new UntypedFormControl('');   // ✅ Ajouté
+  statusFilter = new UntypedFormControl('');   //  Ajouté
   filteredProducts$!: Observable<ProductDto[]>;
   selectedProduct: ProductDto | null = null;
   //editingProduct: Product = { id: 0, name: '', price: 0 };
   productForm!: UntypedFormGroup;
-  // ✅ Liste des statuts
+  // Liste des statuts
   statusList: string[] = ['In Stock', 'Out of Stock', 'Restock'];
   isSaving = false;
   isViewMode = false;
@@ -45,10 +45,10 @@ export class ProductListComponent implements OnInit {
     this.productForm.get('price')!.valueChanges.subscribe(() => this.updateRevenue());
     this.productForm.get('sales')!.valueChanges.subscribe(() => this.updateRevenue());
 
-    // ✅ Combine produits + filtres
+    //  Combine produits + filtres
     this.filteredProducts$ = combineLatest([
       this.products$,
-      this.filter.valueChanges.pipe(startWith('')),
+      this.filter.valueChanges.pipe(startWith(''), debounceTime(200)),
       this.statusFilter.valueChanges.pipe(startWith(''))
     ]).pipe(
       map(([products, term, status]) => {
@@ -67,10 +67,12 @@ export class ProductListComponent implements OnInit {
       })
     );
   }
-
+trackById(index: number, item: ProductDto): number {
+  return item.id;
+}
    loadProducts() {
     this.productService.getAll().subscribe((products) => {
-      // ✅ On push les données dans le BehaviorSubject
+      //  On push les données dans le BehaviorSubject
       this.productsSubject.next(products);
     });
   }
@@ -139,21 +141,18 @@ onEdit(product: ProductDto) {
     this.isSaving = true;
 
     if (formValue.id === 0) {
-      // ✅ CREATE
+      // CREATE
       this.productService.create(formValue).subscribe({
         next: (created) => {
           const current = this.productsSubject.value;
-          this.productsSubject.next([...current, created]); // 🔥 ajoute direct sans F5
-          this.isSaving = false;
-          $('#productModal').modal('hide');
+          this.productsSubject.next([...current, created]); //  ajoute direct sans F5
+          this.finishSave(); 
         },
-        error: (err) => {
-          console.error(err);
-          this.isSaving = false;
-        }
+        error: (err) =>  this.finishSave(err)
+        
       });
     } else {
-      // ✅ UPDATE
+      //  UPDATE
       this.productService.update(formValue).subscribe({
         next: (updated) => {
           const current = this.productsSubject.value;
@@ -161,26 +160,41 @@ onEdit(product: ProductDto) {
           if (index !== -1) {
             const newProducts = [...current];
             newProducts[index] = updated;
-            this.productsSubject.next(newProducts); // 🔥 mise à jour auto
+            this.productsSubject.next(newProducts); //  mise à jour auto
           }
           this.isSaving = false;
-          $('#productModal').modal('hide');
+         this.finishSave();
         },
-        error: (err) => {
-          console.error(err);
-          this.isSaving = false;
-        }
+        error: (err) => this.finishSave(err)
       });
     }
   }
+  private finishSave(error?: any) {
+    this.isSaving = false;
+    if (error) console.error('Erreur sauvegarde:', error);
 
+    //  petit délai pour éviter conflit de détection Angular
+    setTimeout(() => this.closeModalInstant(), 100);
+  }
+
+  closeModalInstant() {
+  const modal = document.getElementById('productModal');
+  if (modal) {
+    $(modal).modal('hide'); // cache direct
+    modal.classList.remove('show'); //  supprime l'effet fade
+    document.body.classList.remove('modal-open');
+    document.body.removeAttribute('style');
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.remove();
+  }
+}
 
    onDelete(product?: ProductDto) {
     const target = product || this.selectedProduct;
     if (target && confirm('Voulez-vous supprimer ce produit ?')) {
       this.productService.delete(target.id).subscribe(() => {
         const current = this.productsSubject.value;
-        this.productsSubject.next(current.filter((p) => p.id !== target.id)); // 🔥 supprime direct
+        this.productsSubject.next(current.filter((p) => p.id !== target.id)); //  supprime direct
         if (this.selectedProduct === target) {
           this.selectedProduct = null;
         }
@@ -202,7 +216,7 @@ onEdit(product: ProductDto) {
     status: product.status
   });
 
-  // ✅ rendre le formulaire désactivé
+  //  rendre le formulaire désactivé
   this.productForm.disable();
 
   $('#productModal').modal('show');

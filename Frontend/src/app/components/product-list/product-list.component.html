@@ -9,7 +9,7 @@
 
   <!-- Actions (recherche + filtres + ajout) -->
   <div class="actions-container d-flex align-items-center">
-    <div class="d-flex mb-3">
+    <div class="d-flex mb-3" style ="margin-top:19px">
       <input
         type="text"
         class="form-control me-2"
@@ -45,7 +45,7 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let product of filteredProducts$ | async ;let i=index"
+      <tr *ngFor="let product of filteredProducts$ | async; trackBy: trackById"
        [class.table-active]="selectedProduct === product"
        (click)="selectProduct(product)">
         <td>
@@ -119,12 +119,11 @@
 
         <!-- Body -->
         <div class="modal-body" style="margin-top:8px;height: 650px;">
-          <h4 class="mb-3" style ="font-size: larger;font-weight: 600;"> ---General Information--- </h4>
+          <h4 class="mb-3" style ="font-size: larger;font-weight: 600;"> --- General Informations --- </h4>
           <div class="row" style="margin-bottom: 20px;">
              <div class="col-md-8 col-sm-6 col-12" >
-              <div class="form-group">
-                <label style="font-size: medium;font-weight: 700;">Product id</label>
-                <input type="number" class="form-control" formControlName="id" readonly style="width: 915px"/>
+              <div class="form-group ">
+                <input type="hidden" class="form-control" formControlName="id" readonly style="width: 915px"/>
               </div>
             </div>
             <div class="col-md-8 col-sm-6 col-12" >
@@ -140,7 +139,7 @@
             <textarea rows="3" class="form-control" formControlName="description"></textarea>
           </div>
 
-          <h4 class="mt-4 mb-3" style ="font-size: larger;font-weight: 600;margin-bottom: 25px;">---Stock & Pricing---</h4>
+          <h4 class="mt-4 mb-3" style ="font-size: larger;font-weight: 600;margin-bottom: 25px;">--- Stock & Pricing ---</h4>
           <div class="row">
             <div class="col-md-4 col-sm-6 col-12">
               <div class="form-group">
@@ -189,7 +188,7 @@
         <!-- Footer -->
         <div class="modal-footer" style="border-bottom: 1px solid #dee2e6;background-color: #f8f9fa;">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="font-weight: 600;font-size: x-large;width: 170px;margin-right: 16px;"> {{ isViewMode ? 'Close' : 'Cancel' }}</button>
-          <button type="submit" class="btn btn-primary" style="font-weight: 600;font-size: x-large;width: 170px;"[disabled]="isSaving"> {{ isSaving ? 'Saving…' : 'Save' }}</button>
+          <button type="submit" class="btn btn-primary" style="font-weight: 600;font-size: x-large;width: 170px;" [disabled]="isSaving" *ngIf ="!isViewMode"> {{ isSaving? 'Saving…' : 'Save' }}</button>
 
         </div>
       </form>
