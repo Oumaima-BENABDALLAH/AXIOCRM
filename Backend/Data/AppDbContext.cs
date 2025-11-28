@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProductManager.API.Models;
 using ProductManager.API.Models.AuthentificationJWT;
+using ProductManager.API.Models.Invoice;
 
 namespace ProductManager.API.Data
 {
@@ -13,6 +14,7 @@ namespace ProductManager.API.Data
        
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
+        public DbSet<DeliveryMethod> DeliveryMethods => Set<DeliveryMethod>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

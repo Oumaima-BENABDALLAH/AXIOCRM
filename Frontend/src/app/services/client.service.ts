@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProductDto } from 'src/app/models/product.model';
-import { ClientProduct } from 'src/app/models/client-product.model';
+
 import { map } from 'rxjs/operators';
 
 export interface Client{
@@ -11,10 +11,7 @@ export interface Client{
   lastName: string;
   fullName?: string;
   email:string;
- phone: {
-    dialCode: string;
-    phoneNumber: string;
-  };
+  phone: string;
   designation :string;
   status:string;
   dateOfBirth?: Date | string;
@@ -78,8 +75,8 @@ getAll(): Observable<Client[]> {
     return this.http.post<Client>(this.apiURL, client);
   }
   
-  update(client: Client): Observable<any> {
-    return this.http.put(`${this.apiURL}/${client.id}`, client);
+  update(client: Client): Observable<Client> {
+    return this.http.put<Client>(`${this.apiURL}/${client.id}`, client);
   }
 
   delete(id: number): Observable<void> {

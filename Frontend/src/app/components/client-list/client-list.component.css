@@ -416,3 +416,11 @@
 .status-offline {
   background-color: gray;
 }
+.disabled-section {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

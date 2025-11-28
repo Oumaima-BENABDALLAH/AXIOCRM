@@ -10,6 +10,8 @@
         public int StockQuantity { get; set; }
 
         public int Sales { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Color { get; set; }
 
         public decimal Revenue => Sales * Price;
         public string Status

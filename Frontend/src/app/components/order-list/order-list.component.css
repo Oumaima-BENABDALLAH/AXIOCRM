@@ -1,0 +1,746 @@
+/* ===== En-tête (header top) ===== */
+.header-top {
+  height: 97px;
+  margin-top: 6px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  padding: 15px;
+  margin-left: 10px;
+}
+.table.client-table tbody tr {
+  border-bottom: none !important;
+}
+.title-container h5 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+}
+.table.client-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* 💡 En-têtes du tableau plus grandes et grises */
+.table.client-table thead th {
+  font-size: 16px;
+  font-weight: 600;
+  color: #6c757d; /* gris élégant */
+  border-bottom: 2px solid #dee2e6;
+  text-transform: capitalize;
+}
+
+.title-container .btn {
+  background-color: transparent;
+  border: none;
+  color: #888;
+}
+
+.actions-container .btn {
+  border-radius: 50px;
+  padding: 8px 12px;
+}
+
+.actions-container .btn-primary {
+  background-color: #745af3;
+  border-color: #745af3;
+}
+
+/* ===== Table Commandes ===== */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.order-table thead {
+  background-color: #f8f9fa; /* gris clair et uniforme */
+  border-bottom: 2px solid #dee2e6;
+}
+
+.order-table th {
+  color: #6c757d; /* gris élégant */
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size: 15px;
+  padding: 12px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #e9ecef;
+}
+
+
+
+.order-table tbody tr {
+  background-color: transparent !important;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.order-table tbody tr:hover {
+  background-color: #fcfcfc;
+}
+
+.order-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.order-table td {
+  padding: 15px 20px;
+  vertical-align: middle;
+  border-bottom: none;
+}
+
+/* ===== Status commande ===== */
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-paid {
+  background-color: #e6f4ea;
+  color: #1e7e34;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* ===== Boutons actions (edit/delete/view) ===== */
+.order-table .btn-link {
+  color: #6c757d;
+  text-decoration: none;
+  padding: 0;
+}
+
+.order-table .btn-link i {
+  font-size: 1rem;
+}
+
+.actions-container {
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ellipsis-icon {
+  color: #6c757d;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.action-icons {
+  display: none;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.actions-container.active .ellipsis-icon {
+  display: none;
+}
+.ellipsis-icon:hover {
+  color: #007bff;
+}
+
+.actions-container.active .action-icons {
+  display: inline-flex !important;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ===== Table Responsive ===== */
+/* ===== Table Commandes ===== */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.order-table thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.order-table th {
+  color: #6c757d;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-size: 15px;
+  padding: 15px 20px;
+}
+
+.order-table tbody tr {
+  background-color: #fff;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.order-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.order-table td {
+  padding: 15px 20px;
+  vertical-align: middle;
+}
+
+/* Liste des produits dans chaque commande */
+.product-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  color: #555;
+}
+
+.product-list li {
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+/* ===== Actions ===== */
+.actions-container {
+  position: relative;
+  display: inline-block;
+}
+
+.ellipsis-icon {
+  color: #6c757d;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.ellipsis-icon:hover {
+  color: #007bff;
+}
+
+.actions-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 25px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 140px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.2s ease-in-out;
+}
+
+.actions-dropdown.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.actions-dropdown button {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.actions-dropdown button:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+/* ===== Table Responsive ===== */
+/* ===== Table Commandes ===== */
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.order-table thead {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.order-table th {
+  color: #6c757d;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-size: 15px;
+  padding: 15px 20px;
+}
+
+.order-table tbody tr {
+  background-color: #fff;
+  border-bottom: 1px solid #e9ecef;
+  transition: background-color 0.2s ease;
+}
+
+.order-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.order-table td {
+  padding: 15px 20px;
+  
+}
+
+/* Liste des produits dans chaque commande */
+.product-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  color: #555;
+}
+
+.product-list li {
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+/* ===== Actions ===== */
+.actions-container {
+  position: relative;
+  display: inline-block;
+}
+
+.ellipsis-icon {
+  color: #6c757d;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.ellipsis-icon:hover {
+  color: #007bff;
+}
+
+.actions-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 25px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  min-width: 140px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 10;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.2s ease-in-out;
+}
+
+.actions-dropdown.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.actions-dropdown button {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.actions-dropdown button:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+/* ✅ Même style que le tableau clients */
+.payment-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+}
+
+.payment-table thead {
+  background-color: white;
+  border-radius: 8px;
+}
+
+.payment-table th {
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 15px 20px;
+  border-bottom: none;
+}
+
+.payment-table td {
+  padding: 15px 20px;
+  vertical-align: middle;
+  border-bottom: none;
+  background-color: #fff;
+}
+
+/* ✅ Style uniforme pour les actions (icônes alignées comme les clients) */
+.payment-table .actions-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-table .actions-container .btn-link {
+  color: #6c757d;
+  text-decoration: none;
+  padding: 0;
+}
+
+.payment-table .actions-container .btn-link:hover {
+  color: #745af3;
+}
+
+.payment-table .actions-container i {
+  font-size: 1rem;
+}
+.modal-content {
+  border-radius: 12px;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #5a3ef3, #7a64f7);
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+.card {
+  border-radius: 1rem;
+  border: none;
+}
+
+input[readonly] {
+  background-color: #f9f9f9;
+  border: 1px solid #e3e3e3;
+}
+
+h5 i {
+  color: #8b6f47;
+}
+.selectable-card {
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.selectable-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+}
+input[type="radio"] {
+  margin-right: 6px;
+}
+
+.border.bg-light {
+  border-color: #dce3ea !important;
+}
+
+.card .form-label {
+  font-weight: 500;
+}
+.payment-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.payment-radio img {
+  width: 38px;
+  height: auto;
+  object-fit: contain;
+}
+
+.payment-options-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+  margin-left: 5px;
+}
+
+.payment-option input[type="radio"] {
+  transform: scale(1.1);
+  margin-right: 6px;
+}
+.payment-option {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 356px;
+  height: 39px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.payment-option:hover {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.payment-radio {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 9px;
+}
+
+.payment-radio input[type="radio"] {
+  margin-right: 10px;
+  accent-color: #007bff; /* pour une belle couleur bleue */
+}
+
+.payment-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.payment-text {
+  font-weight: 500;
+  color: #333;
+}
+
+.payment-logo {
+  height: 24px;
+  width: auto;
+}
+
+/* Effet survol */
+.payment-option:hover {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
+}
+
+/* Quand sélectionné */
+.payment-radio input[type="radio"]:checked + .payment-label .payment-text {
+  font-weight: 600;
+  color: #007bff;
+}
+
+.payment-radio input[type="radio"]:checked + .payment-label img {
+  filter: drop-shadow(0 0 3px #007bff);
+}
+
+.payment-radio input[type="radio"]:checked ~ .payment-label {
+  border-color: #007bff;
+}
+/* --- CARD --- */
+.card {
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+}
+
+/* --- TITLE --- */
+.card h5 {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+/* --- PRODUCT WRAPPER --- */
+.order-product {
+  display: flex;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* --- PRODUCT IMAGE --- */
+.order-product img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+}
+
+/* --- PRODUCT TEXT --- */
+.order-product .info {
+  flex-grow: 1;
+  margin-left: 12px;
+}
+
+.order-product .info .name {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.order-product .info .color {
+  font-size: 13px;
+  color: #6b7280; /* gray-500 */
+}
+
+.order-product .info .price {
+  margin-top: 4px;
+  font-weight: 600;
+  color: #111827; /* gray-900 */
+}
+
+/* --- QUANTITY BUTTONS --- */
+.qty-btn {
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  color: #374151;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qty-btn:hover {
+  background: #e5e7eb;
+}
+
+/* --- REMOVE BUTTON --- */
+.remove-btn {
+  border: 1px solid #dc2626;
+  color: #dc2626;
+  background: transparent;
+  padding: 4px 10px;
+  border-radius: 8px;
+  height: fit-content;
+  font-size: 13px;
+  margin-left: 12px;
+}
+
+.remove-btn:hover {
+  background: #fee2e2;
+}
+
+/* --- TOTAL --- */
+.total-box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 600;
+  padding-top: 12px;
+}
+
+.total-box span:last-child {
+  color: #2563eb; /* Blue-600 */
+}
+
+/* --- SELECT PRODUCT BUTTON --- */
+.select-btn {
+  border: 1px solid #3b82f6;
+  color: #3b82f6;
+  background: #eff6ff;
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: 500;
+  width: 100%;
+}
+
+.select-btn:hover {
+  background: #dbeafe;
+}
+.custom-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.custom-modal .modal-content {
+  background: white;
+  width: 600px;
+  padding: 20px;
+  border-radius: 12px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+.equal-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.equal-height .card {
+  flex-grow: 1;
+}
+.modal-backdrop.show {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(4px);
+}
+.client-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px 25px;
+}
+
+.client-grid .full {
+  grid-column: span 2;
+}
+
+.client-card {
+  border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e4e4e4;
+}
+
+.client-card input,
+.client-card select {
+  height: 40px;
+}
+.disabled-card {
+  pointer-events: none;
+  opacity: 0.6;
+}
+@media (max-width: 768px) {
+  .client-grid {
+    grid-template-columns: 1fr;
+  }
+  .client-grid .full {
+    grid-column: span 1;
+  }
+}

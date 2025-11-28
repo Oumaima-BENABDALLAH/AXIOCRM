@@ -139,12 +139,13 @@
               </div>
              
 
-            <div style="margin-bottom: 25px; margin-top: -50px;margin-left: 95px;">
-               <label class="btn btn-primary btn-sm me-2">
+            <div style="margin-bottom: 25px; margin-top: -50px;margin-left: 95px;"  [class.disabled-section]="isViewMode">
+               <label class="btn btn-primary btn-sm me-2" [class.disabled]="isViewMode">
                   Upload Avatar
-                  <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden>
+                  <input #fileInput type="file" accept="image/*" (change)="onFileSelected($event)" hidden  [disabled]="isViewMode">
                 </label>
-                <a href="javascript:void(0)" class="text-primary" (click)="clearAvatar(fileInput)">Clear selected
+                <a href="javascript:void(0)" class="text-primary" (click)="clearAvatar(fileInput)"[class.disabled]="isViewMode"
+                  [style.pointer-events]="isViewMode ? 'none' : 'auto'" >Clear selected
                   Image</a>
         
               <div class="text-muted small" style="margin-top: -7px;margin-bottom: -2px;margin-left:117px;">
@@ -152,39 +153,46 @@
                 exceeding 5MB
               </div>
             </div>
-
-               <div class="row">
                 <div class="col-md-4 col-sm-6 col-12">
                  <div class="form-group">
-                   <label>Client Id</label>
-                    <input type="text" class="form-control" formControlName="id" readonly />
+                    <input type="hidden" class="form-control" formControlName="id" readonly />
                    </div>
                   </div>
-            <div class="col-md-4 col-sm-6 col-12">
+               <div class="row">
+                
+              <div class="col-md-4 col-sm-6 col-12">
                  <div class="form-group">
-                   <label>First Name</label>
+                   <label for="name">First Name <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" formControlName="name" />
+                    <div *ngIf="clientForm.get('name')?.invalid && (clientForm.get('name')?.touched || clientForm.get('name')?.dirty)" class="text-danger mt-1">
+                         <small>The first name is required.</small>
+                      </div>
                    </div>
                  </div>
                <div class="col-md-4 col-sm-6 col-12">
                   <div class="form-group">
-                    <label>Last Name</label>
-                   <input type="text" class="form-control" formControlName="lastName" />
+                    <label for="lastName">Last Name <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" formControlName="lastName" />
+                      <div *ngIf="clientForm.get('lastName')?.invalid && (clientForm.get('lastName')?.touched || clientForm.get('lastName')?.dirty)" class="text-danger mt-1">
+                         <small>The last name is required.</small>
+                      </div>
                     </div>
                  </div>
-               </div>
-
-              <div class="row">
-               <div class="col-md-4 col-sm-6 col-12">
+                  <div class="col-md-4 col-sm-6 col-12">
                  <div class="form-group">
-                 <label>Full Name</label>
+                 <label >Full Name </label>
                    <input type="text" class="form-control" formControlName="fullName"
                       readonly />
                    </div>
                  </div>
+               </div>
+
+              <div class="row" style="margin-top:17px;">
+              
                  <div class="col-md-4 col-sm-6 col-12">
                  <div class="form-group">
-                     <label>Date of Brith</label>
+            
+                     <label for="dateOfBirth">Date of Brith<span class="text-danger">*</span></label>
                     <input type="date" class="form-control" formControlName="dateOfBirth" />
                        <div *ngIf="clientForm.get('dateOfBirth')?.touched && clientForm.get('dateOfBirth')?.invalid" class="text-danger mt-1">
                           <small *ngIf="clientForm.get('dateOfBirth')?.errors?.['futureDate']">
@@ -202,15 +210,15 @@
                           <option *ngFor="let d of designationList" [value]="d">{{ d }}</option>
                       </select>
                       <div *ngIf="clientForm.get('designation')?.invalid && (clientForm.get('designation')?.touched || clientForm.get('designation')?.dirty)"
-                       class="text-danger mt-1">
-                      <small>La désignation est obligatoire.</small>
+                        class="text-danger mt-1">
+                         <small>The designation is required.</small>
+                      </div>
                    </div>
-                 </div>
-                  </div>
+               </div>
                 <div class="col-md-4 col-sm-6 col-12">
                   <div class="form-group">
-                    <label for="status">Status <span class="text-danger">*</span></label>
-                     <select class="form-select" formControlName="status">
+                    <label for="status" style="margin-left: 10px;">Status <span class="text-danger">*</span></label>
+                     <select class="form-select" formControlName="status" style="height: 39px; margin-left: 2px; width: 240px;">
                         <option value="">-- Select Status --</option>
                          <option *ngFor="let s of statusList" [value]="s">
                            <span class="status-dot me-1" [ngClass]="{
@@ -222,35 +230,14 @@
                          </option>
 
                      </select>
+              
                     <div *ngIf="clientForm.get('status')?.invalid && (clientForm.get('status')?.touched || clientForm.get('status')?.dirty)"
                          class="text-danger mt-1">
                        <small>Le statut est obligatoire.</small>
                      </div>
                     </div>
                   </div>
-                </div>
-
-              <h3>Contact Information</h3>
-              <div class="row">
-                <div class="col-md-4 col-sm-6 col-12">
-                   <div class="form-group">
-                     <label>Address</label>
-                       <input type="text" class="form-control" formControlName="address" style="width :300px;"/>
-                   </div>
-                  </div>
-                 <div class="col-md-4 col-sm-6 col-12">
-                   <div class="form-group">
-                     <label style="margin-left: 58px;" >City</label>
-                         <input type="text" class="form-control" formControlName="city" style="margin-left: 58px;" />
-                    </div>
-                   </div>
-                 <div class="col-md-4 col-sm-6 col-12">
-                   <div class="form-group">
-                     <label style="margin-left: 50px;">Province</label>
-                   <input type="text" class="form-control" formControlName="province" style="width: 191px;margin-left: 50px;"/>
-                   </div>
-                 </div>
-                <div class="col-md-4 col-sm-6 col-12">
+                <div class="col-md-4 col-sm-6 col-12" style="margin-top: -1px;">
                    <div class="form-group">
                       <label for="email">Email <span class="text-danger">*</span></label>
                      <input type="email" class="form-control" formControlName="email"
@@ -267,76 +254,139 @@
                      </div>
                    </div>
                 </div>
-                 
-<div class="col-md-4 col-sm-6 col-12">
-  <div class="form-group">
-    <label for="phone" style="margin-left: 58px;">Phone <span class="text-danger">*</span></label>
-    <input type="text" formControlName="phone" class="form-control" 
-           placeholder="Enter phone number" style="margin-left: 58px; width: 100%;" />
+               
+                </div>
 
-    <div *ngIf="clientForm.get('phone')?.invalid && (clientForm.get('phone')?.dirty || clientForm.get('phone')?.touched)"
-         class="text-danger mt-1" style="margin-left: 58px;">
-      <small *ngIf="clientForm.get('phone')?.errors?.['required']">
-        Le numéro de téléphone est obligatoire.
-      </small>
-      <small *ngIf="clientForm.get('phone')?.errors?.['pattern']">
-        Le format du numéro de téléphone n'est pas valide.
-      </small>
-    </div>
-  </div>
-</div>
-
+              <h3>Contact Information</h3>
+              <div class="row">
+                <div class="col-md-4 col-sm-6 col-12">
+                   <div class="form-group">
+                     <label for="address">Address <span class="text-danger">*</span></label>
+                       <input type="text" class="form-control" formControlName="address" style="width :250px;"/>
+                        <div *ngIf="clientForm.get('address')?.invalid && (clientForm.get('address')?.touched || clientForm.get('address')?.dirty)" class="text-danger mt-1">
+                          <small>Address is required.</small>
+                       </div>
+                   </div>
+                  </div>
                   <div class="col-md-4 col-sm-6 col-12">
                    <div class="form-group">
-                       <label style="margin-left: 50px;">Postal Code </label>
-                      <input type="text" class="form-control" formControlName="postalCode" style="width: 191px;margin-left: 50px;"/>
+                     <label style="margin-left: 9px;" for="country">Country<span class="text-danger">*</span></label>
+                         <select class="form-select" formControlName="country" style="margin-left: 5px; width: 241px;height: 42px;">
+                            <option value="">-- Select Country --</option>
+                             <option *ngFor="let c of countries" [value]="c.name.common || c.name">{{ c.name.common || c.name }}</option>
+
+                         </select>
+                          <div *ngIf="clientForm.get('country')?.invalid && (clientForm.get('country')?.touched || clientForm.get('country')?.dirty)" class="text-danger mt-1" style="margin-left: 5px;">
+                              <small>The country is required.</small>
+                          </div>
+                   </div>
+               </div>
+                 <div class="col-md-4 col-sm-6 col-12">
+                   <div class="form-group">
+                     <label style="margin-left: 8px;" for="city">City<span class="text-danger">*</span></label>
+                         <input type="text" class="form-control" formControlName="city" style="margin-left:12 px;" />
+                          <div *ngIf="clientForm.get('city')?.invalid && (clientForm.get('city')?.touched || clientForm.get('city')?.dirty)" class="text-danger mt-1" style="margin-left: 12px;">
+                            <small>The city is required.</small>
+                          </div>
+                    </div>
+                   </div>
+                 <div class="col-md-4 col-sm-6 col-12">
+                   <div class="form-group">
+                     <label style="margin-left: 3px;" for="province">Province <span class="text-danger">*</span></label>
+                       <input type="text" class="form-control" formControlName="province" style="margin-left: 4px; width: 249px;height: 42px;"/>
+                        <div *ngIf="clientForm.get('province')?.invalid && (clientForm.get('province')?.touched || clientForm.get('province')?.dirty)" class="text-danger mt-1" style="margin-left: 4px;">
+                          <small>the province is required..</small>
+                        </div>
+                      </div>
+                 </div>
+               
+              
+                  <div class="col-md-4 col-sm-6 col-12">
+                   <div class="form-group">
+                       <label style="margin-left: 11px;" for="postalCode">Postal Code <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" formControlName="postalCode" style="width: 241px;margin-left: 5px;"/>
+                      <div *ngIf="clientForm.get('postalCode')?.invalid && (clientForm.get('postalCode')?.touched || clientForm.get('postalCode')?.dirty)" class="text-danger mt-1" style="margin-left: 5px;">
+                              <small>The postal code is required.</small>
+                           </div>
                       </div>
                    </div>
-                
-              </div>
+                  <div class="col-md-4 col-sm-6 col-12">
+            <div class="form-group">
+               <label for="phone" style="margin-left: 7px;">Phone <span class="text-danger">*</span></label>
+               <input type="text" formControlName="phone" class="form-control" 
+                      placeholder="Enter phone number" style=" width: 100%;" />
+
+               <div *ngIf="clientForm.get('phone')?.invalid && (clientForm.get('phone')?.dirty || clientForm.get('phone')?.touched)"
+                 class="text-danger mt-1" style="margin-left: 58px;">
+                  <small *ngIf="clientForm.get('phone')?.errors?.['required']">
+                   Le numéro de téléphone est obligatoire.
+                  </small>
+                  <small *ngIf="clientForm.get('phone')?.errors?.['pattern']">
+                 Le format du numéro de téléphone n'est pas valide.
+              </small>
+        </div>
+       </div>
+     </div>
+    </div>
+                 
+     
+
 
              <h3>Employment Information</h3>
               <div class="row">
                  <div class="col-md-4 col-sm-6 col-12">
                   <div class="form-group">
-                        <label>Job Title / Occupation</label>
+                        <label for="jobTitle">Job Title / Occupation <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" formControlName="jobTitle" />
+                        <div *ngIf="clientForm.get('jobTitle')?.invalid && clientForm.get('jobTitle')?.touched" class="text-danger">
+                           <small>The job title is required</small>
+                         </div>
                     </div>
                   </div>
                 <div class="col-md-4 col-sm-6 col-12">
                    <div class="form-group">
-                     <label>Date of Hire</label>
+                     <label for="hireDate">Date of Hire <span class="text-danger">*</span></label>
                     <input type="date" class="form-control" formControlName="hireDate" />
+
                     </div>
                   </div>
                  <div class="col-md-4 col-sm-6 col-12">
                    <div class="form-group">
-                    <label>Work Reference Number</label>
+                    <label for="workReferenceNumber">Work Reference Number <span class="text-danger">*</span></label>
                      <input type="text" class="form-control" formControlName="workReferenceNumber" />
+                     <div *ngIf="clientForm.get('workReferenceNumber')?.invalid && clientForm.get('workReferenceNumber')?.touched" class="text-danger">
+                           <small>The work Reference Number is required</small>
+                         </div>
                     </div>
                   </div>
-          
-
-          
                <div class="col-md-4 col-sm-6 col-12">
                   <div class="form-group">
-                    <label>Occupation Group</label>
+                    <label for="occupationGroup">Occupation Group <span class="text-danger">*</span></label>
                   <input type="text" class="form-control" formControlName="occupationGroup" />
+                    <div *ngIf="clientForm.get('occupationGroup')?.invalid && clientForm.get('occupationGroup')?.touched" class="text-danger">
+                           <small>The occupation group is required</small>
+                         </div>
                    </div>
                  </div>
                 <div class="col-md-4 col-sm-6 col-12">
                   <div class="form-group">
-                      <label for="department">Department</label>
+                      <label for="department">Department <span class="text-danger">*</span></label>
                         <select class="form-select" formControlName="department">
                           <option value="">-- Select Department --</option>
                           <option *ngFor="let dept of departmentList" [value]="dept">{{ dept }}</option>
                         </select>
+                         <div *ngIf="clientForm.get('department')?.invalid && clientForm.get('department')?.touched" class="text-danger">
+                           <small>The department  is required</small>
+                         </div>
                   </div>
                   </div>
                  <div class="col-md-4 col-sm-6 col-12">
                   <div class="form-group">
-                     <label>Division</label>
+                     <label for="division">Division <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" formControlName="division" />
+                         <div *ngIf="clientForm.get('division')?.invalid && clientForm.get('division')?.touched" class="text-danger">
+                           <small>The division  is required</small>
+                         </div>
                      </div>
                   </div>
               </div>
@@ -347,8 +397,9 @@
       <div class="modal-footer" style="border-top: 1px solid #dee2e6;background-color: #f8f9fa; padding: 1rem;margin-top: -35px;">
                 <button type="button" class="btn btn-secondary" (click)="closeModal()"
                   style="margin-top: -2px">{{ isViewMode ? 'Close' : 'Cancel' }}</button>
-                <button type="submit" class="btn btn-primary" [disabled]="isSaving"
+                <button type="submit" class="btn btn-primary" [disabled]="isSaving" *ngIf ="!isViewMode"
                   style="margin-top: -2px"> {{ isSaving ? 'Saving…' : 'Save' }}</button>
+                  
         </div>
 
       </form>

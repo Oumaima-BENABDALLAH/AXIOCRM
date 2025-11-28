@@ -40,10 +40,13 @@ getAll(): Observable<ProductDto[]> {
      return this.http.post<ProductDto>(this.apiURL, product);
 
    }
-update(product: ProductDto): Observable<ProductDto> {
-  return this.http.put<ProductDto>(`${this.apiURL}/${product.id}`, product);
+update(id: number,product: ProductDto): Observable<ProductDto> {
+  return this.http.put<ProductDto>(`${this.apiURL}/${id}`, product);
 }
+
    delete (id : number): Observable<void> {
     return this.http.delete<void>(`${this.apiURL}/${id}`);
    }
+
+    
 }

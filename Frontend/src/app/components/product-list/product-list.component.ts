@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
-import { UntypedFormControl, UntypedFormGroup, Validators, UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, UntypedFormBuilder,FormArray } from '@angular/forms';
 import { Observable,BehaviorSubject,combineLatest   } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ProductDto  } from 'src/app/models/product.model';
 import { debounceTime } from 'rxjs/operators';
-
+import { finalize } from 'rxjs/operators';
 
 
 declare var $: any;
@@ -17,6 +17,9 @@ declare var $: any;
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef;
+  uploadProgress: number = 0;   // Pour la barre de progression
+
   //products: ProductDto[] = [];
    private productsSubject = new BehaviorSubject<ProductDto[]>([]);
   products$ = this.productsSubject.asObservable();
@@ -30,6 +33,27 @@ export class ProductListComponent implements OnInit {
   statusList: string[] = ['In Stock', 'Out of Stock', 'Restock'];
   isSaving = false;
   isViewMode = false;
+  dropdownOpen = false;
+  isFileSelected = false;
+  imagePreview: string | ArrayBuffer | null = null;
+  selectedColor: { name: string; value: string } | null = null;
+  colorList = [
+  { name: 'Black', value: '#000000' },
+  { name: 'White', value: '#FFFFFF' },
+  { name: 'Red', value: '#FF0000' },
+  { name: 'Green', value: '#008000' },
+  { name: 'Blue', value: '#0000FF' },
+  { name: 'Yellow', value: '#FFFF00' },
+  { name: 'Orange', value: '#FFA500' },
+  { name: 'Pink', value: '#FFC0CB' },
+  { name: 'Gray', value: '#808080' },
+  { name: 'Brown', value: '#A52A2A' },
+  { name: 'Purple', value: '#800080' },
+  { name: 'Cyan', value: '#00FFFF' },
+  { name: 'Beige', value: '#F5F5DC' },
+  { name: 'Gold', value: '#FFD700' },
+  { name: 'Silver', value: '#C0C0C0' },
+];
   // Pour gérer l'ouverture/fermeture des actions (3 points)
   activeActionRow: number | null = null;
 
@@ -41,7 +65,7 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.loadProducts();
-
+    
     this.productForm.get('price')!.valueChanges.subscribe(() => this.updateRevenue());
     this.productForm.get('sales')!.valueChanges.subscribe(() => this.updateRevenue());
 
@@ -92,11 +116,47 @@ trackById(index: number, item: ProductDto): number {
     return this.sanitizer.bypassSecurityTrustHtml(result);
   }
 
+  
+ onFileSelected(event: Event) {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (!file) {
+    this.isFileSelected = false;
+    this.imagePreview = null;
+    return;
+  }
+
+  this.isFileSelected = true;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.imagePreview = reader.result;
+
+    // Injecte la base64 dans le formulaire
+    this.productForm.patchValue({ imageUrl: this.imagePreview });
+    this.productForm.get('imageUrl')?.updateValueAndValidity();
+
+    // 🎬 Simule la barre de progression (comme ton design)
+    this.uploadProgress = 0;
+    const interval = setInterval(() => {
+      this.uploadProgress += 10;
+
+      if (this.uploadProgress >= 100) {
+        clearInterval(interval);
+      }
+    }, 120);
+  };
+
+  reader.readAsDataURL(file);
+}
+// ouvrir le file input en cliquant la zone
+triggerFileInput() {
+  (this.fileInput.nativeElement as HTMLInputElement).click();
+}
   selectProduct(product: ProductDto) {
     this.selectedProduct = product;
   }
 
-    onAdd() {
+ onAdd() {
     this.productForm.reset({
       id: 0,
       name: '',
@@ -105,15 +165,19 @@ trackById(index: number, item: ProductDto): number {
       stockQuantity: 0,
       sales: 0,
       revenue: 0,
-      status: 'Out of Stock'
+      status: 'Out of Stock',
+      imageUrl: '',  
+      color:  '#000000'
     });
     $('#productModal').modal('show');
   }
 
 
-onEdit(product: ProductDto) {
+/*onEdit(product: ProductDto) {
     this.isViewMode = false;
     this.productForm.enable();
+     this.imagePreview = product.imageUrl || null;
+     this.selectedColor = this.colorList.find(c => c.value === product.color) || null;
     // patchValue pour remplir le formulaire (revenu est désactivé)
     this.productForm.patchValue({
       id: product.id ?? 0,
@@ -122,7 +186,9 @@ onEdit(product: ProductDto) {
       price: product.price,
       stockQuantity: product.stockQuantity,
       sales: product.sales,
-      status: product.status
+      status: product.status,
+      imageUrl: product.imageUrl || '',
+      color: product.color || '#000000'
     });
     this.updateRevenue(); // pour afficher revenue calculé dans le champ désactivé
     $('#productModal').modal('show');
@@ -168,7 +234,111 @@ onEdit(product: ProductDto) {
         error: (err) => this.finishSave(err)
       });
     }
+  }*/
+
+ onEdit(product: ProductDto) {
+  this.isViewMode = false;
+  this.productForm.enable();
+
+  // garde la référence du produit édité (utile pour conserver image/color si non modifiées)
+  this.selectedProduct = product;
+
+  // affiche preview + couleur sélectionnée dans le modal
+  this.imagePreview = product.imageUrl || null;
+  this.selectedColor = this.colorList.find(c => c.value === product.color) || null;
+
+  // patch des champs du formulaire (revenue calculé séparément)
+  this.productForm.patchValue({
+    id: product.id ?? 0,
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    stockQuantity: product.stockQuantity,
+    sales: product.sales,
+    status: product.status,
+    imageUrl: product.imageUrl || '',
+    color: product.color || '#000000'
+  });
+
+  this.updateRevenue(); // met à jour revenue dans le champ désactivé
+  $('#productModal').modal('show');
+}
+
+saveProduct() {
+
+  console.log("🔵 [DEBUG] saveProduct() déclenché");
+
+  if (this.productForm.invalid) {
+    console.warn("⚠ Formulaire invalide :", this.productForm.value);
+    this.productForm.markAllAsTouched();
+    return;
   }
+
+  const payload = this.productForm.getRawValue();
+
+  console.log("🟦 [DEBUG] RAW FORM VALUE :", payload);
+
+  // Champs calculés
+  payload.revenue = payload.price * payload.sales;
+  payload.color = payload.color || null;
+
+  console.log("🟩 [DEBUG] PAYLOAD FINAL :", payload);
+
+  this.isSaving = true;
+  console.log("🔄 [DEBUG] isSaving = true");
+
+  const isCreation = payload.id === 0;
+  const request = isCreation
+    ? this.productService.create(payload)
+    : this.productService.update(payload.id, payload);
+
+  console.log(`🟨 [DEBUG] API CALL → ${isCreation ? "POST /create" : "PUT /update/"+payload.id}`);
+
+  request.subscribe({
+    next: (saved) => {
+      console.log("✅ [SUCCESS] Produit sauvegardé :", saved);
+
+      // Mise à jour de la liste Angular
+      const list = this.productsSubject.value;
+      const index = list.findIndex(p => p.id === saved.id);
+
+      if (index !== -1) {
+        console.log("🟧 [DEBUG] Produit trouvé dans la liste → mise à jour");
+        const newList = [...list];
+        newList[index] = saved;
+        this.productsSubject.next(newList);
+      } else {
+        console.log("🟪 [DEBUG] Nouveau produit → ajout à la liste");
+        this.productsSubject.next([...list, saved]);
+      }
+
+      this.isSaving = false;
+      console.log("🟢 [DEBUG] isSaving = false");
+
+      $('#productModal').modal('hide');
+    },
+
+    error: (err) => {
+      console.error("❌ [ERROR] API ERROR :", err);
+
+      if (err.error) {
+        console.error("📦 [ERROR RESPONSE BODY] :", err.error);
+      }
+
+      if (err.status) {
+        console.error("📡 [HTTP STATUS] :", err.status);
+      }
+
+      this.isSaving = false;
+      console.log("🔴 [DEBUG] isSaving = false (suite erreur)");
+    }
+  });
+}
+
+
+
+
+
   private finishSave(error?: any) {
     this.isSaving = false;
     if (error) console.error('Erreur sauvegarde:', error);
@@ -213,7 +383,9 @@ onEdit(product: ProductDto) {
     stockQuantity: product.stockQuantity,
     sales: product.sales,
     revenue: product.revenue,
-    status: product.status
+    status: product.status,
+    imageUrl: product.imageUrl,
+    color: product.color
   });
 
   //  rendre le formulaire désactivé
@@ -238,8 +410,21 @@ private initForm() {
       price: [0, [Validators.required, Validators.min(0)]],
       stockQuantity: [0, [Validators.min(0)]],
       sales: [0, [Validators.min(0)]],
-      revenue: [{ value: 0, disabled: true }], // calculé
-      status: ['Out of Stock']
+      revenue: [{ value: 0, disabled: true }], 
+      status: ['Out of Stock'],
+      imageUrl: [''], 
+      color: ['#000000'], 
     });
   }
+toggleDropdown() {
+  this.dropdownOpen = !this.dropdownOpen;
+}
+
+selectColor(color: { name: string; value: string }) {
+  this.selectedColor = color;
+  this.productForm.get('color')?.setValue(color.value);
+  this.dropdownOpen = false;
+}
+  
+
 }

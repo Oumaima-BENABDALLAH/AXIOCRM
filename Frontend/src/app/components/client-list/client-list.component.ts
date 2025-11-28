@@ -68,7 +68,15 @@ export class ClientListComponent implements OnInit {
     });
 
     // Charger la liste des pays
-    this.countryService.getCountries().subscribe({
+    this. loadCountries();
+
+    // Initialisation
+    this.initFilters();
+    this.initForm();
+  }
+
+  loadCountries(): void {
+       this.countryService.getCountries().subscribe({
       next: (countries) => {
         this.countries = countries;
         console.log("🌍 Countries loaded:", countries);
@@ -77,34 +85,64 @@ export class ClientListComponent implements OnInit {
         console.error("❌ Erreur lors du chargement des pays :", err);
       }
     });
-
-    // Initialisation
-    this.initFilters();
-    this.initForm();
   }
  // ✅ Voir les détails d’un client (affiche le modal en mode lecture seule)
-  onView(client: Client): void {
-    console.log('Voir client', client);
-    // ici tu peux ouvrir ton modal en mode lecture seule
+ 
+   onView(client: Client) {
+    this.isViewMode = true;
+     const formatDate = (dateString: any) => {
+     if (!dateString) return null;
+       const d = new Date(dateString);
+       return d.toISOString().split('T')[0]; // ✅ garde seulement "YYYY-MM-DD"
+     };
+    this.clientForm.patchValue({
+      id: client.id ?? 0,
+      name: client.name,
+      lastName: client.lastName,
+      fullName: client.fullName ?? `${client.name} ${client.lastName}`,
+      email:client.email,
+      phone: client.phone,
+      designation :client.designation,
+      status:client.status,
+      dateOfBirth: formatDate(client.dateOfBirth),
+      profilePic:client.profilePic,   
+      company: client.company,
+      address: client.address,
+      city: client.city,
+      postalCode: client.postalCode,
+      province: client.province,
+      jobTitle: client.jobTitle,
+      country: client.country,
+      hireDate: formatDate(client.hireDate),
+      workReferenceNumber: client.workReferenceNumber,
+      occupationGroup: client.occupationGroup,
+      department: client.department,
+    });
+  
+    //  rendre le formulaire désactivé
+    this.clientForm.disable();
+  
+    $('#clientModal').modal('show');
   }
 
 toggleActions(event: Event) { 
   event.stopPropagation(); const target = event.currentTarget as HTMLElement; target.classList.toggle('active');
  }
-loadClient(): void {
+loadClient() {
   this.isLoading = true;
   this.clientService.getAll().subscribe({
     next: (clients) => {
       this.clients = clients;
+      this.clientsSubject.next(this.clients);
       this.isLoading = false;
-      this.filter.setValue(this.filter.value); // ⚡ déclenche juste le recalcul
     },
     error: (err) => {
-      console.error('❌ Erreur lors du rechargement des clients:', err);
+      console.error('❌ Erreur lors du chargement des clients:', err);
       this.isLoading = false;
     }
   });
 }
+
 
   // ✅ Observable combiné pour tous les filtres
   initFilters() {
@@ -141,20 +179,20 @@ loadClient(): void {
       designation: ['', Validators.required],
       status: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      dateOfBirth: [null, [CustomValidators.notInFuture]],
+      dateOfBirth: ['', [CustomValidators.notInFuture]],
       phone: ['', Validators.required],
       profilePic: [''],
-      address: [''],
-      city: [''],
-      country: [''],
-      province: [''],
-      postalCode: [''],
-      jobTitle: [''],
-      hireDate: [null],
-      workReferenceNumber: [''],
-      occupationGroup: [''],
-      department: [''],
-      division: ['']
+      address: ['', Validators.required],
+      city: ['',Validators.required],
+      country: ['',Validators.required],
+      province: ['',Validators.required],
+      postalCode: ['',Validators.required],
+      jobTitle: ['',Validators.required],
+      hireDate: ['',Validators.required],
+      workReferenceNumber: ['',Validators.required],
+      occupationGroup: ['',Validators.required],
+      department: ['',Validators.required],
+      division: ['',Validators.required]
     });
 
     this.clientForm.get('name')?.valueChanges.subscribe(() => this.updateFullName());
@@ -175,59 +213,183 @@ loadClient(): void {
     this.openModal();
   }
 
-  onEdit(client: Client) {
-    this.isViewMode = false;
-    this.clientForm.enable();
-    this.clientForm.patchValue(client);
-    this.avatarUrl = client.profilePic || null;
-    this.openModal();
-  }
+onEdit(client: Client) {
+  this.isViewMode = false;
+  this.clientForm.enable();
 
-  saveClient() {
-    if (this.clientForm.invalid) {
-      this.clientForm.markAllAsTouched();
-      return;
-    }
+  // ✅ Conversion correcte des dates avant injection dans le formulaire
+  this.clientForm.patchValue({
+    ...client,
+    phone: client.phone || '',
+    dateOfBirth: client.dateOfBirth ? this.formatDateForInput(client.dateOfBirth) : '',
+    hireDate: client.hireDate ? this.formatDateForInput(client.hireDate) : ''
+  });
 
-    this.isSaving = true;
-    const clientData = this.clientForm.getRawValue() as Client;
-
-    const request$ = clientData.id === 0
-      ? this.clientService.create(clientData)
-      : this.clientService.update(clientData);
-
-    request$.subscribe({
-      next: (savedClient) => {
-        let updatedClients = [...this.clients];
-
-        if (clientData.id === 0) {
-          updatedClients.push(savedClient);
-        } else {
-          const index = updatedClients.findIndex(c => c.id === savedClient.id);
-          if (index !== -1) updatedClients[index] = savedClient;
-        }
-
-        this.clients = updatedClients;
-        this.clientsSubject.next(updatedClients); // ✅ met à jour instantanément la liste
-        this.isSaving = false;
-        this.closeModal();
-      },
-      error: (err) => {
-      console.error('❌ Erreur lors de la sauvegarde du client:', err);
-
-      // 🔍 Affiche les détails de validation renvoyés par .NET
-      if (err.error?.errors) {
-      console.group("🔎 Détails des erreurs de validation .NET");
-      console.table(err.error.errors);
-      console.groupEnd();
-    } else {
-    console.warn("⚠️ Pas de détails de validation dans la réponse :", err.error);
-  }
-
-  this.isSaving = false;
+  this.avatarUrl = client.profilePic || null;
+  this.openModal();
 }
-    });
+private normalizePhone(phone: any): string {
+  if (!phone) return '';
+  if (typeof phone === 'string') return phone.trim();
+
+  // Si le backend renvoie un objet
+  if (typeof phone === 'object') {
+    const dial = phone.dialCode || '';
+    const num = phone.phoneNumber || '';
+    return `${dial}${num}`.trim();
   }
+  return '';
+}
+private formatDateForInput(dateValue: string |Date): string {
+  if (!dateValue) return '';
+  
+  const d = (typeof dateValue === 'string') ? new Date(dateValue) : dateValue;
+  
+  if (isNaN(d.getTime())) return ''; // Sécurité en cas de date invalide
+  
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}`;
+}
+
+// save client
+
+/* saveClient() {
+  if (this.clientForm.invalid) {
+    this.clientForm.markAllAsTouched();
+    return;
+  }
+
+  this.isSaving = true;
+  const clientData = this.clientForm.getRawValue();
+
+  // --- normalize payload
+ const payload: any = { ...clientData };
+  if (payload.phone && typeof payload.phone === 'object') {
+    payload.phone = payload.phone.phoneNumber || `${payload.phone.dialCode || ''}${payload.phone.phoneNumber || ''}`;
+  }
+  delete payload.fullName;
+  if (payload.dateOfBirth) payload.dateOfBirth = new Date(payload.dateOfBirth).toISOString();
+  if (payload.hireDate) payload.hireDate = new Date(payload.hireDate).toISOString();
+
+  const request$ = payload.id === 0
+    ? this.clientService.create(payload)
+    : this.clientService.update(payload);
+
+  request$.subscribe({
+    next: (savedClient) => {
+      this.isSaving = false;
+      if (!savedClient || !savedClient.id) {
+        console.warn('Backend did not return updated client, reloading list.');
+        this.loadClient();
+        this.closeModal();
+        return;
+      }
+      const updatedClients = [...this.clients];
+      if (payload.id === 0) {
+        updatedClients.push(savedClient);
+      } else {
+        const index = updatedClients.findIndex(c => c.id === savedClient.id);
+        if (index !== -1) updatedClients[index] = savedClient;
+      }
+      this.clients = updatedClients;
+      this.clientsSubject.next(updatedClients);
+      this.closeModal();
+    },
+    error: (err) => {
+      console.error('❌ Erreur lors de la sauvegarde du client:', err);
+      this.isSaving = false;
+
+      if (!err.error) {
+        alert('Erreur serveur : ' + (err.message || 'unknown'));
+        return;
+      }
+
+      const modelErrors = err.error.errors;
+      if (modelErrors) {
+        console.group('🔎 Détails des erreurs de validation .NET');
+        console.table(modelErrors);
+        console.groupEnd();
+        for (const field in modelErrors) {
+          if (!modelErrors.hasOwnProperty(field)) continue;
+          const key = field.split('.').pop()!;
+          const control = this.clientForm.get(key);
+          const messages = modelErrors[field] as string[];
+          if (control) {
+            control.setErrors({ server: messages.join(' | ') });
+          } else {
+            // message global
+            console.warn(`Server validation for ${key}:`, messages);
+          }
+        }
+        return;
+      }
+
+      alert('Erreur inconnue lors de la sauvegarde');
+    }
+  });
+}*/
+saveClient() {
+  if (this.clientForm.invalid) {
+    this.clientForm.markAllAsTouched();
+    return;
+  }
+
+  this.isSaving = true;
+  const clientData = this.clientForm.getRawValue();
+  const payload: any = { ...clientData };
+
+  delete payload.fullName;
+
+  // 🔹 Convertir les dates en ISO
+  if (payload.dateOfBirth) {
+    payload.dateOfBirth = new Date(payload.dateOfBirth).toISOString();
+  }
+  if (payload.hireDate) {
+    payload.hireDate = new Date(payload.hireDate).toISOString();
+  }
+
+  // 🔹 Nettoyer le champ téléphone
+  if (payload.phone) {
+    payload.phone = payload.phone.toString().replace(/\s+/g, ''); // supprime espaces éventuels
+  }
+
+  const request$ = payload.id === 0
+    ? this.clientService.create(payload)
+    : this.clientService.update(payload);
+
+  request$.subscribe({
+    next: (savedClient) => {
+      this.isSaving = false;
+      this.updateClientList(savedClient);
+      this.closeModal();
+    },
+    error: (err) => {
+      this.isSaving = false;
+      console.error(' Erreur lors de la sauvegarde du client:', err);
+    }
+  });
+}
+
+private updateClientList(savedClient: any) {
+  if (!savedClient) return;
+
+  // Chercher l'index du client existant
+  const index = this.clients.findIndex(c => c.id === savedClient.id);
+
+  if (index >= 0) {
+    // 🔹 Cas modification → remplacer l’ancien client
+    this.clients[index] = { ...savedClient };
+  } else {
+    // 🔹 Cas création → ajouter le nouveau client
+    this.clients.unshift(savedClient);
+  }
+
+  // 🔹 Notifier les abonnés (table, affichage, etc.)
+  this.clientsSubject.next([...this.clients]);
+}
 
   onDelete(client: Client) {
     if (confirm("Voulez-vous supprimer ce client ?")) {
