@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProductManager.API.Data;
 
@@ -11,9 +12,11 @@ using ProductManager.API.Data;
 namespace ProductManager.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251108205928_Order_DeliveryMethod")]
+    partial class Order_DeliveryMethod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -358,7 +361,7 @@ namespace ProductManager.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryMethods");
+                    b.ToTable("DeliveryMethod");
                 });
 
             modelBuilder.Entity("ProductManager.API.Models.Order", b =>
@@ -369,31 +372,13 @@ namespace ProductManager.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CVV")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CardHolder")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CardNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("CashAmount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
                     b.Property<int?>("DeliveryMethodId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ExpiryDate")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("PaymentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentMethod")
@@ -407,6 +392,8 @@ namespace ProductManager.API.Migrations
 
                     b.HasIndex("ClientId");
 
+                    b.HasIndex("DeliveryMethodId");
+
                     b.ToTable("Orders");
                 });
 
@@ -417,12 +404,6 @@ namespace ProductManager.API.Migrations
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -445,14 +426,8 @@ namespace ProductManager.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -532,7 +507,13 @@ namespace ProductManager.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ProductManager.API.Models.Invoice.DeliveryMethod", "DeliveryMethod")
+                        .WithMany()
+                        .HasForeignKey("DeliveryMethodId");
+
                     b.Navigation("Client");
+
+                    b.Navigation("DeliveryMethod");
                 });
 
             modelBuilder.Entity("ProductManager.API.Models.OrderProduct", b =>

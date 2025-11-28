@@ -10,6 +10,9 @@
         public int Sales { get; set; }
         public decimal Revenue { get; set; }
         public string Status { get; set; }
+        public string? ImageUrl { get; set; }
+        public string? Color { get; set; }
 
     }
+   
 }

@@ -34,16 +34,17 @@ namespace ProductManager.API.Services
 
         public async Task<Product> UpdateAsync(int id, Product updated)
         {
-            if (!await _context.Products.AnyAsync(p => p.Id == id))
-                return null;
+            var existing = await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            if (existing == null) return null;
 
             updated.Id = id;
+
             _context.Entry(updated).State = EntityState.Modified;
 
             await _context.SaveChangesAsync();
             return updated;
-        
         }
+
 
         public async Task<bool> DeleteAsync(int id)
         {

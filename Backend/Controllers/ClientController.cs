@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Reflection.Metadata.Ecma335;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProductManager.API.Data;
 using ProductManager.API.Models;
@@ -49,7 +50,9 @@ namespace ProductManager.API.Controllers
         public async Task<IActionResult> Update(int id, Client client)
         {
             var cl = await _clientService.UpdateAsync(id,client);
-            return cl == null ? NotFound(): NoContent();
+           if (cl == null)
+                return NotFound();
+            return Ok(cl);
         }
 
         [HttpDelete("{id}")]

@@ -169,3 +169,105 @@
   border-bottom: 2px solid #f8f9fa; /* Subtle underline */
   padding-bottom: 0.5rem;
 }
+.color-preview {
+  width: 25px;
+  height: 25px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+.color-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+.dropdown-menu.show {
+  display: block;
+}
+
+.image-label {
+  font-size: medium;
+  font-weight: 700;
+  margin-right: 12px;
+}
+
+
+
+
+.product-image-container {
+  display: flex;
+  flex-direction: column;   /* label au-dessus */
+  align-items: flex-start;  /* aligné à gauche comme dans l’exemple vert */
+  gap: 10px;
+}
+
+.image-input {
+  max-width: 280px;
+}
+
+
+
+.upload-box {
+   width: 300px;
+  padding: 20px;
+  border: 2px dashed #d0d7e3;
+  background: #f5f9ff;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.upload-placeholder p {
+  margin: 12px 0 4px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.upload-placeholder small {
+  color: #7c8a9a;
+}
+
+.browse {
+  color: #2b7cff;
+  text-decoration: underline;
+}
+
+.preview-image {
+  width: 100px;            /* largeur fixe */
+  height: 100px;           /* hauteur fixe */
+  object-fit: contain;     /* l’image reste entière sans être coupée */
+  border-radius: 12px;     /* arrondi (optionnel) */
+  background: #f0f0f0;     /* fond gris clair si vide (optionnel) */
+  padding: 8px;
+}
+
+.progress-container {
+  margin-top: 12px;
+  width: 100%;
+  height: 10px;
+  background: #e9edf5;
+  border-radius: 8px;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #4a90e2;
+  border-radius: 8px;
+  transition: width 0.2s ease;
+}
+
+.progress-text {
+  font-size: 14px;
+  position: absolute;
+  right: 0;
+  top: -22px;
+}
+.modal-content,
+.modal-body,
+.mat-dialog-container {
+  background: #ffffff !important;
+}
+.modal-backdrop.show {
+  opacity: 0.4 !important;
+}

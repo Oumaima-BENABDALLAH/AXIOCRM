@@ -29,13 +29,16 @@ namespace ProductManager.API.Controllers
             StockQuantity = p.StockQuantity,
             Sales = p.Sales,
             Revenue = p.Revenue,
-            Status = p.Status
+            Status = p.Status,
+            ImageUrl = p.ImageUrl,
+            Color = p.Color
+
         };
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
         {
             var products = await _productService.GetAllAsync();
-            return Ok(products.Select(ToDto));
+            return Ok(products.Select(ToDto).ToList());
         }
 
         [HttpGet("{id}")]

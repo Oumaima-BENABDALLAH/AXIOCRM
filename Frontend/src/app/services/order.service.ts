@@ -17,18 +17,35 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
 getOrders(): Observable<OrderDto[]> {
-  return this.http.get<{ $id: string, $values: OrderDto[] }>(`${this.apiUrl}`)
-    .pipe(map(response => response.$values || []));
+   return this.http.get<OrderDto[]>(this.apiUrl);
 }
 
-  createOrder(order: OrderDto): Observable<OrderDto> {
-    return this.http.post<OrderDto>(this.apiUrl, order);
-  }
+ createOrder(order: OrderDto) {
 
-  // Ajoute aussi si tu prévois de mettre à jour ou supprimer :
-  updateOrder(order: OrderDto): Observable<OrderDto> {
-    return this.http.put<OrderDto>(`${this.apiUrl}/${order.id}`, order);
-  }
+  const dtoToSend: OrderDto = {
+    ...order,
+    paymentDate: order.paymentDate
+      ? new Date(order.paymentDate).toISOString().slice(0, 10)
+      : null
+  };
+
+  return this.http.post<OrderDto>(this.apiUrl, dtoToSend);
+}
+
+  updateOrder(order: OrderDto) {
+
+  const dtoToSend: OrderDto = {
+    ...order,
+    paymentDate: order.paymentDate
+      ? new Date(order.paymentDate).toISOString().slice(0, 10)
+      : null
+  };
+
+  return this.http.put<OrderDto>(`${this.apiUrl}/${order.id}`, dtoToSend);
+}
+
+
+
 
   deleteOrder(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
@@ -36,4 +53,5 @@ getOrders(): Observable<OrderDto[]> {
   getDashboardStats() {
   return this.http.get<any>(this.apiUrl + '/dashboard');
 }
+
 }

@@ -40,6 +40,7 @@
         <th>Revenu (€)</th>
         <th>Stock</th>
         <th>Status</th>
+    
         <th>Actions</th>
       </tr>
     </thead>
@@ -49,22 +50,18 @@
        [class.table-active]="selectedProduct === product"
        (click)="selectProduct(product)">
         <td>
-          <div class="d-flex align-items-center">
-            <div
-              class="profile-pic rounded-circle me-2 d-flex align-items-center justify-content-center"
-              style="width:40px; height:40px; background:#e0e0e0;"
-            >
-              <i class="fas fa-box text-muted"></i>
-            </div>
-            <div>{{ product.name }}</div>
-          </div>
+         <div class="d-flex align-items-center">
+ 
+  <div>{{ product.name }}</div>
+</div>
+
         </td>
 
         <td>{{ product.price | currency:'EUR' }}</td>
         <td>{{ product.sales }} pcs</td>
         <td>{{ product.revenue | currency:'EUR' }}</td>
         <td>{{ product.stockQuantity }}</td>
-
+        
         <td>
           <span
             class="status-dot me-1"
@@ -76,6 +73,7 @@
           ></span>
           {{ product.status }}
         </td>
+       
 
      <td class="text-center actions-cell">
         <div class="actions-container" (click)="toggleActions($event)">
@@ -109,7 +107,7 @@
 <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content" style="width: 950px; height: 800px;">
+    <div class="modal-content" style="width: 950px; height: 950px;">
       <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
         <!-- Header -->
          <div class="modal-header" style="border-bottom: 1px solid #dee2e6;background-color: #f8f9fa;height: 70px;">
@@ -166,6 +164,88 @@
               </div>
             </div>
           </div>
+   <!-- === Appearance === -->
+<h4 class="mt-4 mb-3" style="font-size: larger; font-weight: 600;">--- Appearance ---</h4>
+<div class="row mb-3">
+
+  <!-- IMAGE À GAUCHE -->
+  <div class="col-md-8 col-sm-6 col-12">
+    <div class="form-group product-image-container">
+
+      <label style="font-size: medium; font-weight: 700; margin-right: 12px;">
+        Product Image
+      </label>
+
+      <div class="upload-box" (click)="triggerFileInput()">
+        <div *ngIf="!imagePreview" class="upload-placeholder">
+          <img src="assets/upload-icon.png" width="45">
+          <p>Drop your image here, or <span class="browse">browse</span></p>
+          <small>Supports: JPG, JPEG2000, PNG</small>
+        </div>
+
+        <img *ngIf="imagePreview" [src]="imagePreview" class="preview-image" />
+
+        <input
+          type="file"
+          #fileInput
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          style="display: none;"
+        />
+      </div>
+
+      <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="progress-container">
+        <div class="progress-bar" [style.width.%]="uploadProgress"></div>
+        <span class="progress-text">{{ uploadProgress }}% uploading…</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- COLOR À DROITE -->
+  <div class="col-md-4 col-sm-6 col-12"style="margin-left: -255px;margin-top:8px">
+    <div class="form-group">
+      <label style="font-size: medium; font-weight: 700; margin-bottom: 6px;">
+        Color
+      </label>
+
+      <div class="dropdown position-relative">
+        <button
+          class="btn btn-light dropdown-toggle text-start d-flex align-items-center justify-content-between w-100"
+          type="button"
+          (click)="toggleDropdown()"
+        >
+          <div class="d-flex align-items-center">
+            <div
+              class="color-box me-2"
+              [style.backgroundColor]="selectedColor?.value || '#fff'"
+            ></div>
+            {{ selectedColor?.name || '-- Select a color --' }}
+          </div>
+        </button>
+
+        <ul
+          class="dropdown-menu w-100"
+          [class.show]="dropdownOpen"
+          style="max-height: 200px; overflow-y: auto;"
+        >
+          <li
+            *ngFor="let color of colorList"
+            (click)="selectColor(color)"
+            class="dropdown-item d-flex align-items-center"
+            style="cursor: pointer;"
+          >
+            <div class="color-box me-2" [style.backgroundColor]="color.value"></div>
+            {{ color.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
 
           <h4 class="mt-4 mb-3" style ="font-size: larger;font-weight: 600;">---Performance---</h4>
           <div class="row">
@@ -186,7 +266,7 @@
         </div>
      
         <!-- Footer -->
-        <div class="modal-footer" style="border-bottom: 1px solid #dee2e6;background-color: #f8f9fa;">
+        <div class="modal-footer" style="border-bottom: 1px solid #dee2e6;background-color: #f8f9fa;margin-top:140px">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="font-weight: 600;font-size: x-large;width: 170px;margin-right: 16px;"> {{ isViewMode ? 'Close' : 'Cancel' }}</button>
           <button type="submit" class="btn btn-primary" style="font-weight: 600;font-size: x-large;width: 170px;" [disabled]="isSaving" *ngIf ="!isViewMode"> {{ isSaving? 'Saving…' : 'Save' }}</button>
 
