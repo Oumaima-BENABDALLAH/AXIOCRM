@@ -1,0 +1,252 @@
+/* ============================================================
+   GLOBAL LAYOUT
+=============================================================== */
+.header-top {
+  height: 97px;
+  margin-top: 6px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  padding: 15px;
+  margin-left: 10px;
+}
+.invoice-layout {
+  padding: 15px;
+}
+
+.invoice-container {
+  display: flex;
+  gap: 30px;
+}
+
+.left-section,
+.right-section {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  width: 50%;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .invoice-container {
+    flex-direction: column;
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%;
+  }
+}
+
+/* ============================================================
+   TITLES
+=============================================================== */
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+/* ============================================================
+   FIELDS (Infos Client / Invoice)
+=============================================================== */
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #666;
+}
+
+.field .value {
+  background: #f3f4f6;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 6px;
+  color: #333;
+}
+
+/* ============================================================
+   PRODUCT LIST
+=============================================================== */
+
+.product-list {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+.product-row {
+  display: grid;
+  grid-template-columns: 1fr 80px 100px 100px;
+  padding: 12px 15px;
+  border-bottom: 1px solid #f2f2f2;
+  align-items: center;
+}
+
+.product-row:last-child {
+  border-bottom: none;
+}
+
+.prod-name {
+  font-weight: 500;
+  color: #222;
+}
+
+.prod-qty,
+.prod-price,
+.prod-total {
+  text-align: right;
+  color: #555;
+  font-size: 14px;
+}
+
+/* ============================================================
+   RIGHT SIDE — PRINT VIEW / INVOICE PREVIEW
+=============================================================== */
+
+.invoice-card {
+  padding: 25px;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.invoice-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #222;
+}
+
+/* ============================================================
+   INFO BLOCKS
+=============================================================== */
+
+.info-block {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.info-block strong {
+  font-size: 14px;
+  color: #222;
+}
+
+.info-block p {
+  font-size: 13px;
+  color: #555;
+  line-height: 18px;
+}
+
+/* ============================================================
+   ITEMS TABLE (Preview)
+=============================================================== */
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.invoice-table thead {
+  background: #f9fafb;
+}
+
+.invoice-table th {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 12px 8px;
+  color: #444;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.invoice-table td {
+  padding: 10px 8px;
+  font-size: 14px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+/* ============================================================
+   TOTALS SECTION
+=============================================================== */
+
+.totals {
+  margin-top: 20px;
+}
+
+.tline {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 15px;
+}
+
+.tline strong {
+  font-weight: 600;
+}
+
+.tline.grand strong {
+  font-size: 18px;
+  font-weight: 700;
+}
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.btn-download {
+  background: #2c7be5;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn-download i {
+  margin-right: 6px;
+}
+
+.btn-download:hover {
+  background: #1a68d4;
+}
+.btn-print {
+  background: #2c7be5;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn-print i {
+  margin-right: 6px;
+}
+
+.btn-print:hover {
+  background: #1a68d4;
+}
+/* ============================================================
+   FOOTER NOTE
+=============================================================== */
+
+.footer-note {
+  margin-top: 25px;
+  font-size: 13px;
+  color: #777;
+  text-align: center;
+}
+

@@ -1,0 +1,72 @@
+<!-- HEADER -->
+<div class="dialog-header">
+  <span class="dialog-title"> </span>
+  <button mat-icon-button (click)="cancel()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<!-- BODY -->
+<div class="dialog-body">
+
+  <div class="row">
+    <label>Title</label>
+    <mat-form-field appearance="outline">
+      <input matInput [(ngModel)]="event.title">
+    </mat-form-field>
+  </div>
+
+<div class="row date-row">
+
+  <!-- START -->
+  <div class="date-field">
+    <label>Start</label>
+    <input
+      type="datetime-local"
+      [(ngModel)]="event.start"
+      class="datetime-input">
+  </div>
+
+  <!-- END -->
+  <div class="date-field">
+    <label>End</label>
+    <input
+      type="datetime-local"
+      [(ngModel)]="event.end"
+      class="datetime-input">
+  </div>
+
+</div>
+
+
+
+  <div class="row">
+    <label>Description</label>
+    <mat-form-field appearance="outline">
+      <textarea matInput rows="2" [(ngModel)]="event.description"></textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <label>Color</label>
+    <input type="color" [(ngModel)]="event.color" class="color-picker">
+  </div>
+  
+  <div class="row">
+  <label>Commercial</label>
+  <mat-form-field appearance="outline">
+    <mat-select [(ngModel)]="event.resourceId">
+      <mat-option *ngFor="let r of resources" [value]="r.id">
+        {{ r.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="dialog-footer">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="save()">Save</button>
+</div>

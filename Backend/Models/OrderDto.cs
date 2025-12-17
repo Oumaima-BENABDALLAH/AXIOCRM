@@ -1,4 +1,5 @@
-﻿using ProductManager.API.Models.Invoice;
+﻿using ProductManager.API.Models.dto;
+using ProductManager.API.Models.Invoice;
 
 namespace ProductManager.API.Models
 {
@@ -24,7 +25,8 @@ namespace ProductManager.API.Models
         public decimal? TotalAmount { get; set; }
 
         public ClientDto? Client { get; set; }
-
+        public int? InvoiceId { get; set; }
+        public ProductManager.API.Models.Invoice.Invoice? Invoice { get; set; }
         public List<OrderProductDto> OrderProducts { get; set; } = new();
     }
 }

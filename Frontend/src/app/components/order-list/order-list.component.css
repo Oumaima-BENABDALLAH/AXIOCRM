@@ -736,6 +736,12 @@ input[type="radio"] {
   pointer-events: none;
   opacity: 0.6;
 }
+.selected-row {
+  background-color: #e8f0fe !important;
+}
+tr:hover {
+  cursor: pointer;
+}
 @media (max-width: 768px) {
   .client-grid {
     grid-template-columns: 1fr;

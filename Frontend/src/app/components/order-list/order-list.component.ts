@@ -19,10 +19,13 @@ export class OrderListComponent implements OnInit, OnDestroy {
   private ordersSubject = new BehaviorSubject<OrderDto[]>([]);
   orders$ = this.ordersSubject.asObservable();
   orderForm!: FormGroup;
-  selectedOrder: any;
+
   clients: Client[] = [];
   products: ProductDto[] = [];
   showProductSelector = false;
+  selectedOrders: number[] = [];
+  selectAll: boolean = false;  
+  selectedOrder: any = null;  
   filteredOrders$!: Observable<OrderDto[]>;
   showClientDetails = false;
   isSaving = false;
@@ -117,7 +120,49 @@ export class OrderListComponent implements OnInit, OnDestroy {
     });
 
   }
+toggleRowSelection(order: OrderDto, event: any) {
+  const checked = event.target.checked;
 
+  if (checked) {
+    // Ajouter dans la liste
+    if (!this.selectedOrders.includes(order.id)) {
+      this.selectedOrders.push(order.id);
+    }
+  } else {
+    // Retirer de la liste
+    this.selectedOrders = this.selectedOrders.filter(id => id !== order.id);
+  }
+
+  // Mettre à jour selectAll automatiquement
+  this.selectAll = this.selectedOrders.length === this.ordersSubject.value.length;
+
+  // Fix: selectedOrder = first selected only
+  this.selectedOrder =
+    this.selectedOrders.length > 0
+      ? this.ordersSubject.value.find(o => o.id === this.selectedOrders[0])
+      : null;
+}
+
+toggleSelectAll(event: any) {
+  this.selectAll = event.target.checked;
+
+  if (this.selectAll) {
+    // sélectionner tous
+    this.selectedOrders = this.ordersSubject.value.map(o => o.id);
+    this.selectedOrder = this.ordersSubject.value[0]; // première ligne
+  } else {
+    // vider
+    this.selectedOrders = [];
+    this.selectedOrder = null;
+  }
+}
+
+// Si on clique sur une ligne directement (ex: pour actions)
+selectOrder(order: OrderDto) {
+  this.selectedOrders = [order.id];
+  this.selectAll = false;
+  this.selectedOrder = order;
+}
 onPaymentMethodChange(method: string) {
   const cardFields = ['cardNumber', 'cardHolder', 'expiryDate', 'cvv', 'cardType'];
   const cashFields = ['cashAmount', 'paymentDate'];
@@ -224,7 +269,7 @@ onPaymentMethodChange(method: string) {
 
 onAdd() {
   this.showClientDetails = false;
-  this.selectedOrder = null;
+
   this.isViewMode = false;
     
   this.orderForm.reset({
@@ -595,4 +640,47 @@ onSave() {
 
     return colorMap[color.toLowerCase()] ?? color;
   }
+  onAddInvoice(order: OrderDto) {
+  if (!order || !order.id) {
+    this.showToast("Please select an order first!", "error");
+    return;
+  }
+
+  this.orderService.generateInvoice(order.id).subscribe({
+    next: () => {
+      this.showToast("Invoice generated successfully!", "success");
+      this.loadOrders(); // 🔄 Recharge la liste
+    },
+    error: (err) => {
+      console.error("Invoice generation error", err);
+      this.showToast("Failed to generate invoice!", "error");
+    }
+  });
+}
+showToast(message: string, type: "success" | "error") {
+  const bg = type === "success" ? "green" : "red";
+
+  const toast = document.createElement("div");
+  toast.innerText = message;
+  toast.style.position = "fixed";
+  toast.style.bottom = "20px";
+  toast.style.right = "20px";
+  toast.style.padding = "12px 20px";
+  toast.style.color = "white";
+  toast.style.borderRadius = "6px";
+  toast.style.backgroundColor = bg;
+  toast.style.zIndex = "9999";
+  toast.style.boxShadow = "0 4px 10px rgba(0,0,0,0.3)";
+  toast.style.opacity = "0";
+  toast.style.transition = "opacity .3s";
+
+  document.body.appendChild(toast);
+
+  setTimeout(() => toast.style.opacity = "1", 10);
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => toast.remove(), 300);
+  }, 2500);
+}
+
 }

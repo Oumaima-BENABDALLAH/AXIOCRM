@@ -17,7 +17,11 @@
         [formControl]="filter"
       />
     </div>
-
+  <button class="btn btn-primary me-2"
+        (click)="onAddInvoice(selectedOrder)"
+        [disabled]="!selectedOrder">
+  <i class="fas fa-file-invoice-dollar"></i> Generate Invoice
+</button>
     <button class="btn btn-primary me-2" (click)="onAdd()">
       <i class="fas fa-shopping-cart"></i> Pass an order
     </button>
@@ -29,6 +33,9 @@
   <table class="table client-table payment-table">
     <thead>
       <tr>
+         <th style="width: 40px;">
+          <input type="checkbox" (change)="toggleSelectAll($event)">
+        </th>
         <th>Date</th>
         <th>Client</th>
         <th>Payment Method</th>
@@ -39,7 +46,14 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let order of filteredOrders$ | async">
+      <tr *ngFor="let order of filteredOrders$ | async"
+       (click)="selectOrder(order)"
+       [ngClass]="{ 'selected-row': selectedOrder?.id === order.id }">
+        <td>
+          <input type="checkbox"
+             [checked]="selectedOrder?.id === order.id"
+             (change)="toggleRowSelection(order, $event)">
+        </td>  
         <td>{{ order.orderDate | date: 'dd/MM/yyyy' }}</td>
        <td>{{ order.client?.name + ' ' + order.client?.lastName }}</td>
         <td>{{ order.paymentMethod }}</td>
