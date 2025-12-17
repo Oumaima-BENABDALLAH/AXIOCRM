@@ -21,6 +21,13 @@ export interface ClientDto{
   phone:string;
   address:string
 }
+export interface InvoiceDto {
+  id: number;
+  orderId: number;
+  invoiceDate: string;
+  totalAmount: number;
+}
+
 export interface OrderDto {
    id: number;
    client?: ClientDto; 
@@ -37,5 +44,5 @@ export interface OrderDto {
   deliveryMethodId?: number;             // 🔹 identifiant du mode de livraison
   deliveryMethod?: DeliveryMethodDto;
   orderProducts: OrderProductDto[];
-
+  invoice?: InvoiceDto;
 }

@@ -71,12 +71,12 @@ namespace ProductManager.API.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]!));
             var claims = new List<Claim>
                   {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim("fullName", user.FullName ?? ""),
-            new Claim("profilePictureUrl", user.ProfilePictureUrl ?? "")
-    };
+                 new Claim(ClaimTypes.NameIdentifier, user.Id),
+                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                 new Claim(JwtRegisteredClaimNames.Email, user.Email!),
+                 new Claim("fullName", user.FullName ?? ""),
+                 new Claim("profilePictureUrl", user.ProfilePictureUrl ?? "")
+                };
             var roles = await _userManager.GetRolesAsync(user);
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

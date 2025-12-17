@@ -1,90 +1,89 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule ,APP_INITIALIZER  } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { RouterModule, Routes } from '@angular/router';
-import { StatCardComponent } from './components/stat-card/stat-card.component';
-import { ChartLineComponent } from './components/chart-line/chart-line.component';
-import { ChartRadialComponent } from './components/chart-radial/chart-radial.component';
+import { NgChartsModule } from 'ng2-charts';
+import { FullCalendarModule } from '@fullcalendar/angular';
+
+import { AppRoutingModule } from './app-routing.module';
+import { JwtInterceptor } from './AuthJwt/jwt.interceptor';
+import { KeycloakService } from 'keycloak-angular';
+
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ClientListComponent } from './components/client-list/client-list.component';
 import { OrderListComponent } from './components/order-list/order-list.component';
+import { InvoiceComponent } from './components/invoice/invoice.component';
 import { ClientProductListComponent } from './components/client-product-list/client-product-list.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { DOCUMENT } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChartLineComponent } from './components/chart-line/chart-line.component';
+import { ChartRadialComponent } from './components/chart-radial/chart-radial.component';
 import { DashboardMetricCardComponent } from './components/dashboard-metric-card/dashboard-metric-card.component';
 import { SparklineCardComponent } from './components/sparkline-card/sparkline-card.component';
-import {AvailableBalanceCardComponent} from './components/available-balance-card/available-balance-card.component'
+import { AvailableBalanceCardComponent } from './components/available-balance-card/available-balance-card.component';
+import { StatCardComponent } from './components/stat-card/stat-card.component';
 import { HighlightCardComponent } from './components/highlight-card/highlight-card.component';
 import { ChartsSectionComponent } from './components/charts-section/charts-section.component';
-import { TotalProjectsCardComponent} from './components/total-projects-card/total-projects-card.component';
-import { NotificationCardComponent} from './components/notification-toast/notification-toast.component';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { JwtInterceptor } from './AuthJwt/jwt.interceptor';
+import { TotalProjectsCardComponent } from './components/total-projects-card/total-projects-card.component';
+import { NotificationCardComponent } from './components/notification-toast/notification-toast.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
-import { ResetPasswordComponent  } from './components/reset-password/reset-password.component';
-import { ForgotPasswordComponent   } from './components/forgot-password/forgot-password.component';
-import { GoogleLoginComponent   } from './components/google-login/google-login.component';
-import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
-import keycloakConfig from './keycloak.config';
-import { KeycloakAngularModule, KeycloakService } from 'keycloak-angular';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { GoogleLoginComponent } from './components/google-login/google-login.component';
+import { SchedulerComponent } from './components/scheduler/scheduler.component';
+import { EventDialogComponent } from './components/event-dialog/event-dialog.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
-
-import { NgChartsModule } from 'ng2-charts';
-export function loadGoogleScript(doc: Document) {
-  return () =>
-    new Promise<void>((resolve) => {
-      const scriptId = 'google-client-script';
-      if (doc.getElementById(scriptId)) {
-        resolve(); // déjà chargé
-        return;
-      }
-      const script = doc.createElement('script');
-      script.id = scriptId;
-      script.src = 'https://accounts.google.com/gsi/client';
-      script.async = true;
-      script.defer = true;
-      script.onload = () => resolve();
-      doc.head.appendChild(script);
-    });
-}
 @NgModule({
   declarations: [
     AppComponent,
     ProductListComponent,
     ClientListComponent,
     OrderListComponent,
+    InvoiceComponent,
     ClientProductListComponent,
     DashboardComponent,
     ChartLineComponent,
     ChartRadialComponent,
     DashboardMetricCardComponent,
     SparklineCardComponent,
-    ChartsSectionComponent,AvailableBalanceCardComponent ,StatCardComponent,NotificationCardComponent,LoginComponent,SignupComponent,ResetPasswordComponent,ForgotPasswordComponent,GoogleLoginComponent  ],
+    AvailableBalanceCardComponent,
+    StatCardComponent,
+    ChartsSectionComponent,
+    NotificationCardComponent,
+    LoginComponent,
+    SignupComponent,
+    ResetPasswordComponent,
+    ForgotPasswordComponent,
+    GoogleLoginComponent,SchedulerComponent, EventDialogComponent  
+  ],
   imports: [
-        HttpClientModule,
-    AppRoutingModule,
     BrowserModule,
-    NgApexchartsModule,
+    AppRoutingModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
     BrowserAnimationsModule,
-    HighlightCardComponent, NgChartsModule,TotalProjectsCardComponent/*, KeycloakAngularModule*/
+    NgApexchartsModule,
+    NgChartsModule,
+    FullCalendarModule,  TotalProjectsCardComponent, HighlightCardComponent,MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatButtonModule,MatIconModule
   ],
-   providers: [
-   /* {
-      provide: APP_INITIALIZER,
-      useFactory: initializeKeycloak,
-      multi: true,
-      deps: [KeycloakService]
-    },*/
+  providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: JwtInterceptor,

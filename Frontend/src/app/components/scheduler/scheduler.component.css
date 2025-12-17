@@ -1,0 +1,36 @@
+:host ::ng-deep .fc-header-toolbar {
+  background: #ffffff !important;
+  padding: 8px 12px !important;
+  border-radius: 8px !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08) !important;
+  margin-bottom: 15px !important;
+}
+
+:host ::ng-deep .fc-toolbar-title {
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: #374151 !important;
+}
+
+:host ::ng-deep .fc .fc-button {
+  background: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  color: #374151 !important;
+  padding: 5px 12px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+}
+
+:host ::ng-deep .fc .fc-button-active {
+  background: #e5e7eb !important;
+}
+
+:host ::ng-deep .fc-prev-button,
+:host ::ng-deep .fc-next-button {
+  padding: 5px 8px !important;
+}
+
+:host ::ng-deep .fc-toolbar > div > .fc-button {
+  margin-right: 6px !important;
+}

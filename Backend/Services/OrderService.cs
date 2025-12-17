@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ProductManager.API.Data;
 using ProductManager.API.Hubs;
 using ProductManager.API.Models;
+using ProductManager.API.Models.dto;
 using ProductManager.API.Services.Interfaces;
 
 namespace ProductManager.API.Services
@@ -204,6 +205,8 @@ namespace ProductManager.API.Services
                 ExpiryDate = o.ExpiryDate,
                 CVV = o.CVV,
                 TotalAmount = o.TotalAmount,
+                InvoiceId = o.Invoice?.Id,
+              
                 Client = o.Client == null ? null : new ClientDto
                 {
                     Id = o.Client.Id,

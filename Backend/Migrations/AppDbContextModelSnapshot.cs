@@ -175,7 +175,6 @@ namespace ProductManager.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -202,11 +201,9 @@ namespace ProductManager.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfilePictureUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SecurityStamp")
@@ -361,6 +358,84 @@ namespace ProductManager.API.Migrations
                     b.ToTable("DeliveryMethods");
                 });
 
+            modelBuilder.Entity("ProductManager.API.Models.Invoice.Invoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("IssueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("SubTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TaxAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("TaxRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("ProductManager.API.Models.Invoice.InvoiceItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.ToTable("InvoiceItems");
+                });
+
             modelBuilder.Entity("ProductManager.API.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -473,6 +548,41 @@ namespace ProductManager.API.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("ProductManager.API.Models.Scheduler.ScheduleEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ResourceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResourceId");
+
+                    b.ToTable("ScheduleEvents");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -524,6 +634,28 @@ namespace ProductManager.API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProductManager.API.Models.Invoice.Invoice", b =>
+                {
+                    b.HasOne("ProductManager.API.Models.Order", "Order")
+                        .WithOne("Invoice")
+                        .HasForeignKey("ProductManager.API.Models.Invoice.Invoice", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ProductManager.API.Models.Invoice.InvoiceItem", b =>
+                {
+                    b.HasOne("ProductManager.API.Models.Invoice.Invoice", "Invoice")
+                        .WithMany("Items")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+                });
+
             modelBuilder.Entity("ProductManager.API.Models.Order", b =>
                 {
                     b.HasOne("ProductManager.API.Models.Client", "Client")
@@ -554,13 +686,29 @@ namespace ProductManager.API.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ProductManager.API.Models.Scheduler.ScheduleEvent", b =>
+                {
+                    b.HasOne("ProductManager.API.Models.AuthentificationJWT.ApplicationUser", "Resource")
+                        .WithMany()
+                        .HasForeignKey("ResourceId");
+
+                    b.Navigation("Resource");
+                });
+
             modelBuilder.Entity("ProductManager.API.Models.Client", b =>
                 {
                     b.Navigation("Orders");
                 });
 
+            modelBuilder.Entity("ProductManager.API.Models.Invoice.Invoice", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("ProductManager.API.Models.Order", b =>
                 {
+                    b.Navigation("Invoice");
+
                     b.Navigation("OrderProducts");
                 });
 

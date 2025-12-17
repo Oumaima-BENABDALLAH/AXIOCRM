@@ -23,8 +23,8 @@ namespace ProductManager.API.Models
         public string? CVV { get; set; }
         public decimal TotalAmount { get; set; }
 
-       
-    
+        public ProductManager.API.Models.Invoice.Invoice? Invoice { get; set; }
+
         public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }
 }

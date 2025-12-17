@@ -3,11 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ClientListComponent } from './components/client-list/client-list.component';
 import { OrderListComponent  } from './components/order-list/order-list.component';
+import { InvoiceComponent } from './components/invoice/invoice.component';
 import { DashboardComponent  } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ResetPasswordComponent  } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent   } from './components/forgot-password/forgot-password.component';
+import {SchedulerComponent} from './components/scheduler/scheduler.component'
 import { AppAuthGuard } from './auth-guard.guard';
 
 const routes: Routes = [
@@ -18,8 +20,9 @@ const routes: Routes = [
   { path: 'product', component: ProductListComponent },
   { path: 'client', component: ClientListComponent },
   { path: 'order', component: OrderListComponent },
-  { path: 'dashboard', component: DashboardComponent },
-
+  { path: 'invoice', component: InvoiceComponent },
+  { path: 'dashboard', component: DashboardComponent }, //
+  { path: 'scheduler', component: SchedulerComponent },
   // ✅ Redirection par défaut vers /login
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 

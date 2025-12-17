@@ -54,4 +54,8 @@ getOrders(): Observable<OrderDto[]> {
   return this.http.get<any>(this.apiUrl + '/dashboard');
 }
 
+
+generateInvoice(orderId: number) {
+  return this.http.post(`https://localhost:7063/api/Invoice/generate/${orderId}`, {});
+}
 }
