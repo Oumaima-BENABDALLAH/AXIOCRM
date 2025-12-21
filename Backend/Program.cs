@@ -1,24 +1,29 @@
-using Microsoft.EntityFrameworkCore;
-using ProductManager.API.Data;
-using ProductManager.API.Middleware;
-using ProductManager.API.Services.Interfaces;
-using ProductManager.API.Services;
-using ProductManager.API.Hubs;
-using ProductManager.API.Models.AuthentificationJWT;
+ï»¿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using ProductManager.API.Models.Invoice;
+using ProductManager.API.Data;
+using ProductManager.API.Hubs;
+using ProductManager.API.Middleware;
+using ProductManager.API.Models.AuthentificationJWT;
+using ProductManager.API.Services;
+using ProductManager.API.Services.Hangfire;
+using ProductManager.API.Services.Interfaces;
+using System.Text;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddDbContext <AppDbContext> (options => {
+#region DbContext
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
+#endregion
 
+#region Services
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
@@ -27,38 +32,21 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDeliveryMethod, DeliveryMethodService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IEventService, EventService>();
-builder.Services.AddSignalR();
-builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowAll",
-            policy =>
-            {
-                policy.WithOrigins("http://localhost:4200", "https://localhost:7063")//("http://localhost:4200", "https://localhost:7063")
-                      .AllowAnyHeader()
-                      .AllowAnyMethod()
-                      .AllowCredentials();
-                     
-            });
-    });
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-    options.JsonSerializerOptions.WriteIndented = true;
- }); 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IEventReminderJob, EventReminderJob>();
 
-// Charger la clé depuis appsettings.json
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+builder.Services.AddScoped<INotificationService, NotificationService>();
+#endregion
 
-// Ajouter Identity si besoin
+#region Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
+#endregion
 
-// Authentification JWT
+#region JWT
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -66,62 +54,141 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.Authority = "http://localhost:8080/realms/MyAppRealm";
-    options.RequireHttpsMetadata = false; // mettre true en prod avec HTTPS
+    options.RequireHttpsMetadata = false;
 
- /*   options.TokenValidationParameters = new TokenValidationParameters
+    options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
-        ValidIssuer = "http://localhost:8080/realms/MyAppRealm",
         ValidateAudience = true,
-        ValidAudience = "APP_ANGULAR", // Client ID
         ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero // pas de délai de grâce
-    };*/
-     options.TokenValidationParameters = new TokenValidationParameters
-     {
-         ValidateIssuer = true,
-         ValidateAudience = true,
-         ValidateLifetime = true,
-         ValidateIssuerSigningKey = true,
-         ValidIssuer = jwtSettings["Issuer"],
-         ValidAudience = jwtSettings["Audience"],
-         IssuerSigningKey = new SymmetricSecurityKey(key),
-         ClockSkew = TimeSpan.Zero // pour que le token expire exactement au bon moment
-     };
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ClockSkew = TimeSpan.Zero
+    };
+
+    // OBLIGATOIRE POUR SIGNALR
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            var accessToken = context.Request.Query["access_token"];
+            var path = context.HttpContext.Request.Path;
+
+            if (!string.IsNullOrEmpty(accessToken) &&
+                path.StartsWithSegments("/notificationHub"))
+            {
+                context.Token = accessToken;
+            }
+
+            return Task.CompletedTask;
+        }
+    };
+});
+#endregion
+
+#region SignalR
+builder.Services.AddSignalR();
+
+// Mapper UserId SignalR = Claim NameIdentifier
+builder.Services.AddSingleton<IUserIdProvider, NameIdentifierUserIdProvider>();
+#endregion
+
+#region CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200", "https://localhost:7063")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+#endregion
+
+#region Controllers / Swagger
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler =
+            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+#endregion
+
+#region Hangfire
+builder.Services.AddHangfire(config =>
+{
+    config.UseSqlServerStorage(
+        builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+//  FORCER DES WORKERS
+builder.Services.AddHangfireServer(options =>
+{
+    options.WorkerCount = 5;
+});
+#endregion
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+#region Middleware pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
 app.UseMiddleware<LoggingMiddleware>();
+
 app.Use(async (context, next) =>
 {
     context.Response.Headers.Remove("Cross-Origin-Opener-Policy");
     context.Response.Headers.Remove("Cross-Origin-Embedder-Policy");
     await next();
 });
-app.UseRouting();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
-app.MapHub<NotificationHub>("/notificationHub");
+
+app.UseRouting();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseHangfireDashboard("/hangfire");
+
+app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllers();
+#endregion
+
+#region Hangfire Jobs
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    RecurringJob.AddOrUpdate<IEventReminderJob>(
+     "event-reminder-job",
+     job => job.CheckTodayEvents(),
+     Cron.Minutely
+ );
+    RecurringJob.AddOrUpdate<ICommercialEmailReminderJob>(
+    "commercial-email-reminder",
+    job => job.SendEmailReminders(),
+    Cron.Daily(7)
+);
+});
+#endregion
+
+#region Roles Seed
 app.Lifetime.ApplicationStarted.Register(async () =>
 {
     using var scope = app.Services.CreateScope();
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    string[] roles = new[] { "Admin","Client", "User", "Manager" };
+    string[] roles = { "Admin", "Client", "User", "Manager", "Commercial" };
 
     foreach (var role in roles)
     {
@@ -131,5 +198,6 @@ app.Lifetime.ApplicationStarted.Register(async () =>
         }
     }
 });
+#endregion
 
 app.Run();

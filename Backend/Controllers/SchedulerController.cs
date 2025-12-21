@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using ProductManager.API.Models.dto;
 using ProductManager.API.Services.Interfaces;
+using Hangfire;
 
 namespace ProductManager.API.Controllers
 {
@@ -30,27 +31,34 @@ namespace ProductManager.API.Controllers
             return Ok(await _service.GetAllAsync(UserId, IsAdmin));
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var ev = await _service.GetByIdAsync(id, UserId, IsAdmin);
-            return ev == null ? NotFound() : Ok(ev);
-        }
-
+        
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateScheduleEventDto dto)
+        public async Task<IActionResult> Create([FromBody] ScheduleEventDto dto)
         {
             var created = await _service.CreateAsync(dto, UserId, IsAdmin);
             return Ok(created);
         }
 
+        
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] CreateScheduleEventDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] ScheduleEventDto dto)
         {
+            Console.WriteLine("====== UPDATE API HIT ======");
+            Console.WriteLine($"URL ID: {id}");
+            Console.WriteLine($"DTO ID: {dto.Id}");
+            Console.WriteLine($"Title: {dto.Title}");
+            Console.WriteLine($"Start: {dto.Start}");
+            Console.WriteLine($"End: {dto.End}");
+            Console.WriteLine($"Color: {dto.Color}");
+            Console.WriteLine($"ResourceId: {dto.ResourceId}");
+            if (id != dto.Id)
+                return BadRequest("ID mismatch");
+
             var ok = await _service.UpdateAsync(id, dto, UserId, IsAdmin);
             return ok ? Ok() : NotFound();
         }
 
+       
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -62,6 +70,15 @@ namespace ProductManager.API.Controllers
         public async Task<IActionResult> GetCommercials()
         {
             return Ok(await _service.GetCommercialsAsync());
+        }
+        [HttpPost("test-email-reminder")]
+        public IActionResult TestEmailReminder()
+        {
+            BackgroundJob.Enqueue<ICommercialEmailReminderJob>(
+                job => job.SendEmailReminders()
+            );
+
+            return Ok("Email reminder job triggered");
         }
     }
 }

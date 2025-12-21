@@ -1,35 +1,98 @@
-.notif-card[_ngcontent-ng-c2212455886] {
-    display: flex;
-    align-items: center;
-    background-color: #ccf;
-    border-left: 5px solid #6a5acd;
-    border-radius: 8px;
-    padding: 12px 16px;
-    box-shadow: 0 2px 6px #0000001a;
-    margin-top: -6px;
-    width: 344px;
-    margin-left: -7px;
-    height: 83px;
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index:  99999;
+   pointer-events: auto;
 }
 
-.icon {
-  font-size: 22px;
-  color: #6a5acd;
-  margin-right: 12px;
+.toast-mac {
+  display: flex;
+  align-items: center;
+  width: 520px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  background: linear-gradient(#f0fff7, #e6fbf1);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  animation: slideIn 0.3s ease;
 }
 
-.content {
+/* animation */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/*.toast-icon {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  background:  #ffffff40;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}*/
+.toast-icon[_ngcontent-ng-c42978700] i[_ngcontent-ng-c42978700] {
+    font-size: 40px;
+    color: #0a7941;
+}
+.toast-icon i {
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.25); 
+}
+.calendar-day {
+    margin-left: -27px;
+    margin-top: 16px;
+    position: absolute;
+    font-size: 18px;
+    font-weight: 700;
+    color: #d1fae5;
+    line-height: 1;
+}
+/* content */
+.toast-body {
+  flex: 1;
+  margin-left: 14px;
+}
+
+.toast-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.toast-message {
+  font-size: 14px;
+  color: #374151;
+  white-space: pre-line; /*  pour les lignes */
+}
+.toast-message b {
+  font-weight: 700;
+  color: #065f46; /* vert foncé */
+}
+
+/* actions */
+.toast-actions {
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
-.title {
-  font-weight: 600;
-  font-size: 16px;
-  color: #333;
+.btn {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
 }
 
-.caption {
-  font-size: 14px;
-  color: #666;
+.btn.snooze {
+  background: #e5e7eb;
+}
+
+.btn.close {
+  background: #3b82f6;
+  color: white;
 }

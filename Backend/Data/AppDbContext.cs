@@ -2,7 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using ProductManager.API.Models;
 using ProductManager.API.Models.AuthentificationJWT;
+using ProductManager.API.Models.Email;
 using ProductManager.API.Models.Invoice;
+using ProductManager.API.Models.Notification;
 using ProductManager.API.Models.Scheduler;
 
 namespace ProductManager.API.Data
@@ -19,6 +21,9 @@ namespace ProductManager.API.Data
         public DbSet<Invoice> Invoices => Set<Invoice>();
         public DbSet<InvoiceItem> InvoiceItems => Set<InvoiceItem>();
         public DbSet<ScheduleEvent> ScheduleEvents => Set<ScheduleEvent>();
+        public DbSet<EmailLog> EmailLogs => Set<EmailLog>();
+        public DbSet<AdminNotification> AdminNotifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

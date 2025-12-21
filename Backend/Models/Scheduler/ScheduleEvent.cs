@@ -18,5 +18,7 @@ namespace ProductManager.API.Models.Scheduler
         public string? ResourceId { get; set; }   // UserId
                                                   //  public Resource? Resource { get; set; }
         public ApplicationUser? Resource { get; set; }
+        public bool AdminNotified { get; set; }      // SignalR
+        public bool EmailSent { get; set; }         // Email commercial
     }
 }

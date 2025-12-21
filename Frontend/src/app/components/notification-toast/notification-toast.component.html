@@ -1,10 +1,31 @@
-<div class="notif-card">
-  <div class="icon">
-    <i class="fa fa-bell"></i>
-  </div>
-  <div class="content">
-    <div class="title">{{ title }}</div>
-    <div class="caption">{{ caption }}</div>
-  </div>
-</div>
+<div class="toast-container">
 
+  <div class="toast-mac" *ngFor="let toast of toasts; let i = index">
+
+    <!-- Icon -->
+    <div class="toast-icon">
+      <i class="fa fa-calendar"></i>
+      <span class="calendar-day">{{ todayDay }}</span>
+    </div>
+
+
+    <!-- Content -->
+    <div class="toast-body">
+      <div class="toast-title">
+        {{ toast.title }}
+      </div>
+
+      <div class="toast-message">
+        {{ toast.message }}
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="toast-actions">
+      <button class="btn snooze" (click)="snooze(toast)">Snooze</button>
+      <button class="btn close" (click)="close(i)">Close</button>
+    </div>
+
+  </div>
+
+</div>

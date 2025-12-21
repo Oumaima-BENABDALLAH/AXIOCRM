@@ -62,10 +62,11 @@ export class DashboardComponent  implements OnInit {
  ngOnInit(): void {
     this.updateTimes();
     setInterval(() => this.updateTimes(), 1000); // mise à jour chaque seconde
-    this.notificationService.notification$.subscribe((message) => {
-      if (message) {
-        this.notifications.push(message);
-      }
+    this.notificationService.notification$
+    .subscribe(n => {
+      if (!n) return;
+
+      console.log('EVENT:', n.title, n.message);
     });
 
     this.profilePictureUrl = this.authService.getProfilePicture();

@@ -13,12 +13,16 @@ namespace ProductManager.API.Services
     {
         private readonly AppDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public EventService(AppDbContext context , UserManager<ApplicationUser> userManager)
+
+        public EventService(
+            AppDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
+  
         public async Task<List<ScheduleEventDto>> GetAllAsync(string userId, bool isAdmin)
         {
             var query = _context.ScheduleEvents.AsQueryable();
@@ -26,30 +30,18 @@ namespace ProductManager.API.Services
             if (!isAdmin)
                 query = query.Where(e => e.ResourceId == userId);
 
-            return await query.Select(e => e.ToDto()).ToListAsync();
-        }
-        public async Task<ScheduleEventDto?> GetByIdAsync(int id, string userId, bool isAdmin)
-        {
-            var ev = await _context.ScheduleEvents.FindAsync(id);
-            if (ev == null) return null;
-
-            if (!isAdmin && ev.ResourceId != userId)
-                return null;
-
-            return ev.ToDto();
+            return await query
+                .Select(e => e.ToDto())
+                .ToListAsync();
         }
 
         public async Task<ScheduleEventDto> CreateAsync(
-    CreateScheduleEventDto dto,
-    string currentUserId,
-    bool isAdmin)
+            ScheduleEventDto dto,
+            string userId,
+            bool isAdmin)
         {
-            if (!isAdmin && dto.ResourceId != currentUserId)
+            if (!isAdmin && dto.ResourceId != userId)
                 throw new UnauthorizedAccessException();
-
-            var user = await _userManager.FindByIdAsync(dto.ResourceId);
-            if (user == null || !await _userManager.IsInRoleAsync(user, "Commercial"))
-                throw new Exception("Commercial invalide");
 
             var entity = new ScheduleEvent
             {
@@ -67,8 +59,12 @@ namespace ProductManager.API.Services
             return entity.ToDto();
         }
 
-        public async Task<bool> UpdateAsync( int id,CreateScheduleEventDto dto,string userId,bool isAdmin)
-        {
+        public async Task<bool> UpdateAsync(
+          int id,
+          ScheduleEventDto dto,
+          string userId,
+          bool isAdmin)
+           {
             var ev = await _context.ScheduleEvents.FindAsync(id);
             if (ev == null) return false;
 
@@ -80,11 +76,18 @@ namespace ProductManager.API.Services
             ev.End = dto.End;
             ev.Description = dto.Description;
             ev.Color = dto.Color ?? ev.Color;
-            ev.ResourceId = dto.ResourceId;
+
+            
+            if (!string.IsNullOrWhiteSpace(dto.ResourceId))
+            {
+                ev.ResourceId = dto.ResourceId;
+            }
 
             await _context.SaveChangesAsync();
             return true;
         }
+
+
 
         public async Task<bool> DeleteAsync(int id, string userId, bool isAdmin)
         {
@@ -98,6 +101,7 @@ namespace ProductManager.API.Services
             await _context.SaveChangesAsync();
             return true;
         }
+
         public async Task<List<SchedulerResourceDto>> GetCommercialsAsync()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -117,6 +121,24 @@ namespace ProductManager.API.Services
 
             return result;
         }
-    }
 
+        public async Task<ScheduleEventDto?> GetByIdAsync(
+      int id,
+      string currentUserId,
+      bool isAdmin)
+        {
+            var ev = await _context.ScheduleEvents
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.Id == id);
+
+            if (ev == null)
+                return null;
+
+            // un commercial ne peut voir que ses events
+            if (!isAdmin && ev.ResourceId != currentUserId)
+                return null;
+
+            return ev.ToDto();
+        }
+    }
 }

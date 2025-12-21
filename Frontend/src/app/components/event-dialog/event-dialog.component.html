@@ -1,7 +1,13 @@
 <!-- HEADER -->
 <div class="dialog-header">
-  <span class="dialog-title"> </span>
-  <button mat-icon-button (click)="cancel()">
+  <div class="dialog-title-container">
+    <mat-icon class="dialog-icon">
+       {{ event.id ? 'edit_calendar' : 'add_circle' }}
+    </mat-icon>
+    <span class="dialog-title">{{ dialogTitle }}</span>
+  </div>
+
+  <button mat-icon-button (click)="cancel()" class="close-btn">
     <mat-icon>close</mat-icon>
   </button>
 </div>
@@ -62,7 +68,11 @@
     </mat-select>
   </mat-form-field>
 </div>
-
+ <div class="row checkbox-row">
+  <mat-checkbox [(ngModel)]="event.reminderSent">
+    Reminder sent
+  </mat-checkbox>
+</div>
 </div>
 
 <!-- FOOTER -->
