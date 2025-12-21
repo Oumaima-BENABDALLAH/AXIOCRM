@@ -7,6 +7,7 @@ export interface ScheduleEvent {
   description?: string;
   resourceId?: string;
   resource?: Resource;
+  reminderSent: boolean;
 }
 
 export interface ScheduleEventDto {
@@ -17,6 +18,7 @@ export interface ScheduleEventDto {
   color: string;
   description?: string;
   resourceId?: string;
+  reminderSent: boolean;
 }
 
 export interface Resource {

@@ -6,20 +6,8 @@
   overflow: hidden;
 }
 
-/* HEADER */
-.dialog-header {
-  background: #1976d2;
-  color: white;
-  padding: 12px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-.dialog-title {
-  font-size: 16px;
-  font-weight: 600;
-}
+
 
 /* BODY */
 .dialog-body {
@@ -97,4 +85,36 @@ mat-form-field {
 .datetime-input:focus {
   border-color: #1976d2;
   outline: none;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: #1976d2; /* bleu Material */
+  color: white;
+
+  padding: 14px 16px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+.dialog-title-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dialog-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.dialog-icon {
+  font-size: 22px;
+}
+
+.close-btn mat-icon {
+  color: white;
 }

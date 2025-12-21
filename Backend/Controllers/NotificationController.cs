@@ -1,35 +1,52 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using ProductManager.API.Data;
 using ProductManager.API.Hubs;
-using ProductManager.API.Models;
+using System.Security.Claims;
 
-namespace ProductManager.API.Controllers
+[ApiController]
+[Route("api/notification")]
+[Authorize(Roles = "Admin")]
+public class NotificationController : ControllerBase
 {
+    private readonly AppDbContext _context;
+    private readonly IHubContext<NotificationHub> _hub;
 
-    [ApiController]
-    [Route("api/[controller]")]
-    public class NotificationController : ControllerBase
+    public NotificationController(
+        AppDbContext context,
+        IHubContext<NotificationHub> hub)
     {
-        private readonly IHubContext<NotificationHub> _hubContext;
-        public NotificationController(IHubContext<NotificationHub> hubContext)
-        {
-            _hubContext = hubContext;
-        }
-        [HttpGet("test")]
-        public async Task<IActionResult> SendTestNotification()
-        {
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", "✅ Notification test depuis le backend !");
-            return Ok();
-        }
-        [HttpPost("send")]
-        public async Task<IActionResult> SendNotification([FromBody] NotificationDto dto)
-        {
-            if (string.IsNullOrWhiteSpace(dto.Message))
-                return BadRequest("Message is required.");
-
-            await _hubContext.Clients.All.SendAsync("ReceiveNotification", dto.Message);
-            return Ok();
-        }
+        _context = context;
+        _hub = hub;
     }
-    
+
+    [HttpGet("admin/push")]
+    public async Task<IActionResult> PushAdminNotifications()
+    {
+        var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var notifications = await _context.AdminNotifications
+            .Where(n => !n.IsSentToAdmin)
+            .OrderBy(n => n.CreatedAt)
+            .ToListAsync();
+
+        foreach (var n in notifications)
+        {
+            await _hub.Clients
+                .Group(adminId!)
+                .SendAsync("ReceiveNotification", new
+                {
+                    title = n.Title,
+                    message = n.Message
+                });
+
+            n.IsSentToAdmin = true;
+        }
+
+        await _context.SaveChangesAsync();
+
+        return Ok();
+    }
 }

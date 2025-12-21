@@ -4,6 +4,7 @@ import { filter } from 'rxjs/operators';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core'; // useful for typechecking
 import dayGridPlugin from '@fullcalendar/daygrid';
+import { NotificationService } from './services/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 export class AppComponent {
   title = 'ProductApp';
   showSidebar = true;
-  constructor(private router: Router) {
+  constructor(private router: Router ,  private notificationService: NotificationService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {

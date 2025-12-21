@@ -12,5 +12,6 @@
         public string? Description { get; set; }
 
         public string? ResourceId { get; set; } // UserId
+        public bool ReminderSent { get; set; }
     }
 }

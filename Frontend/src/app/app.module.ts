@@ -29,7 +29,7 @@ import { StatCardComponent } from './components/stat-card/stat-card.component';
 import { HighlightCardComponent } from './components/highlight-card/highlight-card.component';
 import { ChartsSectionComponent } from './components/charts-section/charts-section.component';
 import { TotalProjectsCardComponent } from './components/total-projects-card/total-projects-card.component';
-import { NotificationCardComponent } from './components/notification-toast/notification-toast.component';
+import { NotificationToastComponent } from './components/notification-toast/notification-toast.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
@@ -43,7 +43,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,7 +60,7 @@ import { MatIconModule } from '@angular/material/icon';
     AvailableBalanceCardComponent,
     StatCardComponent,
     ChartsSectionComponent,
-    NotificationCardComponent,
+    NotificationToastComponent,
     LoginComponent,
     SignupComponent,
     ResetPasswordComponent,
@@ -81,7 +81,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    MatButtonModule,MatIconModule
+    MatButtonModule,MatIconModule,MatCheckboxModule
   ],
   providers: [
     {

@@ -20,16 +20,16 @@ export class EventService {
   return this.http.post<ScheduleEventDto>(this.apiUrl, event);
 }
 
- update(event: ScheduleEventDto): Observable<ScheduleEventDto> {
-  return this.http.put<ScheduleEventDto>(
+
+update(event: ScheduleEventDto) {
+  return this.http.put(
     `${this.apiUrl}/${event.id}`,
     event
   );
 }
-
-  delete(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
-  }
+delete(id: number) {
+  return this.http.delete(`${this.apiUrl}/${id}`);
+}
   getCommercials(): Observable<Resource[]> {
   return this.http.get<Resource[]>(
     `${this.apiUrl}/resources/commercials`

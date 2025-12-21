@@ -18,24 +18,16 @@ export class EventDialogComponent {
     public dialogRef: MatDialogRef<EventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ScheduleEventDto
   ) {
-    // copie de l'objet pour éviter de modifier directement les données d'origine
+  
     this.event = { ...data };
     this.eventService.getCommercials().subscribe(res => {
       this.resources = res;
     });
-    this.dialogRef.updateSize('600px', 'auto');
+    this.dialogRef.updateSize('650px', 'auto');
   }
 
 save() {
-  this.dialogRef.close({
-    id: this.event.id,               // ✅ OBJET MODIFIÉ
-    title: this.event.title,
-    start: this.event.start,
-    end: this.event.end,
-    color: this.event.color,
-    description: this.event.description,
-    resourceId: this.event.resourceId
-  });
+  this.dialogRef.close(this.event);
 }
 
   cancel() {
@@ -43,5 +35,8 @@ save() {
   }
   close() {
   this.dialogRef.close(null);
+}
+get dialogTitle(): string {
+  return this.event.id ? 'Edit Event' : 'Create Event';
 }
 }
