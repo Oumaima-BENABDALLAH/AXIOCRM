@@ -14,11 +14,12 @@ namespace ProductManager.API.Models.Scheduler
         public string Color { get; set; } = "#3788d8";   // FullCalendar-ready
         public string? Description { get; set; }
 
-        // Relation avec une ressource (employé, machine, intervenant...) 
+   
         public string? ResourceId { get; set; }   // UserId
                                                   //  public Resource? Resource { get; set; }
         public ApplicationUser? Resource { get; set; }
         public bool AdminNotified { get; set; }      // SignalR
+        public DateTime? LastAdminNotifiedAt { get; set; }
         public bool EmailSent { get; set; }         // Email commercial
     }
 }

@@ -6,5 +6,6 @@ namespace ProductManager.API.Services.Interfaces
     public interface INotificationService
     {
         Task NotifyUser(string userId, NotificationDto notification);
+
     }
 }

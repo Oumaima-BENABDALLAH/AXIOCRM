@@ -43,7 +43,7 @@ namespace ProductManager.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] ScheduleEventDto dto)
         {
-            Console.WriteLine("====== UPDATE API HIT ======");
+            Console.WriteLine(" UPDATE API HIT ");
             Console.WriteLine($"URL ID: {id}");
             Console.WriteLine($"DTO ID: {dto.Id}");
             Console.WriteLine($"Title: {dto.Title}");
@@ -71,14 +71,6 @@ namespace ProductManager.API.Controllers
         {
             return Ok(await _service.GetCommercialsAsync());
         }
-        [HttpPost("test-email-reminder")]
-        public IActionResult TestEmailReminder()
-        {
-            BackgroundJob.Enqueue<ICommercialEmailReminderJob>(
-                job => job.SendEmailReminders()
-            );
-
-            return Ok("Email reminder job triggered");
-        }
+      
     }
 }

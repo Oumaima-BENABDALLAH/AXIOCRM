@@ -79,7 +79,8 @@ export class SchedulerComponent implements OnInit {
       color: fcEvent.backgroundColor,
       description: fcEvent.extendedProps?.description,
       resourceId: fcEvent.extendedProps?.resourceId,
-      reminderSent: fcEvent.extendedProps?.reminderSent ?? false
+      AdminNotified: fcEvent.extendedProps?.AdminNotified ?? false,
+      lastAdminNotifiedAt: fcEvent.extendedProps?.lastAdminNotifiedAt ?? null
     }
   });
 
@@ -94,8 +95,8 @@ export class SchedulerComponent implements OnInit {
     fcEvent.setProp('borderColor', result.color);
     fcEvent.setExtendedProp('description', result.description);
     fcEvent.setExtendedProp('resourceId', result.resourceId);
-    fcEvent.setExtendedProp('reminderSent', result.reminderSent);
-
+    fcEvent.setExtendedProp('AdminNotified', result.AdminNotified);
+    fcEvent.setExtendedProp('lastAdminNotifiedAt', result.lastAdminNotifiedAt);
     // Backend
     this.eventService.update(result).subscribe();
   });
@@ -125,7 +126,8 @@ confirmDelete(fcEvent: any) {
           extendedProps: {
             description: e.description,
             resourceId: e.resourceId,
-            reminderSent: e.reminderSent
+            AdminNotified: e.AdminNotified,
+            lastAdminNotifiedAt :e.lastAdminNotifiedAt
           }
         });
       });
@@ -145,7 +147,9 @@ confirmDelete(fcEvent: any) {
         color: fcEvent.backgroundColor,
         description: fcEvent.extendedProps?.description,
         resourceId: fcEvent.extendedProps?.resourceId,
-        reminderSent: fcEvent.extendedProps?.reminderSent ?? false
+        AdminNotified: fcEvent.extendedProps?.AdminNotified ?? false,
+        lastAdminNotifiedAt :fcEvent.extendedProps?.lastAdminNotifiedAt ?? null
+
       }
     });
 
@@ -160,7 +164,8 @@ confirmDelete(fcEvent: any) {
       fcEvent.setProp('borderColor', result.color);
       fcEvent.setExtendedProp('description', result.description);
       fcEvent.setExtendedProp('resourceId', result.resourceId);
-      fcEvent.setExtendedProp('reminderSent', result.reminderSent); 
+      fcEvent.setExtendedProp('AdminNotified', result.AdminNotified); 
+      fcEvent.setExtendedProp('lastAdminNotifiedAt', result.lastAdminNotifiedAt); 
       // UPDATE BACKEND
       this.eventService.update(result).subscribe();
     });
@@ -177,7 +182,8 @@ confirmDelete(fcEvent: any) {
         color: '#3788d8',
         description: '',
         resourceId: undefined,
-        reminderSent: false
+        AdminNotified: false,
+       lastAdminNotifiedAt: null,
       }
     });
 

@@ -10,23 +10,22 @@ import { SignupComponent } from './components/signup/signup.component';
 import { ResetPasswordComponent  } from './components/reset-password/reset-password.component';
 import { ForgotPasswordComponent   } from './components/forgot-password/forgot-password.component';
 import {SchedulerComponent} from './components/scheduler/scheduler.component'
+import { EmailHistoryComponent } from './components/email-history/email-history.component';
 import { AppAuthGuard } from './auth-guard.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
    { path: 'signup', component: SignupComponent },
-   { path: 'reset-password', component: ResetPasswordComponent },
-   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'product', component: ProductListComponent },
+   { path: 'reset-password', component: ResetPasswordComponent  },
+   { path: 'forgot-password', component: ForgotPasswordComponent  },
+  { path: 'product', component: ProductListComponent  },
   { path: 'client', component: ClientListComponent },
   { path: 'order', component: OrderListComponent },
   { path: 'invoice', component: InvoiceComponent },
-  { path: 'dashboard', component: DashboardComponent }, //
+  { path: 'dashboard', component: DashboardComponent }, 
   { path: 'scheduler', component: SchedulerComponent },
-  // ✅ Redirection par défaut vers /login
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-
-  // ✅ Pour gérer les chemins inconnus (404)
+  { path: 'email-history', component: EmailHistoryComponent },
   { path: '**', redirectTo: '/login' }
 ];
 

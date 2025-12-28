@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using ProductManager.API.Data;
 using ProductManager.API.Hubs;
 using ProductManager.API.Models;
 using ProductManager.API.Models.AuthentificationJWT;

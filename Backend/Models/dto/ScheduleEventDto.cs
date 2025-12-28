@@ -13,5 +13,6 @@
 
         public string? ResourceId { get; set; } // UserId
         public bool ReminderSent { get; set; }
+        public DateTime? LastAdminNotifiedAt { get; set; }
     }
 }

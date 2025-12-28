@@ -1,17 +1,18 @@
 ﻿ using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.SignalR;
+ using Microsoft.AspNetCore.SignalR;
+using ProductManager.API.Services.Interfaces;
 
-    namespace ProductManager.API.Hubs
+namespace ProductManager.API.Hubs
+{
+   
+    public class NotificationHub : Hub
     {
-        [Authorize]
-        public class NotificationHub : Hub
+        public override Task OnConnectedAsync()
         {
-        public override async Task OnConnectedAsync()
-        {
-            // Rien à faire, SignalR utilise UserId automatiquement
-            await base.OnConnectedAsync();
+            return base.OnConnectedAsync();
         }
     }
 
-    }
+
+}
 

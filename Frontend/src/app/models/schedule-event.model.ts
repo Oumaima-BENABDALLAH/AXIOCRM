@@ -18,7 +18,9 @@ export interface ScheduleEventDto {
   color: string;
   description?: string;
   resourceId?: string;
-  reminderSent: boolean;
+  AdminNotified: boolean;
+  lastAdminNotifiedAt?: string | null;
+
 }
 
 export interface Resource {

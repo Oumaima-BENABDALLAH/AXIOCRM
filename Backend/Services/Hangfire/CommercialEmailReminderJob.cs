@@ -22,29 +22,35 @@ namespace ProductManager.API.Services.Hangfire
         [DisableConcurrentExecution(300)]
         public async Task SendEmailReminders()
         {
-            var today = DateTime.Today;
+            var now = DateTime.Now;
+
+            var windowStart = now.AddMinutes(-1);
+            var windowEnd = now.AddMinutes(1);
 
             var events = await _context.ScheduleEvents
                 .Include(e => e.Resource)
                 .Where(e =>
-                    e.Start.Date == today &&
                     !e.EmailSent &&
                     e.Resource != null &&
-                    e.Resource.Email != null)
+                    e.Resource.Email != null &&
+                    e.Start.AddMinutes(-30) >= windowStart &&
+                    e.Start.AddMinutes(-30) <= windowEnd
+                )
                 .ToListAsync();
 
             foreach (var ev in events)
             {
                 var subject = $"Rappel : {ev.Title}";
                 var body = $@"
-                <p>Bonjour {ev.Resource!.FullName},</p>
-                <p>Vous avez un événement aujourd’hui :</p>
-                <ul>
-                    <li><b>{ev.Title}</b></li>
-                    <li>Début : {ev.Start:HH:mm}</li>
-                    <li>Fin : {ev.End:HH:mm}</li>
-                </ul>
-            ";
+            <p>Bonjour {ev.Resource!.FullName},</p>
+            <p>Votre événement commence dans 30 minutes :</p>
+            <ul>
+                <li><b>{ev.Title}</b></li>
+                <li>{ev.Description}</li>
+                <li>Début : {ev.Start:HH:mm}</li>
+                <li>Fin : {ev.End:HH:mm}</li>
+            </ul>
+        ";
 
                 await _emailService.SendAsync(
                     ev.Resource.Email!,
@@ -66,5 +72,6 @@ namespace ProductManager.API.Services.Hangfire
 
             await _context.SaveChangesAsync();
         }
+
     }
 }
