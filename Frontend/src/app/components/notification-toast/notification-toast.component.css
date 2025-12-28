@@ -34,23 +34,7 @@
   align-items: center;
   justify-content: center;
 }*/
-.toast-icon[_ngcontent-ng-c42978700] i[_ngcontent-ng-c42978700] {
-    font-size: 40px;
-    color: #0a7941;
-}
-.toast-icon i {
-  font-size: 28px;
-  color: rgba(255, 255, 255, 0.25); 
-}
-.calendar-day {
-    margin-left: -27px;
-    margin-top: 16px;
-    position: absolute;
-    font-size: 18px;
-    font-weight: 700;
-    color: #d1fae5;
-    line-height: 1;
-}
+
 /* content */
 .toast-body {
   flex: 1;

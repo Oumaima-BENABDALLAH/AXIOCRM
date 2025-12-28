@@ -19,7 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 #endregion
 
@@ -33,6 +33,7 @@ builder.Services.AddScoped<IDeliveryMethod, DeliveryMethodService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventReminderJob, EventReminderJob>();
+builder.Services.AddScoped <ICommercialEmailReminderJob, CommercialEmailReminderJob>();
 
 builder.Services.AddScoped<INotificationService, NotificationService>();
 #endregion
@@ -124,10 +125,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHangfire(config =>
 {
     config.UseSqlServerStorage(
-        builder.Configuration.GetConnectionString("DefaultConnection"));
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new Hangfire.SqlServer.SqlServerStorageOptions
+        {
+            CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+            SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+            QueuePollInterval = TimeSpan.FromSeconds(15),
+            UseRecommendedIsolationLevel = true,
+            DisableGlobalLocks = true
+        });
 });
 
-//  FORCER DES WORKERS
+
+
 builder.Services.AddHangfireServer(options =>
 {
     options.WorkerCount = 5;
@@ -135,7 +145,23 @@ builder.Services.AddHangfireServer(options =>
 #endregion
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var recurringJobManager = scope.ServiceProvider
+        .GetRequiredService<IRecurringJobManager>();
 
+    recurringJobManager.AddOrUpdate<IEventReminderJob>(
+        "event-reminder-job",
+        job => job.CheckTodayEvents(),
+        Cron.Minutely
+    );
+
+    recurringJobManager.AddOrUpdate<ICommercialEmailReminderJob>(
+        "commercial-email-reminder",
+        job => job.SendEmailReminders(),
+        Cron.Minutely
+    );
+}
 #region Middleware pipeline
 if (app.Environment.IsDevelopment())
 {
@@ -166,21 +192,7 @@ app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllers();
 #endregion
 
-#region Hangfire Jobs
-app.Lifetime.ApplicationStarted.Register(() =>
-{
-    RecurringJob.AddOrUpdate<IEventReminderJob>(
-     "event-reminder-job",
-     job => job.CheckTodayEvents(),
-     Cron.Minutely
- );
-    RecurringJob.AddOrUpdate<ICommercialEmailReminderJob>(
-    "commercial-email-reminder",
-    job => job.SendEmailReminders(),
-    Cron.Daily(7)
-);
-});
-#endregion
+
 
 #region Roles Seed
 app.Lifetime.ApplicationStarted.Register(async () =>

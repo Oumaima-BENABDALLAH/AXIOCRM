@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ScheduleEventDto } from '../models/schedule-event.model';
 import { Resource } from '../models/schedule-event.model';
+import { EmailHistoryGroup } from '../models/email-history.model';
 @Injectable({
   providedIn: 'root'
 })
@@ -35,4 +36,5 @@ delete(id: number) {
     `${this.apiUrl}/resources/commercials`
   );
 }
+
 }

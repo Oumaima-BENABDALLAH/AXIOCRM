@@ -1,0 +1,55 @@
+<div class="email-history">
+
+  <h2 class="title">
+    <i class="fas fa-envelope"></i>
+    Email History
+  </h2>
+
+  <!-- IMPORTANT : tout ce qui utilise group est ici -->
+  <ng-container *ngFor="let group of history">
+
+    <div class="group">
+
+      <!-- GROUP HEADER -->
+      <div class="group-header" (click)="toggleGroup(group)">
+
+        <i
+          class="fas"
+          [ngClass]="group.expanded ? 'fa-chevron-down' : 'fa-chevron-right'"
+        ></i>
+
+        <span class="group-title">
+          Date: {{ group.date | date:'fullDate' }}
+        </span>
+
+        <span class="group-total">
+          Total: {{ group.emails.length }}
+        </span>
+
+      </div>
+
+      <!-- CONTENT (HIDE / SHOW) -->
+      <div [hidden]="!group.expanded">
+
+        <div class="table-header">
+          <span>To</span>
+          <span>Subject</span>
+          <span>Time</span>
+        </div>
+
+        <div
+          class="table-row"
+          *ngFor="let email of group.emails"
+        >
+          <span>{{ email.toEmail }}</span>
+          <span>{{ email.subject }}</span>
+          <span>{{ email.sentAt | date:'HH:mm' }}</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </ng-container>
+
+</div>

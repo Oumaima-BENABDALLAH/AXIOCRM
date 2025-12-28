@@ -19,24 +19,26 @@ export class NotificationToastComponent implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
+ngOnInit(): void {
 
-    this.router.events
-      .pipe(filter(e => e instanceof NavigationEnd))
-      .subscribe((e: any) => {
-        this.currentUrl = e.urlAfterRedirects;
-      });
-
-    this.notificationService.notification$.subscribe(data => {
-      if (!data) return;
-
-      //  afficher uniquement dans scheduler
-      if (!this.currentUrl.includes('/scheduler')) return;
-
-      this.toasts.push(data);
+  // suivre la route
+  this.router.events
+    .pipe(filter(e => e instanceof NavigationEnd))
+    .subscribe((e: any) => {
+      this.currentUrl = e.urlAfterRedirects;
     });
-  }
 
+  // recevoir les notifications
+  this.notificationService.notification$.subscribe(data => {
+    if (!data) return;
+  if (!this.isOnSchedulerPage()) return;
+    //  TOUJOURS stocker
+    this.toasts.push(data);
+  });
+}
+private isOnSchedulerPage(): boolean {
+  return this.currentUrl.startsWith('/scheduler');
+}
   close(index: number) {
     this.toasts.splice(index, 1);
   }

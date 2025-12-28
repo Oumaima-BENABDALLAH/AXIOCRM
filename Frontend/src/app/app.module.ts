@@ -37,6 +37,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { GoogleLoginComponent } from './components/google-login/google-login.component';
 import { SchedulerComponent } from './components/scheduler/scheduler.component';
 import { EventDialogComponent } from './components/event-dialog/event-dialog.component';
+import { EmailHistoryComponent } from './components/email-history/email-history.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -65,7 +66,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     SignupComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,
-    GoogleLoginComponent,SchedulerComponent, EventDialogComponent  
+    GoogleLoginComponent,SchedulerComponent, EventDialogComponent ,EmailHistoryComponent  
   ],
   imports: [
     BrowserModule,

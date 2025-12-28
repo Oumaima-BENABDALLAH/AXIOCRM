@@ -9,16 +9,11 @@ using Hangfire;
 
 namespace ProductManager.API.Services.Hangfire
 {
-
-
     public class EventReminderJob : IEventReminderJob
     {
         private readonly AppDbContext _context;
         private readonly INotificationService _notificationService;
-
-        public EventReminderJob(
-            AppDbContext context,
-            INotificationService notificationService)
+        public EventReminderJob(AppDbContext context, INotificationService notificationService)
         {
             _context = context;
             _notificationService = notificationService;
@@ -26,12 +21,14 @@ namespace ProductManager.API.Services.Hangfire
 
         public async Task CheckTodayEvents()
         {
+            Console.WriteLine("EventReminderJob STARTED");
+
             var today = DateTime.Today;
 
             var events = await _context.ScheduleEvents
                 .Include(e => e.Resource)
-                .Where(e => e.Start.Date == today && !e.AdminNotified)
-                .ToListAsync();
+                  .Where(e => e.Start.Date == today)
+                  .ToListAsync();
 
             if (!events.Any())
                 return;
@@ -46,8 +43,8 @@ namespace ProductManager.API.Services.Hangfire
                 {
                     Title = "Event reminder",
                     Message =
-                             $"The commercial {ev.Resource?.FullName} will have {ev.Title} " +
-                             $"from {ev.Start:HH:mm} to {ev.End:HH:mm}"
+                        $"The commercial {ev.Resource?.FullName} will have " +
+                        $"{ev.Title} from {ev.Start:HH:mm} to {ev.End:HH:mm}"
                 };
 
                 foreach (var admin in admins)
@@ -55,12 +52,10 @@ namespace ProductManager.API.Services.Hangfire
                     await _notificationService.NotifyUser(admin.Id, notification);
                 }
 
-                ev.AdminNotified = true;
+                
             }
 
             await _context.SaveChangesAsync();
         }
-
-
     }
-}
+  }

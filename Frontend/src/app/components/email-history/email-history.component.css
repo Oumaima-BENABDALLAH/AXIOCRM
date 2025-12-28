@@ -1,0 +1,70 @@
+.email-history {
+  padding: 24px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Group */
+.group {
+  border: 1px solid #e5e7eb;
+  margin-bottom: 16px;
+  border-radius: 4px;
+}
+
+/* Header (Category Name...) */
+.group-header {
+  background: #f3f4f6;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+}
+.group-header i {
+  width: 16px;
+}
+
+.group-title {
+  flex: 1;
+}
+
+.group-total {
+  color: #374151;
+}
+
+/* Table header */
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+  background: #fafafa;
+}
+
+/* Rows */
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-row:hover {
+  background: #f9fafb;
+}
