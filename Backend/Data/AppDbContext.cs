@@ -4,6 +4,7 @@ using ProductManager.API.Models;
 using ProductManager.API.Models.AuthentificationJWT;
 using ProductManager.API.Models.Email;
 using ProductManager.API.Models.Invoice;
+using ProductManager.API.Models.Kanban;
 using ProductManager.API.Models.Notification;
 using ProductManager.API.Models.Scheduler;
 
@@ -23,7 +24,7 @@ namespace ProductManager.API.Data
         public DbSet<ScheduleEvent> ScheduleEvents => Set<ScheduleEvent>();
         public DbSet<EmailLog> EmailLogs => Set<EmailLog>();
         public DbSet<AdminNotification> AdminNotifications { get; set; }
-
+        public DbSet<BookingTask> BookingTasks => Set<BookingTask>();
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -1,0 +1,16 @@
+<div class="kanban-card" cdkDrag>
+    <span class="priority"
+       [ngClass]="task.priority">
+      {{ task.priority  }}
+    </span>
+  <div class="card-title">{{ task.title }}</div>
+
+   <!-- USERS -->
+   <div class="avatar"
+         [style.background]="getAvatarColor(task.commercialName)">
+         {{ getInitialsFromName(task.commercialName) }}
+    </div>
+
+  <div class="card-desc">{{ task.description }}</div>
+    
+</div>

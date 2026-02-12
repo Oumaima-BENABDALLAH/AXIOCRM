@@ -178,6 +178,22 @@ namespace ProductManager.API.Controllers
                 return BadRequest(new { message = "Invalid Google token", error = ex.Message });
             }
         }
+
+        [HttpGet("commercials")]
+       // [Authorize(Roles = "Admin,Manager")]
+        public async Task<IActionResult> GetCommercials()
+        {
+            var commercials = await _userManager.GetUsersInRoleAsync("Commercial");
+
+            var result = commercials.Select(u => new
+            {
+                id = u.Id,
+                fullName = u.FullName ?? u.Email
+            });
+
+            return Ok(result);
+        }
+
         [Authorize]
         [HttpGet("me")]
         public async Task<IActionResult> GetCurrentUser()
