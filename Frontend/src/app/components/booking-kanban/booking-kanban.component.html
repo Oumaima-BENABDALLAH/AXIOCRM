@@ -1,0 +1,95 @@
+<!-- HEADER -->
+<div class="kanban-header">
+  <div class="kanban-title">  <img src="assets/news.png" class="title-icon"/> Booking Kanban</div>
+
+  <div class="kanban-avatars">
+    <div
+      class="avatar"
+      *ngFor="let user of headerUsers; let i = index"
+      [ngClass]="getAvatarColor(i)"
+      [style.zIndex]="10 - i">
+      {{ getInitials(user.name) }}
+    </div>
+    <div class="avatar avatar-add" (click)="addUserGlobal()">+</div>
+  </div>
+</div>
+
+<!-- BOARD -->
+<div class="kanban-board">
+
+  <div class="kanban-column" *ngFor="let col of columns">
+
+    <!-- COLUMN HEADER -->
+    <div class="kanban-column-header">
+      <span class="column-title">{{ col.label }}</span>
+    </div>
+
+    <!-- COLUMN CONTENT -->
+    <div
+      class="kanban-column-content"
+      cdkDropList
+      [id]="'list-' + col.status"
+      [cdkDropListData]="tasksByColumn[col.status]"
+      [cdkDropListConnectedTo]="connectedLists"
+      (cdkDropListDropped)="drop($event, col.status)">
+
+      <!-- TASK CARD -->
+      <div
+        class="kanban-card advanced"
+        *ngFor="let task of tasksByColumn[col.status]; trackBy: trackByTaskId"
+        cdkDrag>
+        
+        <!-- PRIORITY -->
+       <div class="priority-badge" [ngClass]="getPriorityClass(task.priority)">
+         {{ getPriorityLabel(task.priority) }}
+       </div>
+
+        <!-- TITLE -->
+        <div class="task-title">
+          {{ task.title }}
+        </div>
+
+        <!-- AVATARS -->
+        <div class="task-avatars">
+          <div class="avatar small">
+            {{ getInitials(task.commercialName || 'NA') }}
+          </div>
+          <div class="avatar small ghost">+</div>
+        </div>
+
+        <!-- SUBTASKS (OPTIONNEL) -->
+        <div class="task-subtasks" *ngIf="task.subTasks?.length">
+          <div class="subtask" *ngFor="let s of task.subTasks">
+            <input type="checkbox" /> {{ s }}
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="task-footer">
+          <span *ngIf="task.dueDate">📅 {{ task.dueDate | date:'dd MMM' }}</span>
+          <span class="task-more">+</span>
+          <div class="card-actions">
+
+      <button class="icon-btn"
+           (click)="openEditTask(task); $event.stopPropagation()">
+                ✏️
+      </button>
+
+      <button class="icon-btn delete"
+          (click)="deleteTask(task); $event.stopPropagation()">
+            🗑️
+       </button>
+
+        </div>
+       </div>
+
+      </div>
+
+      <!-- ADD TASK -->
+      <div class="add-task-inline" (click)="openAddTask(col.status)">
+        + ADD TASK
+      </div>
+
+    </div>
+  </div>
+</div>

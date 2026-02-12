@@ -8,6 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgChartsModule } from 'ng2-charts';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { JwtInterceptor } from './AuthJwt/jwt.interceptor';
@@ -45,6 +46,10 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { BookingKanbanComponent } from './components/booking-kanban/booking-kanban.component';
+import { BookingCardComponent } from './components/booking-card/booking-card.component';
+import { AddTaskDialogComponent } from './components/add-task-dialog/add-task-dialog.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,7 +71,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     SignupComponent,
     ResetPasswordComponent,
     ForgotPasswordComponent,
-    GoogleLoginComponent,SchedulerComponent, EventDialogComponent ,EmailHistoryComponent  
+    GoogleLoginComponent,SchedulerComponent, EventDialogComponent ,EmailHistoryComponent ,BookingKanbanComponent,BookingCardComponent,AddTaskDialogComponent   
   ],
   imports: [
     BrowserModule,
@@ -82,7 +87,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    MatButtonModule,MatIconModule,MatCheckboxModule
+    MatButtonModule,MatIconModule,MatCheckboxModule,DragDropModule,MatDialogModule
   ],
   providers: [
     {

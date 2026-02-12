@@ -14,7 +14,7 @@ export class NotificationService {
   public notification$ = this._notification$.asObservable();
 
   constructor() {
-    console.log('📦 NotificationService constructor');
+    console.log('NotificationService constructor');
     this.startConnection();
   }
 
@@ -29,7 +29,7 @@ export class NotificationService {
 
     this.hubConnection
       .start()
-      .then(() => console.log('✅ SignalR connected'))
+      .then(() => console.log('SignalR connected'))
       .catch(err => console.error('SignalR connection error:', err));
 
     this.hubConnection.on('ReceiveNotification', (data: NotificationDto) => {

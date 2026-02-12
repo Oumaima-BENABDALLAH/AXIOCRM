@@ -73,4 +73,7 @@ export class AuthService {
 getProfilePicture() {
   return localStorage.getItem('profilePictureUrl') || 'assets/default-avatar.png';
 }
+getCommercials() {
+  return this.http.get<any[]>(`${this.apiUrl}/commercials`);
+}
 }

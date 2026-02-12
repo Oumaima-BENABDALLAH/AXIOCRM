@@ -1,0 +1,64 @@
+<h2 mat-dialog-title>Add Task</h2>
+
+<mat-dialog-content >
+
+  <mat-form-field appearance="outline" style ="width: 330px;">
+    <mat-label>Title</mat-label>
+    <input matInput [(ngModel)]="title">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style ="width: 330px;">
+    <mat-label>Description</mat-label>
+    <textarea matInput [(ngModel)]="description"></textarea>
+  </mat-form-field>
+
+ <mat-form-field appearance="outline" style ="width: 330px;">
+  <mat-label>Client</mat-label>
+  <mat-select [(ngModel)]="clientId">
+    <mat-option *ngFor="let c of clients" [value]="c.id">
+      {{ c.fullName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field appearance="outline"style ="width: 330px;">
+  <mat-label>Commercial</mat-label>
+
+  <mat-select [(ngModel)]="commercialId">
+    <mat-option *ngFor="let c of commercials" [value]="c.id">
+      {{ c.fullName }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+  <mat-form-field appearance="outline" style ="width: 330px;">
+    <mat-label>Due date</mat-label>
+    <input matInput type="date" [(ngModel)]="dueDate">
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" style ="width: 330px;">
+    <mat-label>Priority</mat-label>
+    <mat-select [(ngModel)]="priority">
+      <mat-option [value]="Priority.Low">Low</mat-option>
+      <mat-option [value]="Priority.Medium">Medium</mat-option>
+      <mat-option [value]="Priority.High">High</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline" style="width: 330px;">
+  <mat-label>Status</mat-label>
+
+  <mat-select [(ngModel)]="status">
+    <mat-option [value]="TaskStatus.Pending">Pending</mat-option>
+    <mat-option [value]="TaskStatus.Accepted">Accepted</mat-option>
+    <mat-option [value]="TaskStatus.InProgress">In Progress</mat-option>
+    <mat-option [value]="TaskStatus.WaitingClient">Waiting</mat-option>
+    <mat-option [value]="TaskStatus.Done">Done</mat-option>
+    <mat-option [value]="TaskStatus.Cancelled">Cancelled</mat-option>
+  </mat-select>
+</mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+</mat-dialog-actions>

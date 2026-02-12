@@ -12,6 +12,10 @@ using ProductManager.API.Services.Hangfire;
 using ProductManager.API.Services.Interfaces;
 using System.Text;
 using Hangfire;
+using ProductManager.API.Services.Kanban;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Logging;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +40,10 @@ builder.Services.AddScoped<IEventReminderJob, EventReminderJob>();
 builder.Services.AddScoped <ICommercialEmailReminderJob, CommercialEmailReminderJob>();
 
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IBookingTaskService, BookingTaskService>();
+
+
+IdentityModelEventSource.ShowPII = true;
 #endregion
 
 #region Identity
@@ -55,38 +63,53 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false;
-
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
+
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key),
-        ClockSkew = TimeSpan.Zero
+        ClockSkew = TimeSpan.Zero // optionnel, pour réduire délai de tolérance sur expiration
     };
 
-    // OBLIGATOIRE POUR SIGNALR
     options.Events = new JwtBearerEvents
     {
-        OnMessageReceived = context =>
+        OnAuthenticationFailed = context =>
         {
-            var accessToken = context.Request.Query["access_token"];
-            var path = context.HttpContext.Request.Path;
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger("JWT");
 
-            if (!string.IsNullOrEmpty(accessToken) &&
-                path.StartsWithSegments("/notificationHub"))
-            {
-                context.Token = accessToken;
-            }
+            logger.LogError(context.Exception, " JWT FAILED");
+            return Task.CompletedTask;
+        },
+        OnChallenge = context =>
+        {
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger("JWT");
 
+            logger.LogWarning(" JWT CHALLENGE: {Error} - {Description}",
+                context.Error, context.ErrorDescription);
+
+            return Task.CompletedTask;
+        },
+        OnTokenValidated = context =>
+        {
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger("JWT");
+
+            logger.LogInformation(" JWT VALIDATED");
             return Task.CompletedTask;
         }
     };
 });
+
 #endregion
 
 #region SignalR
@@ -118,7 +141,33 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Enter: Bearer {your JWT token}"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 #endregion
 
 #region Hangfire

@@ -11,6 +11,7 @@ import { ResetPasswordComponent  } from './components/reset-password/reset-passw
 import { ForgotPasswordComponent   } from './components/forgot-password/forgot-password.component';
 import {SchedulerComponent} from './components/scheduler/scheduler.component'
 import { EmailHistoryComponent } from './components/email-history/email-history.component';
+import { BookingKanbanComponent } from './components/booking-kanban/booking-kanban.component';
 import { AppAuthGuard } from './auth-guard.guard';
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'scheduler', component: SchedulerComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'email-history', component: EmailHistoryComponent },
+  { path: 'booking-kanban', component: BookingKanbanComponent },
   { path: '**', redirectTo: '/login' }
 ];
 

@@ -1,0 +1,287 @@
+
+.kanban-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  background: #f1f3f8;
+  border-radius: 14px;
+  margin: 16px;
+}
+
+.kanban-title {
+   display: flex;
+   align-items: center;
+   gap: 10px;
+   font-size: 22px;
+   font-weight: 600;
+   color: #111;
+}
+.title-icon {
+  width:25px
+}
+.kanban-avatars {
+  display: flex;
+  align-items: center;
+}
+.avatar.blue {
+  background: #6c7cff;
+}
+
+.avatar.orange {
+  background: #ff9f43;
+}
+
+.avatar.purple {
+  background: #9b59b6;
+}
+
+.avatar.green {
+  background: #2ecc71;
+}
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #6c7cff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -8px;
+  border: 2px solid #fff;
+}
+
+.avatar-add {
+  background: #fff;
+  color: #6c7cff;
+  border: 2px dashed #6c7cff;
+  cursor: pointer;
+}
+ 
+
+.kanban-board {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  height: calc(100vh - 140px);
+  background: #f5f7fb;
+  overflow-x: auto;
+}
+
+
+.kanban-column {
+  min-width: 280px;
+  max-width: 280px;
+  background: #f1f3f8;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.kanban-column-header {
+  padding: 14px 16px;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+
+.kanban-column-content {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.kanban-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+  cursor: grab;
+  position: relative;
+}
+
+.priority-badge {
+  margin-left:-6px;
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 10px;
+  text-transform: uppercase;
+}
+
+.priority-badge.High {
+  background: #ffe5e5;
+  color: #d63031;
+}
+.priority-badge.Medium {
+  background: #fff3cd;
+  color: #f39c12;
+}
+.priority-badge.Low {
+  background: #eafaf1;
+  color: #27ae60;
+}
+
+
+.task-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 10px;
+  padding-right: 50px;
+}
+
+
+.avatar.blue {
+  background: #6c7cff;
+}
+
+.avatar.orange {
+  background: #ff9f43;
+}
+
+.avatar.purple {
+  background: #9b59b6;
+}
+
+.avatar.green {
+  background: #2ecc71;
+}
+.task-avatars {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.avatar.small {
+  width: 26px;
+  height: 26px;
+  font-size: 11px;
+  margin-left: -6px;
+}
+
+.avatar.ghost {
+  background: #f1f3f8;
+  color: #777;
+  border: 1px dashed #ccc;
+}
+
+
+.task-subtasks {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.subtask {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #555;
+}
+
+
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #777;
+}
+
+.task-more {
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+.add-task-inline {
+  margin-top: 8px;
+  padding: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6c7cff;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.add-task-inline:hover {
+  background: rgba(108,124,255,0.08);
+}
+
+.cdk-drag-preview {
+  box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+  border-radius: 14px;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.3;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0,0,0.2,1);
+}
+.priority-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+.priority-badge.High {
+  top: 11px;
+  left: 188px;  
+  background: #ffe5e5;
+  color: #d63031;
+}
+
+.priority-badge.Medium {
+  top: 11px;
+  left: 188px;  
+  background: #fff3cd;
+  color: #f39c12;
+}
+
+.priority-badge.Low {
+  top: 11px;
+  left: 188px;  
+  background: #eafaf1;
+  color: #27ae60;
+}
+.card-actions {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+}
+
+.icon-btn {
+  border: none;
+  background: white;
+  padding: 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.icon-btn:hover {
+    background: white;
+}
+
+.icon-btn.delete:hover {
+  background: #ffe5e5;
+  color: red;
+}
