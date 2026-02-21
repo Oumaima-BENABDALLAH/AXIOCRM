@@ -1,4 +1,3 @@
-/* ===== En-tête (header top) ===== */
 .header-top {
   height: 97px;
   margin-top: 6px;
@@ -21,11 +20,10 @@
   background-color: #f9f9f9;
 }
 
-/* 💡 En-têtes du tableau plus grandes et grises */
 .table.client-table thead th {
   font-size: 16px;
   font-weight: 600;
-  color: #6c757d; /* gris élégant */
+  color: #6c757d; 
   border-bottom: 2px solid #dee2e6;
   text-transform: capitalize;
 }
@@ -45,8 +43,6 @@
   background-color: #745af3;
   border-color: #745af3;
 }
-
-/* ===== Table Commandes ===== */
 .order-table {
   width: 100%;
   border-collapse: collapse;
@@ -55,12 +51,12 @@
 }
 
 .order-table thead {
-  background-color: #f8f9fa; /* gris clair et uniforme */
+  background-color: #f8f9fa; 
   border-bottom: 2px solid #dee2e6;
 }
 
 .order-table th {
-  color: #6c757d; /* gris élégant */
+  color: #6c757d; 
   font-weight: 700;
   text-transform: capitalize;
   font-size: 15px;
@@ -91,7 +87,6 @@
   border-bottom: none;
 }
 
-/* ===== Status commande ===== */
 .status-badge {
   display: inline-block;
   padding: 5px 10px;
@@ -116,7 +111,6 @@
   color: #721c24;
 }
 
-/* ===== Boutons actions (edit/delete/view) ===== */
 .order-table .btn-link {
   color: #6c757d;
   text-decoration: none;
@@ -159,8 +153,6 @@
   align-items: center;
 }
 
-/* ===== Table Responsive ===== */
-/* ===== Table Commandes ===== */
 .order-table {
   width: 100%;
   border-collapse: collapse;
@@ -198,7 +190,6 @@
   vertical-align: middle;
 }
 
-/* Liste des produits dans chaque commande */
 .product-list {
   margin: 0;
   padding: 0;
@@ -211,7 +202,6 @@
   margin-bottom: 3px;
 }
 
-/* ===== Actions ===== */
 .actions-container {
   position: relative;
   display: inline-block;
@@ -267,8 +257,6 @@
   color: #007bff;
 }
 
-/* ===== Table Responsive ===== */
-/* ===== Table Commandes ===== */
 .order-table {
   width: 100%;
   border-collapse: collapse;
@@ -306,7 +294,6 @@
   
 }
 
-/* Liste des produits dans chaque commande */
 .product-list {
   margin: 0;
   padding: 0;
@@ -319,7 +306,6 @@
   margin-bottom: 3px;
 }
 
-/* ===== Actions ===== */
 .actions-container {
   position: relative;
   display: inline-block;
@@ -375,7 +361,6 @@
   color: #007bff;
 }
 
-/* ✅ Même style que le tableau clients */
 .payment-table {
   width: 100%;
   border-collapse: collapse;
@@ -404,8 +389,6 @@
   border-bottom: none;
   background-color: #fff;
 }
-
-/* ✅ Style uniforme pour les actions (icônes alignées comme les clients) */
 .payment-table .actions-container {
   display: flex;
   justify-content: center;
@@ -522,7 +505,7 @@ input[type="radio"] {
 
 .payment-radio input[type="radio"] {
   margin-right: 10px;
-  accent-color: #007bff; /* pour une belle couleur bleue */
+  accent-color: #007bff; 
 }
 
 .payment-label {
@@ -542,13 +525,11 @@ input[type="radio"] {
   width: auto;
 }
 
-/* Effet survol */
 .payment-option:hover {
   border-color: #007bff;
   box-shadow: 0 0 6px rgba(0, 123, 255, 0.2);
 }
 
-/* Quand sélectionné */
 .payment-radio input[type="radio"]:checked + .payment-label .payment-text {
   font-weight: 600;
   color: #007bff;
@@ -561,21 +542,18 @@ input[type="radio"] {
 .payment-radio input[type="radio"]:checked ~ .payment-label {
   border-color: #007bff;
 }
-/* --- CARD --- */
 .card {
   border-radius: 12px;
   background: #fff;
   border: 1px solid #e5e7eb;
 }
 
-/* --- TITLE --- */
 .card h5 {
   font-weight: 600;
   display: flex;
   align-items: center;
 }
 
-/* --- PRODUCT WRAPPER --- */
 .order-product {
   display: flex;
   padding-bottom: 14px;
@@ -583,7 +561,6 @@ input[type="radio"] {
   border-bottom: 1px solid #f0f0f0;
 }
 
-/* --- PRODUCT IMAGE --- */
 .order-product img {
   width: 80px;
   height: 80px;
@@ -593,7 +570,6 @@ input[type="radio"] {
   background: #fafafa;
 }
 
-/* --- PRODUCT TEXT --- */
 .order-product .info {
   flex-grow: 1;
   margin-left: 12px;
@@ -606,16 +582,15 @@ input[type="radio"] {
 
 .order-product .info .color {
   font-size: 13px;
-  color: #6b7280; /* gray-500 */
+  color: #6b7280; 
 }
 
 .order-product .info .price {
   margin-top: 4px;
   font-weight: 600;
-  color: #111827; /* gray-900 */
+  color: #111827; 
 }
 
-/* --- QUANTITY BUTTONS --- */
 .qty-btn {
   border: 1px solid #d1d5db;
   background: #f9fafb;
@@ -633,7 +608,6 @@ input[type="radio"] {
   background: #e5e7eb;
 }
 
-/* --- REMOVE BUTTON --- */
 .remove-btn {
   border: 1px solid #dc2626;
   color: #dc2626;
@@ -648,8 +622,6 @@ input[type="radio"] {
 .remove-btn:hover {
   background: #fee2e2;
 }
-
-/* --- TOTAL --- */
 .total-box {
   display: flex;
   justify-content: space-between;
@@ -659,10 +631,8 @@ input[type="radio"] {
 }
 
 .total-box span:last-child {
-  color: #2563eb; /* Blue-600 */
+  color: #2563eb; 
 }
-
-/* --- SELECT PRODUCT BUTTON --- */
 .select-btn {
   border: 1px solid #3b82f6;
   color: #3b82f6;

@@ -49,9 +49,6 @@ export class ClientService {
 
   constructor(private http: HttpClient) {}
 
-//getAll(): Observable<Client[]> {
-   // return this.http.get<Client[]>(this.apiURL);
-//  }
 getAll(): Observable<Client[]> {
   return this.http.get<ClientApiResponse | Client[]>(this.apiURL).pipe(
     map(response => {
@@ -61,12 +58,11 @@ getAll(): Observable<Client[]> {
       if (response && '$values' in response && Array.isArray(response.$values)) {
         return response.$values;
       }
-      return []; // cas d'erreur ou réponse inattendue
+      return []; 
     })
   );
 }
-  
-  // Ajoutez une méthode pour la page de détails si votre API a un endpoint dédié
+
   getClientDetails(id: number): Observable<Client> {
     return this.http.get<Client>(`${this.apiURL}/${id}/details`);
   }

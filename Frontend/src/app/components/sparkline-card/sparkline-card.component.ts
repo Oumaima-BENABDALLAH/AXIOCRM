@@ -79,69 +79,6 @@ export class SparklineCardComponent implements OnInit, AfterViewInit {
   isPositive(): boolean {
     return this.change.startsWith('+');
   }
-
- /* drawChart(): void {
-    const canvas = this.customCanvasRef?.nativeElement;
-    const ctx = canvas?.getContext('2d');
-    if (!ctx || this.data.length === 0) return;
-
-    // Dynamically sync canvas size
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-
-    const width = canvas.width;
-    const height = canvas.height;
-
-    const maxVal = Math.max(...this.data);
-    const minVal = Math.min(...this.data);
-    const scaleY = maxVal - minVal === 0 ? 1 : height / (maxVal - minVal);
-    const stepX = width / (this.data.length - 1);
-
-    const getX = (i: number) => i * stepX;
-    const getY = (val: number) => (maxVal - val) * scaleY;
-
-    ctx.clearRect(0, 0, width, height);
-
-    // === Gradient background
-    ctx.beginPath();
-    ctx.moveTo(getX(0), getY(this.data[0]));
-
-    for (let i = 0; i < this.data.length - 1; i++) {
-      const x0 = getX(i);
-      const y0 = getY(this.data[i]);
-      const x1 = getX(i + 1);
-      const y1 = getY(this.data[i + 1]);
-      const cx = (x0 + x1) / 2;
-      ctx.quadraticCurveTo(x0, y0, cx, (y0 + y1) / 2);
-    }
-
-    ctx.lineTo(getX(this.data.length - 1), height);
-    ctx.lineTo(0, height);
-    ctx.closePath();
-
-    const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, 'rgba(255, 0, 128, 0.2)');
-    gradient.addColorStop(1, 'rgba(255, 0, 128, 0.05)');
-    ctx.fillStyle = gradient;
-    ctx.fill();
-
-    // === Line stroke
-    ctx.beginPath();
-    ctx.moveTo(getX(0), getY(this.data[0]));
-
-    for (let i = 0; i < this.data.length - 1; i++) {
-      const x0 = getX(i);
-      const y0 = getY(this.data[i]);
-      const x1 = getX(i + 1);
-      const y1 = getY(this.data[i + 1]);
-      const cx = (x0 + x1) / 2;
-      ctx.quadraticCurveTo(x0, y0, cx, (y0 + y1) / 2);
-    }
-
-    ctx.strokeStyle = '#5b21b6';
-    ctx.lineWidth = 2.5;
-    ctx.stroke();
-  }*/
  drawChart(): void {
   const canvas = this.customCanvasRef?.nativeElement;
   const ctx = canvas?.getContext('2d');
@@ -154,7 +91,6 @@ export class SparklineCardComponent implements OnInit, AfterViewInit {
   const width = canvas.width;
   const height = canvas.height;
 
-  // 🔁 Utiliser les données inversées si variant === 'balance'
   const chartData = this.variant === 'balance' ? [...this.data].reverse() : this.data;
 
   const maxVal = Math.max(...chartData);
@@ -168,8 +104,6 @@ export class SparklineCardComponent implements OnInit, AfterViewInit {
   const getY = (val: number) => padding + (maxVal - val) * scaleY;
 
   ctx.clearRect(0, 0, width, height);
-
-  // === 🎨 FOND DÉGRADÉ
   ctx.beginPath();
   ctx.moveTo(getX(0), getY(chartData[0]));
 
@@ -202,8 +136,6 @@ export class SparklineCardComponent implements OnInit, AfterViewInit {
     ctx.fillStyle = gradient;
     ctx.fill();
   }
-
-  // === 🟣 COURBE
   ctx.beginPath();
   ctx.moveTo(getX(0), getY(chartData[0]));
 
@@ -223,7 +155,5 @@ export class SparklineCardComponent implements OnInit, AfterViewInit {
   ctx.lineWidth = 2.5;
   ctx.stroke();
 }
- 
-
 
 }

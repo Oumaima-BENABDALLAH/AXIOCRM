@@ -1,0 +1,18 @@
+.sparkline-card {
+  background: linear-gradient(135deg, #ff4d4f, #ff7a45);
+  color: white;
+
+  .title {
+    font-size: 13px;
+    opacity: 0.9;
+  }
+
+  .value {
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .change {
+    font-size: 14px;
+  }
+}

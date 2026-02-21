@@ -1,4 +1,4 @@
-/* Reset de base */
+
 * {
   margin: 0;
   padding: 0;
@@ -60,8 +60,7 @@ body {
   font-weight: 600;
   color: white;
   padding: 10px;
- /* border: 2px solid;  Vert */
-   border: none;
+  border: none;
   border-radius: 12px;
   text-decoration: none;
   transition: background 0.2s ease;
@@ -124,7 +123,6 @@ nav[_ngcontent-ng-c1653844408]
 nav .navbar-brand {
   font-size: 1.4rem;
   font-weight: bold;
- /* margin-bottom: 40px;*/
   flex-basis: auto;
   display: contents;
   align-items: center;
@@ -167,19 +165,17 @@ nav .nav-link i, nav .nav-link span {
 
 .main-content-area {
   flex-grow: 1;
-  /*padding: 30px;*/
   background-color: #f9f9f9;
    overflow-y: auto;
 }
 .main-content-area[_ngcontent-ng-c1322472800] {
     flex-grow: 1;
-    /* padding: 30px; */
     background-color: #f9f9f9;
     overflow-y: auto;
 }
 .sidebar {
   position: fixed;
-  top: 60px; /* sous la barre de navigation du haut */
+  top: 60px; 
   left: 0;
   width: 300px;
   height: calc(100vh - 60px);

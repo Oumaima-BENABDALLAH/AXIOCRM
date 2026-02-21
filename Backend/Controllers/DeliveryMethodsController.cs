@@ -27,7 +27,6 @@ namespace ProductManager.API.Controllers
             return Ok(methods);
         }
 
-        // GET: api/deliverymethods/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DeliveryMethod>> GetDeliveryMethod(int id)
         {
@@ -37,7 +36,6 @@ namespace ProductManager.API.Controllers
             return Ok(method);
         }
 
-        // POST: api/deliverymethods
         [HttpPost]
         public async Task<ActionResult<DeliveryMethod>> PostDeliveryMethod(DeliveryMethod method)
         {
@@ -45,7 +43,6 @@ namespace ProductManager.API.Controllers
             return CreatedAtAction(nameof(GetDeliveryMethod), new { id = created.Id }, created);
         }
 
-        // PUT: api/deliverymethods/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDeliveryMethod(int id, DeliveryMethod method)
         {
@@ -59,7 +56,6 @@ namespace ProductManager.API.Controllers
             return NoContent();
         }
 
-        // DELETE: api/deliverymethods/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDeliveryMethod(int id)
         {

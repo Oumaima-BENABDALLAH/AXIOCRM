@@ -12,7 +12,7 @@
         public async Task InvokeAsync(HttpContext context)
         {
             Console.WriteLine($"Request: {context.Request.Method} {context.Request.Path}");
-            await _next(context); // ➜ appelle le prochain middleware ou contrôleur
+            await _next(context); 
         }
     }
 }

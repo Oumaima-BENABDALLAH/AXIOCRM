@@ -1,6 +1,5 @@
 
 <div class="header-top d-flex align-items-center justify-content-between p-3">
-  <!-- Titre + bouton refresh -->
   <div class="title-container d-flex align-items-center">
     <h5 class="mb-0">Invoices</h5>
     <button class="btn btn-sm btn-light ms-3" (click)="loadInvoices()" style ="border-color: white;background-color: white;">
@@ -8,7 +7,6 @@
     </button>
   </div>
 
-  <!-- Actions (recherche + ajout) -->
   <div class="actions-container d-flex align-items-center">
     <div class="d-flex mb-3" style="margin-top:19px;">
       <input
@@ -23,7 +21,6 @@
   </div>
 </div>
 
-<!-- Tableau Invoices -->
 <div class="table-responsive" style="margin-left: 13px;">
  <table class="table table-borderless client-table payment-table">
   <thead class="invoice-header">
@@ -50,8 +47,6 @@
         <td>{{ invoice.order?.client?.name }} {{ invoice.order?.client?.lastName }}</td>
 
         <td>{{ invoice.order?.cashAmount | currency:'USD' }}</td>
-
-        <!-- Actions -->
         <td class="text-center actions-cell">
           <div class="actions-container" (click)="toggleActions($event)">
             <td class="text-center">
@@ -68,10 +63,6 @@
   </table>
 </div>
 
-
-<!-- ============================== -->
-<!--    MODAL APERCU DE FACTURE     -->
-<!-- ============================== -->
 <div class="modal fade" id="invoiceModal" tabindex="-1">
   <div class="modal-dialog modal-xl modal-dialog-scrollable">
     <div class="modal-content">
@@ -85,8 +76,7 @@
 
         <div class="invoice-container">
 
-          <!-- LEFT SECTION -->
-        <!-- LEFT SECTION -->
+     
 <div class="left-section">
 
   <h2 class="section-title">Invoice Details</h2>
@@ -145,8 +135,6 @@
   </div>
 
 </div>
-
-          <!-- RIGHT SECTION -->
          
           <div class="right-section">
               <div class="action-buttons">

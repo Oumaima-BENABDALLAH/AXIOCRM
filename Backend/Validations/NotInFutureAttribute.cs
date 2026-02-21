@@ -9,9 +9,9 @@ namespace ProductManager.API.Validations
         {
             if (value is DateTime date)
             {
-                return date <= DateTime.Today; // interdit les dates > aujourd’hui
+                return date <= DateTime.Today; 
             }
-            return true; // null est accepté (si optionnel)
+            return true; 
         }
     }
 }

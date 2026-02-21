@@ -21,18 +21,14 @@ export class NotificationToastComponent implements OnInit {
 
 ngOnInit(): void {
 
-  // suivre la route
   this.router.events
     .pipe(filter(e => e instanceof NavigationEnd))
     .subscribe((e: any) => {
       this.currentUrl = e.urlAfterRedirects;
     });
-
-  // recevoir les notifications
   this.notificationService.notification$.subscribe(data => {
     if (!data) return;
   if (!this.isOnSchedulerPage()) return;
-    //  TOUJOURS stocker
     this.toasts.push(data);
   });
 }
@@ -49,6 +45,6 @@ private isOnSchedulerPage(): boolean {
 
     setTimeout(() => {
       this.toasts.push(toast);
-    }, 5 * 60 * 1000); // 5 min
+    }, 5 * 60 * 1000); 
   }
 }

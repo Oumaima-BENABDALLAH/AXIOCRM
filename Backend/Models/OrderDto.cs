@@ -16,7 +16,6 @@ namespace ProductManager.API.Models
         public DateTime? PaymentDate { get; set; }
         public int? DeliveryMethodId { get; set; }
 
-        // Card payment
         public string? CardNumber { get; set; }
         public string? CardHolder { get; set; }
         public string? ExpiryDate { get; set; }

@@ -12,8 +12,6 @@ namespace ProductManager.API.Services
         private readonly IEmailService _emailService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-
-
         public AuthService(IEmailService emailService, UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _emailService = emailService;
@@ -25,18 +23,13 @@ namespace ProductManager.API.Services
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null) return;
-
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-
-            // Remplacer les caractères non sûrs de Base64 par des caractères sûrs pour les URL
             var safeToken = token.Replace("+", "-").Replace("/", "_");
-
             var resetLink = $"http://localhost:4200/reset-password?email={HttpUtility.UrlEncode(email)}&token={safeToken}";
-
             await _emailService.SendAsync(
                 email,
-                "Réinitialisation de mot de passe",
-                $"Cliquez sur ce lien pour réinitialiser votre mot de passe : {resetLink}"
+                "Password reset",
+                $"Click this link to reset your password: {resetLink}"
             );
         }
 
@@ -44,12 +37,8 @@ namespace ProductManager.API.Services
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null) return false;
-
-            // Remplacer les caractères sûrs de l'URL par les caractères originaux de Base64
             var originalToken = token.Replace("-", "+").Replace("_", "/");
-
             var result = await _userManager.ResetPasswordAsync(user, originalToken, newPassword);
-
             return result.Succeeded;
         }
 

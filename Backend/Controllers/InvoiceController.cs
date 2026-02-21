@@ -58,10 +58,9 @@ namespace ProductManager.API.Controllers
                     Invoice = it.Invoice,
                     Quantity = it.Quantity,
                     UnitPrice = it.UnitPrice,
-                    //Total = it.UnitPrice * it.Quantity
+                
                 }).ToList(),
 
-                // 💙 Ajout de Order + Client dans la facture DTO
                 Order = i.Order == null ? null : new OrderDto
                 {
                     Id = i.Order.Id,

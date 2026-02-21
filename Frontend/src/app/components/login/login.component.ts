@@ -14,10 +14,7 @@ export class LoginComponent {
   loginError: string = '';
   passwordType: string = 'password';
 
-  constructor(private authService : AuthService, private router : Router)
-  {
-    
-  }
+  constructor(private authService : AuthService, private router : Router){}
 
   onSubmit(): void {
     this.authService.login(this.email, this.password).subscribe({

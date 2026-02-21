@@ -2,12 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to bottom right, #7f00ff, #e6e6fa); /* Violet vers blanc */
+  background: linear-gradient(to bottom right, #7f00ff, #e6e6fa); 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   height: 100vh;
-  width: 100vw; /* Ajouté */
+  width: 100vw;
   font-family: "Segoe UI", sans-serif;
-  margin: 0; /* Important pour éviter les décalages */
+  margin: 0; 
   padding: 0;
   box-sizing: border-box;
 }
@@ -95,21 +95,6 @@
   gap: 2rem;
   padding: 2rem;
 }
-
-/* ✅ Bloc texte gauche 
-.signup-left {
-  /*background-color: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 700px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}*/
-
-/* ✅ Styles internes */
 
 .brand[_ngcontent-ng-c2067819649] {
     color: #f3f2f7;

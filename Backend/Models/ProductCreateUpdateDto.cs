@@ -8,8 +8,8 @@
         public int StockQuantity { get; set; }
         public int Sales { get; set; }
         public string? Color { get; set; }
-        public string? ImageUrl { get; set; }  // optionnel si pas d'upload
-        public IFormFile? ImageFile { get; set; }  // fichier uploadé (optionnel)
+        public string? ImageUrl { get; set; }  
+        public IFormFile? ImageFile { get; set; }  
     }
 
 }

@@ -1,0 +1,14 @@
+<div class="sparkline-card compact"
+     [style.border-left]="'6px solid ' + riskColor">
+
+  <div class="title">Clients à risque</div>
+
+  <div class="value">
+    {{ churn?.riskClients }}
+  </div>
+
+  <div class="change negative">
+    {{ churn?.riskRate | number:'1.0-1' }} %
+  </div>
+
+</div>

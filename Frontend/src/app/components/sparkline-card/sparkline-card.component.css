@@ -1,7 +1,4 @@
 :host {
-  /*display: inline-block;
-  width: 220px;
-  margin-right: 1rem;*/
   display: block;
   width: 100%;
   height: 100%;
@@ -14,27 +11,6 @@
     user-select: none;
 }
 
-/*.sparkline-card {
-  /*background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  padding: 12px;
-  width: 180px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100px;**
-   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  padding: 12px;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-}*/
 .sparkline-card {
   width: 100%;
   height: 100%;
@@ -47,7 +23,6 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* Variante compacte */
 .compact {
   width: 200px;
   height: 200px;
@@ -108,14 +83,12 @@
   max-width: 300px;
 }
 
-/* Couleur des variations */
 .change.positive {
   color: #9155fd;
 }
 .change.negative {
   color: #9155fd;
 }
-/* 🌟 Version compacte */
 .sparkline-card.compact {
   width: 250px;
   height: 140px;
@@ -128,66 +101,35 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-/* Réduction de la taille des textes 
-.sparkline-card.compact .title {
-  font-size: 13px;
-  font-weight: 500;
-  margin-bottom: 4px;
-}*/
-
 .sparkline-card.compact .value {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 4px;
 }
 
-/* Le conteneur du graphique */
 .sparkline-card.compact .full-chart {
  width: 450px !important;
   height: 180px !important;
   overflow: hidden;
   margin: 0;
   padding: 0;
-  /*border: 2px dashed red;*/
 }
-
-/* Empêche le contenu de déborder */
 .sparkline-card.compact .bottom-row {
   margin-top: auto;
 }
-
-/* Cache la variation dans la version compacte */
 .sparkline-card.compact .change {
   display: none;
 }
 .value.highlighted {
   font-weight: bold;
   font-size: 1.2rem;
-  color: #1f2937; /* ou une autre couleur sombre */
+  color: #1f2937; 
 }
 .custom-value {
   font-weight: bold;
   font-size: 1.2rem;
-  color: #1f2937; /* couleur sombre personnalisée */
+  color: #1f2937; 
 }
-/*.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-   margin-bottom: 4px;
-}
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 4px;
-}
-
-/*.percentage {
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-*/
 .percentage {
   font-size: 0.9rem;
   font-weight: 600;
@@ -195,11 +137,11 @@
 
 
 .percentage.positive {
-  color: #9155fd; /* vert */
+  color: #9155fd; 
 }
 
 .percentage.negative {
-  color: #9155fd; /* rouge */
+  color: #9155fd; 
 }
 .full-chart.large-chart canvas {
   width: 100%;
@@ -209,29 +151,10 @@
   padding: 0;
 }
 
-/*canvas {
-    width: 100%;
-    height: auto;
-    display: block;
-}*/
-
-
-/*canvas {
-  display: block;
-  width: 100%;
-   height: 100%;   
-  object-fit: fill;
-  margin: 0;
-  padding: 0;
-  border: none;
-   object-fit: fill;
-  box-sizing: border-box;
-}*/
 canvas {
   display: block;
   width: 100%;
   height: 100%;
-  /* height: unset; Laisse le canvas décider selon l'attribut height */
   object-fit: fill;
   margin: 0;
   padding: 0;
@@ -241,10 +164,8 @@ canvas {
 
 
 .full-chart {
-   width: 100%;
-   height: auto;  
-  /*flex-grow: 1; */
-
+  width: 100%;
+  height: auto;  
   overflow: hidden;
   margin: 0;
   padding: 0;
@@ -256,7 +177,6 @@ canvas {
   overflow: hidden;
   margin: 0;
   padding: 0;
- /* b0order: 2px dashed red;*/
 }
 .sparkline-card.large-chart {
   width: 100%;
@@ -264,19 +184,10 @@ canvas {
 }
 
 .sparkline-card.compact[_ngcontent-ng-c3372783706] .bottom-row[_ngcontent-ng-c3372783706] {
-    /* margin-top: 0px; 
-    margin-left: 18px;*/
-    padding: 0px;
+   
+    padding: 0px
 }
-/*.card-header[_ngcontent-ng-c3372783706] {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 4px;
-    margin-right: 10px;
-    font-size: larger;
-    margin-left: 10px;
-}*/
+
 .card-header[_ngcontent-ng-c3372783706][_ngcontent-ng-c3372783706] {
     display: flex;
     justify-content: space-between;

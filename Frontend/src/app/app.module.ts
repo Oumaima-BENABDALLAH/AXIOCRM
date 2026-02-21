@@ -19,7 +19,6 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { ClientListComponent } from './components/client-list/client-list.component';
 import { OrderListComponent } from './components/order-list/order-list.component';
 import { InvoiceComponent } from './components/invoice/invoice.component';
-import { ClientProductListComponent } from './components/client-product-list/client-product-list.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ChartLineComponent } from './components/chart-line/chart-line.component';
 import { ChartRadialComponent } from './components/chart-radial/chart-radial.component';
@@ -49,6 +48,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { BookingKanbanComponent } from './components/booking-kanban/booking-kanban.component';
 import { BookingCardComponent } from './components/booking-card/booking-card.component';
 import { AddTaskDialogComponent } from './components/add-task-dialog/add-task-dialog.component';
+import { ChurnKpiComponent } from './components/churn-kpi/churn-kpi.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 @NgModule({
   declarations: [
@@ -57,7 +57,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     ClientListComponent,
     OrderListComponent,
     InvoiceComponent,
-    ClientProductListComponent,
     DashboardComponent,
     ChartLineComponent,
     ChartRadialComponent,
@@ -70,7 +69,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     LoginComponent,
     SignupComponent,
     ResetPasswordComponent,
-    ForgotPasswordComponent,
+    ForgotPasswordComponent,ChurnKpiComponent,
     GoogleLoginComponent,SchedulerComponent, EventDialogComponent ,EmailHistoryComponent ,BookingKanbanComponent,BookingCardComponent,AddTaskDialogComponent   
   ],
   imports: [

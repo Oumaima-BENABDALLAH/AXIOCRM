@@ -4,7 +4,6 @@ import { FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-
 import { EventService } from '../../services/Event.service';
 import { ScheduleEventDto } from '../../models/schedule-event.model';
 import { EventDialogComponent } from '../event-dialog/event-dialog.component';
@@ -86,8 +85,6 @@ export class SchedulerComponent implements OnInit {
 
   dialogRef.afterClosed().subscribe(result => {
     if (!result) return;
-
-    // UI
     fcEvent.setProp('title', result.title);
     fcEvent.setStart(result.start);
     fcEvent.setEnd(result.end);
@@ -97,7 +94,6 @@ export class SchedulerComponent implements OnInit {
     fcEvent.setExtendedProp('resourceId', result.resourceId);
     fcEvent.setExtendedProp('AdminNotified', result.AdminNotified);
     fcEvent.setExtendedProp('lastAdminNotifiedAt', result.lastAdminNotifiedAt);
-    // Backend
     this.eventService.update(result).subscribe();
   });
 }
@@ -155,8 +151,6 @@ confirmDelete(fcEvent: any) {
 
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return;
-
-      // UPDATE UI INSTANT
       fcEvent.setProp('title', result.title);
       fcEvent.setStart(result.start);
       fcEvent.setEnd(result.end);
@@ -166,7 +160,6 @@ confirmDelete(fcEvent: any) {
       fcEvent.setExtendedProp('resourceId', result.resourceId);
       fcEvent.setExtendedProp('AdminNotified', result.AdminNotified); 
       fcEvent.setExtendedProp('lastAdminNotifiedAt', result.lastAdminNotifiedAt); 
-      // UPDATE BACKEND
       this.eventService.update(result).subscribe();
     });
   }

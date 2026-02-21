@@ -31,10 +31,10 @@
 
 
 <div class="p-6 space-y-6 bg-gray-50 min-h-screen ml-0 lg:ml-[260px]">
-  <!-- 🔹 Statistiques principales -->
 <div class="flex flex-wrap gap-6 items-start mt-8">
  <div class="stats-row">
   <div class="card-group" >
+
   <app-sparkline-card 
     title="Total Earnings"
     value="$1.2M"
@@ -59,7 +59,6 @@
     [data]="[701,300,680,440,610,580,520, 470, 560, 455,100, 350, 540, 400,290,200,150,290,130,20]"
     changeColor="red">
   </app-sparkline-card>
-
   <app-sparkline-card
     title="Pending Tasks"
     value="45"
@@ -85,10 +84,6 @@
     </div>
   </div>
 </div>
-
-  <!-- 🔹 Graphiques -->
-<!--<div class="chart-grid grid grid-cols-1 xl:grid-cols-3 gap-6 mt-6">-->
-  <!-- La section graphique qui prend 2 colonnes -->
 <div class="chart-row">
   <app-charts-section class="charts-section"></app-charts-section>
 

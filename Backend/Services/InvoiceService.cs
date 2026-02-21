@@ -63,8 +63,6 @@ namespace ProductManager.API.Services
                     .Include(i => i.Items)
                     .Include(i => i.Order)
                     .ThenInclude(o => o.OrderProducts)
-
-                    // Charger Product (optionnel)
                     .ThenInclude(op => op.Product)
                     .Include(i => i.Order)
                     .ThenInclude(o => o.Client)

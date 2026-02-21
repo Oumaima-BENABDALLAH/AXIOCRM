@@ -4,23 +4,10 @@ import { from, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 
-
-
 import { KeycloakService } from 'keycloak-angular';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-   /* private keycloak = new Keycloak({
-    url: 'http://localhost:8080', // URL de ton serveur Keycloak
-    realm: 'MyAppRealm',
-    clientId: 'mon-client-angular'
-  });
 
-  init(): Promise<boolean> {
-    return this.keycloak.init({
-      onLoad: 'login-required', // ou 'check-sso'
-      pkceMethod: 'S256'
-    });
-  }*/
   private apiUrl = 'https://localhost:7063/api/Auth';
 
   constructor(private http: HttpClient , private router : Router ) {}
@@ -38,10 +25,6 @@ export class AuthService {
     this.router.navigate(['/login']);
    
   }
-/* async logout(): Promise<void> {
-  await this.keycloakService.logout('http://localhost:4200');
-}*/
-
   saveToken(token: string) {
     localStorage.setItem('token', token);
   }

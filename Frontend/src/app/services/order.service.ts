@@ -43,18 +43,12 @@ getOrders(): Observable<OrderDto[]> {
 
   return this.http.put<OrderDto>(`${this.apiUrl}/${order.id}`, dtoToSend);
 }
-
-
-
-
   deleteOrder(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
   getDashboardStats() {
   return this.http.get<any>(this.apiUrl + '/dashboard');
 }
-
-
 generateInvoice(orderId: number) {
   return this.http.post(`https://localhost:7063/api/Invoice/generate/${orderId}`, {});
 }

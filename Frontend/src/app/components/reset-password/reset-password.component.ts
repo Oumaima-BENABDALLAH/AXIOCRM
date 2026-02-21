@@ -10,8 +10,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ResetPasswordComponent implements OnInit {
   resetForm!: FormGroup;
-  // Les variables email et token de la classe ne sont plus nécessaires,
-  // car nous les récupérons directement depuis l'URL dans la méthode onSubmit.
   message = '';
   loading = false;
   newPasswordType: string = 'password';
@@ -49,28 +47,24 @@ export class ResetPasswordComponent implements OnInit {
     }
 
     this.loading = true;
-
-    // Nous récupérons l'email et le token directement depuis l'URL ici,
-    // pour nous assurer d'avoir les valeurs les plus récentes au moment de la soumission.
     this.route.queryParams.subscribe(params => {
       const email = params['email'] || '';
       const token = params['token'] || '';
 
-      console.log("Token envoyé au backend :", token);
-      console.log("Email envoyé au backend :", email);
-      console.log("Nouveau mot de passe :", this.resetForm.value.newPassword);
+      console.log("Token sent to the backend :", token);
+      console.log("Email sent to the backend :", email);
+      console.log("New password :", this.resetForm.value.newPassword);
 
       this.authService.resetPassword(email, token, this.resetForm.value.newPassword)
         .subscribe({
           next: () => {
-            this.message = 'Mot de passe réinitialisé avec succès';
+            this.message = 'Password reset successfully';
             setTimeout(() => this.router.navigate(['/login']), 2000);
           },
           error: (error) => {
-            this.message = 'Erreur lors de la réinitialisation';
+            this.message = 'Error resetting';
             this.loading = false;
-            // Pour le débogage, il est utile de voir l'erreur complète de l'API.
-            console.error("Erreur de l'API:", error);
+            console.error("API error:", error);
           }
         });
     });

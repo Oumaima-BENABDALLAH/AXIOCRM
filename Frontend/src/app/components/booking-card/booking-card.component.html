@@ -4,8 +4,6 @@
       {{ task.priority  }}
     </span>
   <div class="card-title">{{ task.title }}</div>
-
-   <!-- USERS -->
    <div class="avatar"
          [style.background]="getAvatarColor(task.commercialName)">
          {{ getInitialsFromName(task.commercialName) }}

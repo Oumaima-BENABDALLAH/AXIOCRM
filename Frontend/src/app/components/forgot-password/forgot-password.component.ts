@@ -22,7 +22,7 @@ export class ForgotPasswordComponent {
 
     this.authService.forgotPassword(this.form.value.email).subscribe({
       next: () => {
-        this.message = 'Un email de réinitialisation a été envoyé si l’adresse existe.';
+        this.message = 'A reset email has been sent if the address exists.';
         this.error = '';
         setTimeout(() => {
           this.router.navigate(['/reset-password'], {
@@ -31,7 +31,7 @@ export class ForgotPasswordComponent {
         }, 2000);
       },
       error: err => {
-        this.error = err.error || 'Erreur lors de l’envoi du lien.';
+        this.error = err.error || 'Error while sending the link.';
         this.message = '';
       }
     });

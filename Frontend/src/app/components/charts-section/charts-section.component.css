@@ -12,5 +12,5 @@
   padding: 20px;
   margin-right: 3px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  width: calc(35% - 10px); /* deux cartes par ligne */
+  width: calc(35% - 10px); 
 }

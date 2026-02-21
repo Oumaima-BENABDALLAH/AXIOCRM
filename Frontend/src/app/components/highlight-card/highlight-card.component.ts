@@ -43,7 +43,7 @@ public markers: ApexMarkers = {
   discrete: [
     {
       seriesIndex: 0,
-      dataPointIndex: this.data.length - 1, // 👈 Dernier point dynamique
+      dataPointIndex: this.data.length - 1,
       fillColor: '#ffffff',
       strokeColor: '#ffffff',
       size: 5
@@ -63,29 +63,6 @@ public dataLabels!: ApexDataLabels;
   }
 };
 
-/*public dataLabels: ApexDataLabels = {
-  enabled: true,
-  enabledOnSeries: [0],
-  style: {
-    fontSize: '12px',
-    colors: ['#ffffff']
-  },
-  formatter: (val, opts) =>
-      opts.dataPointIndex === opts.series[0].length - 1 ? val : '',
-    offsetY: -10
-};
-
-public xaxis: ApexXAxis = {
-  labels: {
-    show: false
-  },
-  axisBorder: {
-    show: false
-  },
-  axisTicks: {
-    show: false
-  }
-};*/
 ngOnInit(): void {
   const lastIndex = this.data.length - 1;
 
@@ -122,7 +99,7 @@ ngOnInit(): void {
     padding: 4,
     borderRadius: 4,
     borderWidth: 0,
-    opacity: 0, // Tu peux ajuster l’opacité ou mettre 0 pour transparent
+    opacity: 0, 
     dropShadow: {
       enabled: false
     }

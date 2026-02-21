@@ -9,6 +9,6 @@
         public string? Description { get; set; }
         public string? Color { get; set; }
 
-        public string ResourceId { get; set; } = ""; // CommercialId
+        public string ResourceId { get; set; } = ""; 
     }
 }

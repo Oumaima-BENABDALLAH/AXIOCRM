@@ -1,6 +1,6 @@
 .card {
-  width: 300px;     /* plus large */
-  height: 235px;    /* plus haute */
+  width: 300px;     
+  height: 235px; 
   margin-top: 15px;
   border-color: white;
   padding: 1rem;
@@ -13,11 +13,6 @@
    padding-bottom: 1rem;
 }
 
-/*canvas {
-  margin-top: -65px;
-  width: 340px;
-  height: 230px; 
-  */
 canvas {
   display: block;
   margin-left: -35px;

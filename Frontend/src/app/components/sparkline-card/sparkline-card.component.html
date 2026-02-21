@@ -21,10 +21,7 @@
 </div>
 
     <div class="bottom-row">
-      <!-- 🔹 Variante standard (ApexCharts) -->
       <ng-container *ngIf="variant === 'default'">
-        
-        <!-- Sparkline par défaut -->
         <div class="sparkline" *ngIf="chartType !== 'pie'">
           <apx-chart
             [series]="series"
@@ -34,8 +31,6 @@
             [colors]="[color]">
           </apx-chart>
         </div>
-
-        <!-- Graphique circulaire (pie chart) -->
         <div class="sparkline" *ngIf="chartType === 'pie'">
           <apx-chart
             [series]="pieSeries"
@@ -45,23 +40,17 @@
             [responsive]="pieResponsive">
           </apx-chart>
         </div>
-
-        <!-- Variation -->
        
       </ng-container>
 
-      <!-- 🔸 Variante personnalisée (Canvas) -->
       <ng-container *ngIf="variant === 'gradient' || variant === 'balance'">
        <div class="full-chart" [ngClass]="{ 'large-chart': title === 'Total Revenue' }">
          <canvas
-          
           #customCanvas
           [attr.width]="compact ? 450 : 400"
-          [attr.height]="compact ? 180 : 300"
-
-        ></canvas>
-  </div>
-</ng-container>
+          [attr.height]="compact ? 180 : 300"></canvas>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

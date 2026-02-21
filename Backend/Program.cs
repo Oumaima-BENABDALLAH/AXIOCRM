@@ -15,6 +15,9 @@ using Hangfire;
 using ProductManager.API.Services.Kanban;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Logging;
+using ProductManager.API.AI.ChurnPrediction.Interfaces;
+using ProductManager.API.AI.ChurnPrediction.Services;
+using ProductManager.API.AI.ChurnPrediction;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,7 +26,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-    //options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 });
 #endregion
 
@@ -38,11 +40,11 @@ builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventReminderJob, EventReminderJob>();
 builder.Services.AddScoped <ICommercialEmailReminderJob, CommercialEmailReminderJob>();
-
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IBookingTaskService, BookingTaskService>();
-
-
+builder.Services.AddScoped<ChurnFeatureBuilder>();
+builder.Services.AddScoped<IChurnTrainingService, ChurnTrainingService>();
+builder.Services.AddScoped<IChurnService, ChurnService>();
 IdentityModelEventSource.ShowPII = true;
 #endregion
 
@@ -73,7 +75,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(key),
-        ClockSkew = TimeSpan.Zero // optionnel, pour réduire délai de tolérance sur expiration
+        ClockSkew = TimeSpan.Zero 
     };
 
     options.Events = new JwtBearerEvents
@@ -114,8 +116,6 @@ builder.Services.AddAuthentication(options =>
 
 #region SignalR
 builder.Services.AddSignalR();
-
-// Mapper UserId SignalR = Claim NameIdentifier
 builder.Services.AddSingleton<IUserIdProvider, NameIdentifierUserIdProvider>();
 #endregion
 
@@ -210,6 +210,11 @@ using (var scope = app.Services.CreateScope())
         job => job.SendEmailReminders(),
         Cron.Minutely
     );
+    recurringJobManager.AddOrUpdate<IChurnTrainingService>(
+       "churn-training",
+       x => x.TrainModelAsync(),
+       Cron.Weekly
+   );
 }
 #region Middleware pipeline
 if (app.Environment.IsDevelopment())

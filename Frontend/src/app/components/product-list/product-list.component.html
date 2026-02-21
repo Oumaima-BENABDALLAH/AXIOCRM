@@ -1,5 +1,4 @@
 <div class="header-top d-flex align-items-center justify-content-between p-3">
-  <!-- Titre + bouton refresh -->
   <div class="title-container d-flex align-items-center">
     <h5 class="mb-0">Produits</h5>
     <button class="btn btn-sm btn-light ms-3" (click)="loadProducts()">
@@ -7,7 +6,6 @@
     </button>
   </div>
 
-  <!-- Actions (recherche + filtres + ajout) -->
   <div class="actions-container d-flex align-items-center">
     <div class="d-flex mb-3" style ="margin-top:19px">
       <input
@@ -28,8 +26,6 @@
     </button>
   </div>
 </div>
-
-<!-- Tableau Produits -->
 <div class="table-responsive">
   <table class="table client-table">
     <thead>
@@ -109,13 +105,10 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content" style="width: 950px; height: 950px;">
       <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
-        <!-- Header -->
          <div class="modal-header" style="border-bottom: 1px solid #dee2e6;background-color: #f8f9fa;height: 70px;">
           <h5 class="modal-title" id="productModalLabel" style="font: 600 22.62px / 21px Roboto, sans-serif;margin: 0 0 12px;">Product Details</h5>
          
         </div>
-
-        <!-- Body -->
         <div class="modal-body" style="margin-top:8px;height: 650px;">
           <h4 class="mb-3" style ="font-size: larger;font-weight: 600;"> --- General Informations --- </h4>
           <div class="row" style="margin-bottom: 20px;">
@@ -164,11 +157,8 @@
               </div>
             </div>
           </div>
-   <!-- === Appearance === -->
 <h4 class="mt-4 mb-3" style="font-size: larger; font-weight: 600;">--- Appearance ---</h4>
 <div class="row mb-3">
-
-  <!-- IMAGE À GAUCHE -->
   <div class="col-md-8 col-sm-6 col-12">
     <div class="form-group product-image-container">
 
@@ -201,8 +191,6 @@
 
     </div>
   </div>
-
-  <!-- COLOR À DROITE -->
   <div class="col-md-4 col-sm-6 col-12"style="margin-left: -255px;margin-top:8px">
     <div class="form-group">
       <label style="font-size: medium; font-weight: 700; margin-bottom: 6px;">
@@ -264,8 +252,6 @@
             </div>
           </div>
         </div>
-     
-        <!-- Footer -->
         <div class="modal-footer" style="border-bottom: 1px solid #dee2e6;background-color: #f8f9fa;margin-top:140px">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeModal()" style="font-weight: 600;font-size: x-large;width: 170px;margin-right: 16px;"> {{ isViewMode ? 'Close' : 'Cancel' }}</button>
           <button type="submit" class="btn btn-primary" style="font-weight: 600;font-size: x-large;width: 170px;" [disabled]="isSaving" *ngIf ="!isViewMode"> {{ isSaving? 'Saving…' : 'Save' }}</button>
