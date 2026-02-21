@@ -113,7 +113,6 @@ builder.Services.AddAuthentication(options =>
 });
 
 #endregion
-
 #region SignalR
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IUserIdProvider, NameIdentifierUserIdProvider>();
@@ -131,7 +130,6 @@ builder.Services.AddCors(options =>
     });
 });
 #endregion
-
 #region Controllers / Swagger
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -184,8 +182,6 @@ builder.Services.AddHangfire(config =>
             DisableGlobalLocks = true
         });
 });
-
-
 
 builder.Services.AddHangfireServer(options =>
 {
@@ -245,8 +241,6 @@ app.UseHangfireDashboard("/hangfire");
 app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllers();
 #endregion
-
-
 
 #region Roles Seed
 app.Lifetime.ApplicationStarted.Register(async () =>

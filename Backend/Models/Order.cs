@@ -5,17 +5,13 @@ namespace ProductManager.API.Models
     public class Order
     {
         public int Id { get; set; }
-
         public int ClientId { get; set; }
         public Client? Client { get; set; } 
-
         public DateTime OrderDate { get; set; }
-
         public string PaymentMethod { get; set; } = "";
-      
         public decimal? CashAmount { get; set; }
         public DateTime? PaymentDate { get; set; }
-        public int? DeliveryMethodId { get; set; 
+        public int? DeliveryMethodId { get; set; } 
         public string? CardNumber { get; set; }
         public string? CardHolder { get; set; }
         public string? ExpiryDate { get; set; }
