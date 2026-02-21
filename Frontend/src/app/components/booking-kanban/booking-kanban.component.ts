@@ -21,7 +21,6 @@ export class BookingKanbanComponent implements OnInit {
   tasks: BookingTask[] = [];
   Status = BookingTaskStatus;
   assignedUsers?: AssignedUser[];
-  //  Filtres
   selectedCommercial: number | null = null;
   selectedDate: 'today' | 'week' | '' = '';
    headerUsers = [
@@ -161,17 +160,11 @@ openEditTask(task: BookingTask) {
     if (!result) return;
 
     this.service.update(task.id, result).subscribe(() => {
-
-      // = supprimer l’ancienne version
       this.removeTaskFromColumns(task.id);
-
-      // = mettre à jour l’objet local
       const updatedTask: BookingTask = {
         ...task,
-        ...result   // title, description, priority, status, etc.
+        ...result   
       };
-
-      // le remettre dans la bonne colonne
       this.tasksByColumn[updatedTask.status].push(updatedTask);
 
     });

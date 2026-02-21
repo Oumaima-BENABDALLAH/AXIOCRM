@@ -59,13 +59,11 @@
   justify-content: flex-end;
   margin-top: 10px;
 }
-
-/* AVATAR */
 .avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #6366f1; /* violet pro */
+  background: #6366f1; 
   color: #fff;
   font-weight: 600;
   font-size: 13px;

@@ -3,13 +3,11 @@
   font-family: Inter, Roboto, Arial, sans-serif;
 }
 
-/* TITLE */
 h2 {
   font-weight: 600;
   margin-bottom: 10px;
 }
 
-/* CONTENT */
 mat-dialog-content {
   display: flex;
   flex-direction: column;
@@ -21,43 +19,42 @@ mat-dialog-content {
 ::ng-deep .mat-mdc-dialog-surface {
   overflow-x: hidden;
 }
-/* FORM FIELDS */
+
 mat-form-field {
   width: 330px;
 }
 
-/* TEXTAREA */
 textarea {
   min-height: 80px;
   resize: none;
 }
 
-/* ACTIONS */
+
 mat-dialog-actions {
   margin-top: 10px;
   padding-top: 10px;
   border-top: 1px solid #eee;
 }
 
-/* BUTTONS */
+
 button[mat-raised-button] {
   border-radius: 8px;
   padding: 6px 18px;
   font-weight: 500;
 }
 
-/* CANCEL BUTTON */
+
 button[mat-button] {
   color: #666;
 }
 
-/* DIALOG CONTAINER (global Angular Material override) */
+
 ::ng-deep .mat-mdc-dialog-container {
   border-radius: 14px !important;
   padding: 8px;
 }
 
-/* INPUT STYLE */
+
 ::ng-deep .mdc-text-field--outlined {
   border-radius: 10px;
 }

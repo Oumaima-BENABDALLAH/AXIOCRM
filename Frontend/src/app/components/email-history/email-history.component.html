@@ -5,12 +5,9 @@
     Email History
   </h2>
 
-  <!-- IMPORTANT : tout ce qui utilise group est ici -->
   <ng-container *ngFor="let group of history">
 
     <div class="group">
-
-      <!-- GROUP HEADER -->
       <div class="group-header" (click)="toggleGroup(group)">
 
         <i
@@ -27,8 +24,6 @@
         </span>
 
       </div>
-
-      <!-- CONTENT (HIDE / SHOW) -->
       <div [hidden]="!group.expanded">
 
         <div class="table-header">

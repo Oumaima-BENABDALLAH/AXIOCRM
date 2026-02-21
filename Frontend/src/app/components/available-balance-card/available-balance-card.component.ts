@@ -26,23 +26,20 @@ export class AvailableBalanceCardComponent implements AfterViewInit {
     const radius = 45;
     let startAngle = 0;
 
-    // 🔵 Part 1
     let angle1 = (part1 / total) * 2 * Math.PI;
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
     ctx.arc(centerX, centerY, radius, startAngle, startAngle + angle1);
     ctx.closePath();
-    ctx.fillStyle = '#7c3aed'; // violet
+    ctx.fillStyle = '#7c3aed'; 
     ctx.fill();
     startAngle += angle1;
-
-    // 🔴 Part 2
     let angle2 = (part2 / total) * 2 * Math.PI;
     ctx.beginPath();
     ctx.moveTo(centerX, centerY);
     ctx.arc(centerX, centerY, radius, startAngle, startAngle + angle2);
     ctx.closePath();
-    ctx.fillStyle = '#fbb6ce'; // rose clair
+    ctx.fillStyle = '#fbb6ce'; 
     ctx.fill();
   }
 }

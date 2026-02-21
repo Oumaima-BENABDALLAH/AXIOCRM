@@ -17,7 +17,7 @@ namespace ProductManager.API.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        // GET: AuthController
+
 
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -107,12 +107,12 @@ namespace ProductManager.API.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPassword model)
         {
-            // Logging pour le débogage (optionnel)
+      
             Console.WriteLine("Token reçu dans le contrôleur : " + model.Token);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            //var decodedToken = System.Net.WebUtility.UrlDecode(model.Token);
+        
 
             var result = await _authService.ResetPasswordAsync(model.Email, model.Token, model.NewPassword);
 
@@ -156,7 +156,7 @@ namespace ProductManager.API.Controllers
 
                 else
                 {
-                    // Mettre à jour la photo si elle a changé
+             
                     if (user.ProfilePictureUrl != payload.Picture)
                     {
                         user.ProfilePictureUrl = payload.Picture;
@@ -180,7 +180,6 @@ namespace ProductManager.API.Controllers
         }
 
         [HttpGet("commercials")]
-       // [Authorize(Roles = "Admin,Manager")]
         public async Task<IActionResult> GetCommercials()
         {
             var commercials = await _userManager.GetUsersInRoleAsync("Commercial");

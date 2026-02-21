@@ -31,7 +31,6 @@ save() {
     this.event.lastAdminNotifiedAt = new Date().toISOString();
   }
 
-  //  CAS INVERSE : checkbox décochée
   if (!this.event.AdminNotified) {
     this.event.lastAdminNotifiedAt = null;
   }

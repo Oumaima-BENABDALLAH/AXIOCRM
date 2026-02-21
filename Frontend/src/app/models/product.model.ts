@@ -6,9 +6,9 @@ export interface ProductDto {
   price: number;
   stockQuantity: number;
   sales: number;
-  revenue?: number;   // readonly côté backend, mais reçu en JSON
+  revenue?: number;   
   status?: string; 
-  imageUrl?: string;   // nouvelle propriété
+  imageUrl?: string;
   color?: string;
 
 }

@@ -28,8 +28,6 @@ namespace ProductManager.API.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-        
-            //Configure the many-to-many relationship between Order and Product
              modelBuilder.Entity<OrderProduct>()
              .HasKey(op => new { op.OrderId, op.ProductId });
 
@@ -47,9 +45,9 @@ namespace ProductManager.API.Data
                 .WithOne(i => i.Order)
                 .HasForeignKey<Invoice>(i => i.OrderId);
             modelBuilder.Entity<InvoiceItem>()
-                .HasOne(ii => ii.Invoice)       // chaque item a une facture
-                .WithMany(i => i.Items)         // chaque facture a plusieurs items
-                .HasForeignKey(ii => ii.InvoiceId) // clé étrangère dans InvoiceItem
+                .HasOne(ii => ii.Invoice)      
+                .WithMany(i => i.Items)        
+                .HasForeignKey(ii => ii.InvoiceId) 
                 .OnDelete(DeleteBehavior.Cascade);
 
         }

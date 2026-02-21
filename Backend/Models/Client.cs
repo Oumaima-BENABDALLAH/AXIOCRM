@@ -63,9 +63,5 @@ namespace ProductManager.API.Models
             }
         }
 
-
-
-        //public ICollection<ClientProduct> ClientProducts { get; set; } = new List<ClientProduct>();
-
     }
 }

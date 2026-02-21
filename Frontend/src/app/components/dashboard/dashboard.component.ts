@@ -1,6 +1,8 @@
 import { Component ,OnInit  } from '@angular/core';
 import { SparklineCardComponent } from '../sparkline-card/sparkline-card.component';
 import { NotificationService } from '../../services/notification.service';
+import { ChurnDashboard } from '../../models/churn-dashboard.model';
+import { ChurnService } from '../../services/churn.service';
 import { AuthService } from '../../services/auth.service';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {
@@ -25,6 +27,7 @@ export type ChartOptions = {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent  implements OnInit {
+  churn!: ChurnDashboard;
   public chartOptions: ChartOptions;
   franceTime: string = '';
   notifications: string[] = [];
@@ -32,12 +35,12 @@ export class DashboardComponent  implements OnInit {
   showLogoutText = false;
   profilePictureUrl: string = '';
 
-  constructor(private notificationService: NotificationService,private router :Router,private authService :AuthService) {
+  constructor(private churnService: ChurnService,private notificationService: NotificationService,private router :Router,private authService :AuthService) {
     this.chartOptions = {
       series: [
         {
           name: 'Earnings',
-          data: [1.2, 1.1, 1.3, 1.25, 1.15, 1.05, 1.2] // Exemple de valeurs
+          data: [1.2, 1.1, 1.3, 1.25, 1.15, 1.05, 1.2] 
         }
       ],
       chart: {
@@ -52,7 +55,7 @@ export class DashboardComponent  implements OnInit {
         curve: 'smooth',
         width: 2
       },
-      colors: ['#3f51b5'], // Bleu violet comme sur ton image
+      colors: ['#3f51b5'], 
       tooltip: {
         enabled: false
       }
@@ -60,8 +63,9 @@ export class DashboardComponent  implements OnInit {
   }
  
  ngOnInit(): void {
+    this.loadChurn();
     this.updateTimes();
-    setInterval(() => this.updateTimes(), 1000); // mise à jour chaque seconde
+    setInterval(() => this.updateTimes(), 1000); 
     this.notificationService.notification$
     .subscribe(n => {
       if (!n) return;
@@ -98,11 +102,13 @@ export class DashboardComponent  implements OnInit {
         this.toggleLogout();
       },1000)
      }
-       //this.authService.logout();
-  // Effacer le token
+     
   localStorage.removeItem('token');
-  // Redirection vers la page de login
    this.authService.logout();
 
 } 
+loadChurn() {
+    this.churnService.getDashboard()
+      .subscribe(res => this.churn = res);
+  }
 }

@@ -82,7 +82,6 @@ namespace ProductManager.API.Services
             {
                 ev.ResourceId = dto.ResourceId;
             }
-
             await _context.SaveChangesAsync();
             return true;
         }
@@ -118,7 +117,6 @@ namespace ProductManager.API.Services
                     });
                 }
             }
-
             return result;
         }
 
@@ -133,8 +131,6 @@ namespace ProductManager.API.Services
 
             if (ev == null)
                 return null;
-
-            // un commercial ne peut voir que ses events
             if (!isAdmin && ev.ResourceId != currentUserId)
                 return null;
 

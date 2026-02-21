@@ -108,9 +108,6 @@ namespace ProductManager.API.Services.Kanban
             await _context.SaveChangesAsync();
             return true;
         }
-
-        
-
         public async Task<ScheduleEventDto> PlanifyAsync(
             int taskId,
             PlanifyTaskDto dto,

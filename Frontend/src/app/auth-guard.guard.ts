@@ -17,14 +17,11 @@ export class AppAuthGuard extends KeycloakAuthGuard {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
-    // Redirige vers la page de connexion Keycloak si l'utilisateur n'est pas authentifié.
     if (!this.authenticated) {
       await this.keycloak.login({
         redirectUri: window.location.origin + state.url,
       });
     }
-
-    // Retourne true si l'utilisateur est authentifié, lui permettant d'accéder à la route.
     return this.authenticated;
   }
 }

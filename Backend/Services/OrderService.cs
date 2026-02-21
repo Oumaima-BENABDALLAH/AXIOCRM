@@ -16,10 +16,6 @@ namespace ProductManager.API.Services
         {
             _context = context;
         }
-
-        // -------------------------------
-        // GET ALL
-        // -------------------------------
         public async Task<IEnumerable<OrderDto>> GetAllAsync()
         {
             var orders = await _context.Orders
@@ -31,9 +27,6 @@ namespace ProductManager.API.Services
             return orders.Select(ToDto).ToList();
         }
 
-        // -------------------------------
-        // GET BY ID
-        // -------------------------------
         public async Task<OrderDto> GetByIdAsync(int id)
         {
             var order = await _context.Orders
@@ -44,9 +37,6 @@ namespace ProductManager.API.Services
             return order == null ? null : ToDto(order);
         }
 
-        // -------------------------------
-        // CREATE
-        // -------------------------------
         public async Task<OrderDto> CreateAsync(OrderDto dto)
         {
             var order = new Order
@@ -97,10 +87,6 @@ namespace ProductManager.API.Services
 
             return ToDto(order);
         }
-
-        // -------------------------------
-        // UPDATE
-        // -------------------------------
         public async Task<OrderDto> UpdateAsync(int id, OrderDto dto)
         {
             var existing = await _context.Orders
@@ -109,7 +95,6 @@ namespace ProductManager.API.Services
 
             if (existing == null) return null;
 
-            // Mettre à jour
             existing.ClientId = dto.ClientId;
             existing.OrderDate = dto.OrderDate;
             existing.PaymentMethod = dto.PaymentMethod;
@@ -121,12 +106,11 @@ namespace ProductManager.API.Services
             existing.ExpiryDate = dto.ExpiryDate;
             existing.CVV = dto.CVV;
 
-            // Supprimer anciens produits
+
             _context.OrderProducts.RemoveRange(existing.OrderProducts);
 
             decimal total = 0m;
 
-            // Ajouter nouveaux
             foreach (var p in dto.OrderProducts)
             {
                 var newOp = new OrderProduct
@@ -151,9 +135,6 @@ namespace ProductManager.API.Services
             return ToDto(existing);
         }
 
-        // -------------------------------
-        // DELETE
-        // -------------------------------
         public async Task<bool> DeleteAsync(int id)
         {
             var existing = await _context.Orders.FindAsync(id);
@@ -164,10 +145,6 @@ namespace ProductManager.API.Services
 
             return true;
         }
-
-        // -------------------------------
-        // STATS
-        // -------------------------------
         public async Task<decimal> GetTotalEarningsAsync()
         {
             return await _context.Orders.SumAsync(o => o.CashAmount ?? 0);
@@ -185,10 +162,6 @@ namespace ProductManager.API.Services
         {
             return await _context.Orders.CountAsync();
         }
-
-        // -------------------------------
-        // MAPPER
-        // -------------------------------
         private static OrderDto ToDto(Order o)
         {
             return new OrderDto

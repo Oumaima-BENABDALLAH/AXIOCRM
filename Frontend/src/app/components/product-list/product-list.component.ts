@@ -18,18 +18,15 @@ declare var $: any;
 })
 export class ProductListComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
-  uploadProgress: number = 0;   // Pour la barre de progression
-
-  //products: ProductDto[] = [];
+  uploadProgress: number = 0;  
    private productsSubject = new BehaviorSubject<ProductDto[]>([]);
   products$ = this.productsSubject.asObservable();
   filter = new UntypedFormControl('');
-  statusFilter = new UntypedFormControl('');   //  Ajouté
+  statusFilter = new UntypedFormControl('');   
   filteredProducts$!: Observable<ProductDto[]>;
   selectedProduct: ProductDto | null = null;
-  //editingProduct: Product = { id: 0, name: '', price: 0 };
+
   productForm!: UntypedFormGroup;
-  // Liste des statuts
   statusList: string[] = ['In Stock', 'Out of Stock', 'Restock'];
   isSaving = false;
   isViewMode = false;
@@ -54,7 +51,7 @@ export class ProductListComponent implements OnInit {
   { name: 'Gold', value: '#FFD700' },
   { name: 'Silver', value: '#C0C0C0' },
 ];
-  // Pour gérer l'ouverture/fermeture des actions (3 points)
+
   activeActionRow: number | null = null;
 
   constructor(
@@ -68,8 +65,6 @@ export class ProductListComponent implements OnInit {
     
     this.productForm.get('price')!.valueChanges.subscribe(() => this.updateRevenue());
     this.productForm.get('sales')!.valueChanges.subscribe(() => this.updateRevenue());
-
-    //  Combine produits + filtres
     this.filteredProducts$ = combineLatest([
       this.products$,
       this.filter.valueChanges.pipe(startWith(''), debounceTime(200)),
@@ -96,7 +91,6 @@ trackById(index: number, item: ProductDto): number {
 }
    loadProducts() {
     this.productService.getAll().subscribe((products) => {
-      //  On push les données dans le BehaviorSubject
       this.productsSubject.next(products);
     });
   }
@@ -130,12 +124,8 @@ trackById(index: number, item: ProductDto): number {
   const reader = new FileReader();
   reader.onload = () => {
     this.imagePreview = reader.result;
-
-    // Injecte la base64 dans le formulaire
     this.productForm.patchValue({ imageUrl: this.imagePreview });
     this.productForm.get('imageUrl')?.updateValueAndValidity();
-
-    // 🎬 Simule la barre de progression (comme ton design)
     this.uploadProgress = 0;
     const interval = setInterval(() => {
       this.uploadProgress += 10;
@@ -148,7 +138,6 @@ trackById(index: number, item: ProductDto): number {
 
   reader.readAsDataURL(file);
 }
-// ouvrir le file input en cliquant la zone
 triggerFileInput() {
   (this.fileInput.nativeElement as HTMLInputElement).click();
 }
@@ -172,82 +161,12 @@ triggerFileInput() {
     $('#productModal').modal('show');
   }
 
-
-/*onEdit(product: ProductDto) {
-    this.isViewMode = false;
-    this.productForm.enable();
-     this.imagePreview = product.imageUrl || null;
-     this.selectedColor = this.colorList.find(c => c.value === product.color) || null;
-    // patchValue pour remplir le formulaire (revenu est désactivé)
-    this.productForm.patchValue({
-      id: product.id ?? 0,
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      stockQuantity: product.stockQuantity,
-      sales: product.sales,
-      status: product.status,
-      imageUrl: product.imageUrl || '',
-      color: product.color || '#000000'
-    });
-    this.updateRevenue(); // pour afficher revenue calculé dans le champ désactivé
-    $('#productModal').modal('show');
-  }
-
-   saveProduct() {
-    if (this.productForm.invalid) {
-      this.productForm.markAllAsTouched();
-      return;
-    }
-
-    const formValue = this.productForm.getRawValue() as ProductDto;
-    formValue.id = formValue.id ?? 0;
-    formValue.revenue = (Number(formValue.price) || 0) * (Number(formValue.sales) || 0);
-
-    this.isSaving = true;
-
-    if (formValue.id === 0) {
-      // CREATE
-      this.productService.create(formValue).subscribe({
-        next: (created) => {
-          const current = this.productsSubject.value;
-          this.productsSubject.next([...current, created]); //  ajoute direct sans F5
-          this.finishSave(); 
-        },
-        error: (err) =>  this.finishSave(err)
-        
-      });
-    } else {
-      //  UPDATE
-      this.productService.update(formValue).subscribe({
-        next: (updated) => {
-          const current = this.productsSubject.value;
-          const index = current.findIndex((p) => p.id === updated.id);
-          if (index !== -1) {
-            const newProducts = [...current];
-            newProducts[index] = updated;
-            this.productsSubject.next(newProducts); //  mise à jour auto
-          }
-          this.isSaving = false;
-         this.finishSave();
-        },
-        error: (err) => this.finishSave(err)
-      });
-    }
-  }*/
-
  onEdit(product: ProductDto) {
   this.isViewMode = false;
   this.productForm.enable();
-
-  // garde la référence du produit édité (utile pour conserver image/color si non modifiées)
   this.selectedProduct = product;
-
-  // affiche preview + couleur sélectionnée dans le modal
   this.imagePreview = product.imageUrl || null;
   this.selectedColor = this.colorList.find(c => c.value === product.color) || null;
-
-  // patch des champs du formulaire (revenue calculé séparément)
   this.productForm.patchValue({
     id: product.id ?? 0,
     name: product.name,
@@ -260,7 +179,7 @@ triggerFileInput() {
     color: product.color || '#000000'
   });
 
-  this.updateRevenue(); // met à jour revenue dans le champ désactivé
+  this.updateRevenue(); 
   $('#productModal').modal('show');
 }
 
@@ -276,61 +195,58 @@ saveProduct() {
 
   const payload = this.productForm.getRawValue();
 
-  console.log("🟦 [DEBUG] RAW FORM VALUE :", payload);
-
-  // Champs calculés
+  console.log(" [DEBUG] RAW FORM VALUE :", payload);
   payload.revenue = payload.price * payload.sales;
   payload.color = payload.color || null;
 
-  console.log("🟩 [DEBUG] PAYLOAD FINAL :", payload);
+  console.log("[DEBUG] PAYLOAD FINAL :", payload);
 
   this.isSaving = true;
-  console.log("🔄 [DEBUG] isSaving = true");
+  console.log("[DEBUG] isSaving = true");
 
   const isCreation = payload.id === 0;
   const request = isCreation
     ? this.productService.create(payload)
     : this.productService.update(payload.id, payload);
 
-  console.log(`🟨 [DEBUG] API CALL → ${isCreation ? "POST /create" : "PUT /update/"+payload.id}`);
+  console.log(`[DEBUG] API CALL → ${isCreation ? "POST /create" : "PUT /update/"+payload.id}`);
 
   request.subscribe({
     next: (saved) => {
-      console.log("✅ [SUCCESS] Produit sauvegardé :", saved);
+      console.log("[SUCCESS] Product saved :", saved);
 
-      // Mise à jour de la liste Angular
       const list = this.productsSubject.value;
       const index = list.findIndex(p => p.id === saved.id);
 
       if (index !== -1) {
-        console.log("🟧 [DEBUG] Produit trouvé dans la liste → mise à jour");
+        console.log("[DEBUG] Product found in the updated list");
         const newList = [...list];
         newList[index] = saved;
         this.productsSubject.next(newList);
       } else {
-        console.log("🟪 [DEBUG] Nouveau produit → ajout à la liste");
+        console.log("[DEBUG] New product added to the list");
         this.productsSubject.next([...list, saved]);
       }
 
       this.isSaving = false;
-      console.log("🟢 [DEBUG] isSaving = false");
+      console.log("[DEBUG] isSaving = false");
 
       $('#productModal').modal('hide');
     },
 
     error: (err) => {
-      console.error("❌ [ERROR] API ERROR :", err);
+      console.error("[ERROR] API ERROR :", err);
 
       if (err.error) {
-        console.error("📦 [ERROR RESPONSE BODY] :", err.error);
+        console.error("[ERROR RESPONSE BODY] :", err.error);
       }
 
       if (err.status) {
-        console.error("📡 [HTTP STATUS] :", err.status);
+        console.error("[HTTP STATUS] :", err.status);
       }
 
       this.isSaving = false;
-      console.log("🔴 [DEBUG] isSaving = false (suite erreur)");
+      console.log("[DEBUG] isSaving = false (following error)");
     }
   });
 }

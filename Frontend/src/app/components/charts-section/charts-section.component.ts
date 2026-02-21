@@ -8,7 +8,7 @@ import { BaseChartDirective } from 'ng2-charts';
   styleUrls: ['./charts-section.component.css']
 })
 export class ChartsSectionComponent {
-  // Données pour le graphique à barres
+  
   barChartData = {
     labels: ['2017', '2018', '2019', '2020', '2021', '2022'],
     datasets: [
@@ -35,7 +35,6 @@ export class ChartsSectionComponent {
     ]
   };
 
-  // Données pour le graphique en lignes
   lineChartData = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
     datasets: [

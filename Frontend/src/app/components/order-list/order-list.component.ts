@@ -40,7 +40,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
     { name: 'Black', value: '#000000' },
     { name: 'White', value: '#FFFFFF' },
     { name: 'Red', value: '#FF0000' },
-    // ... etc
   ];
 
   private subs: Subscription[] = [];
@@ -58,8 +57,6 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.loadOrders();
     this.loadClients();
     this.loadProducts();
-
-    // guard valueChanges observables (product array may be empty)
    const productsChange$ = this.orderProductsArray ? this.orderProductsArray.valueChanges.pipe(startWith(this.orderProductsArray.value)): of([]);
       const deliveryPriceControl = this.orderForm.get('deliveryMethod.price');
     const deliveryChange$ = deliveryPriceControl ? deliveryPriceControl.valueChanges.pipe(startWith(this.getDeliveryCost())) : of(this.getDeliveryCost());
@@ -67,16 +64,12 @@ export class OrderListComponent implements OnInit, OnDestroy {
     this.subs.push(
       combineLatest([productsChange$, deliveryChange$]).subscribe(() => {
         this.updateTotalAmount();
-        // if payment method is cash, keep cash amount synced (numeric)
         if (this.orderForm.get('paymentMethod')?.value === 'Cash') {
           const total = Number(this.orderForm.get('totalAmount')?.value) || 0;
-          // keep numeric value
           this.orderForm.get('cashAmount')?.setValue(Number(total.toFixed(2)), { emitEvent: false });
         }
       })
     );
-
-    // react to payment method changes
   
   }
 
@@ -124,19 +117,14 @@ toggleRowSelection(order: OrderDto, event: any) {
   const checked = event.target.checked;
 
   if (checked) {
-    // Ajouter dans la liste
     if (!this.selectedOrders.includes(order.id)) {
       this.selectedOrders.push(order.id);
     }
   } else {
-    // Retirer de la liste
     this.selectedOrders = this.selectedOrders.filter(id => id !== order.id);
   }
 
-  // Mettre à jour selectAll automatiquement
   this.selectAll = this.selectedOrders.length === this.ordersSubject.value.length;
-
-  // Fix: selectedOrder = first selected only
   this.selectedOrder =
     this.selectedOrders.length > 0
       ? this.ordersSubject.value.find(o => o.id === this.selectedOrders[0])
@@ -147,17 +135,15 @@ toggleSelectAll(event: any) {
   this.selectAll = event.target.checked;
 
   if (this.selectAll) {
-    // sélectionner tous
     this.selectedOrders = this.ordersSubject.value.map(o => o.id);
-    this.selectedOrder = this.ordersSubject.value[0]; // première ligne
+    this.selectedOrder = this.ordersSubject.value[0]; 
   } else {
-    // vider
+  
     this.selectedOrders = [];
     this.selectedOrder = null;
   }
 }
 
-// Si on clique sur une ligne directement (ex: pour actions)
 selectOrder(order: OrderDto) {
   this.selectedOrders = [order.id];
   this.selectAll = false;
@@ -168,13 +154,10 @@ onPaymentMethodChange(method: string) {
   const cashFields = ['cashAmount', 'paymentDate'];
 
   if (method === 'Card') {
-    // Activer champs carte
     cardFields.forEach(f => {
       this.orderForm.get(f)?.setValidators([Validators.required]);
       this.orderForm.get(f)?.enable({ emitEvent: false });
     });
-
-    // Désactiver cash
     cashFields.forEach(f => {
       this.orderForm.get(f)?.clearValidators();
       this.orderForm.get(f)?.disable({ emitEvent: false });
@@ -182,20 +165,15 @@ onPaymentMethodChange(method: string) {
   }
 
   else if (method === 'Cash') {
-    // Activer champs cash
     cashFields.forEach(f => {
       this.orderForm.get(f)?.setValidators([Validators.required]);
       this.orderForm.get(f)?.enable({ emitEvent: false });
     });
-
-    // Désactiver carte
     cardFields.forEach(f => {
       this.orderForm.get(f)?.clearValidators();
       this.orderForm.get(f)?.disable({ emitEvent: false });
     });
   }
-
-  // revalidation
   this.orderForm.updateValueAndValidity({ onlySelf: false, emitEvent: false });
 }
 
@@ -329,15 +307,11 @@ onAdd() {
     this.orderForm.patchValue({
       id: order.id,
       clientId: order.clientId,
-
-      // 🟢 Toujours envoyer yyyy-MM-dd
       orderDate: order.orderDate?.slice(0, 10),
 
       paymentMethod: order.paymentMethod,
 
       cashAmount: order.paymentMethod === "Cash" ? order.cashAmount ?? null : null,
-
-      // 🟢 IMPORTANT : jamais d’ISO → slice(0,10)
       paymentDate:
         order.paymentMethod === "Cash" && order.paymentDate
           ? order.paymentDate.slice(0, 10)
@@ -349,15 +323,11 @@ onAdd() {
       cvv: order.paymentMethod === "Card" ? order.cvv : null,
 
       totalAmount: order.totalAmount ?? 0,
-
-      // 🟢 FIX : toujours récupérer deliveryMethodId d’abord
       deliveryMethodId:
         order.deliveryMethodId ??
         order.deliveryMethod?.id ??
         null,
     });
-
-    // -------- PRODUITS --------
     (order.orderProducts || []).forEach(p => {
   const prod = this.products.find(x => x.id === p.productId);
 
@@ -374,7 +344,6 @@ onAdd() {
 });
 
 
-    // -------- DELIVERY --------
     this.orderForm.get("deliveryMethod")?.patchValue({
       id:
         order.deliveryMethodId ??
@@ -384,8 +353,6 @@ onAdd() {
       price: order.deliveryMethod?.price ?? 0,
       estimatedDays: order.deliveryMethod?.estimatedDays ?? 0,
     });
-
-    // -------- CLIENT --------
     const client = this.clients.find(c => c.id === order.clientId);
     if (client) {
       this.showClientDetails = true;
@@ -399,15 +366,8 @@ onAdd() {
         postalCode: client.postalCode,
       });
     }
-
-    // clientId readonly
     this.orderForm.get("clientId")?.disable({ emitEvent: false, onlySelf: true });
     this.orderForm.get("clientId")?.addValidators([Validators.required]);
-
-    // Recalcul règles payement
-
-
-    // Recalcul total
     this.updateTotalAmount();
 
     $('#orderModal').modal('show');
@@ -432,14 +392,14 @@ onAdd() {
   }
 
 onSave() {
-  console.log("========== 🟦 START onSave() 🟦 ==========");
+  console.log(" START onSave()");
 
   this.onPaymentMethodChange(this.orderForm.value.paymentMethod);
 
   this.orderForm.updateValueAndValidity({ onlySelf: false, emitEvent: false });
 
   if (this.orderForm.invalid) {
-    console.warn("⚠ FORMULAIRE INVALIDE !");
+    console.warn("INVALID FORM !");
     this.logFormErrors(this.orderForm);
     return;
   }
@@ -447,25 +407,17 @@ onSave() {
   this.orderForm.enable({ emitEvent: false });
 
   const fv = this.orderForm.getRawValue();
-
-  // ==============================
-  // 🟢 DTO FINAL
-  // ==============================
   const dto: any = {
     id: fv.id ?? 0,
     clientId: Number(fv.clientId),
     orderDate: fv.orderDate,
     paymentMethod: fv.paymentMethod,
     deliveryMethodId: fv.deliveryMethodId ?? null,
-
-    // CASH
     cashAmount:
       fv.paymentMethod === 'Cash' ? Number(fv.cashAmount || 0) : null,
 
     paymentDate:
       fv.paymentMethod === 'Cash' ? fv.paymentDate ?? null : null,
-
-    // CARD
     cardNumber: fv.paymentMethod === 'Card' ? fv.cardNumber : null,
     cardHolder: fv.paymentMethod === 'Card' ? fv.cardHolder : null,
     expiryDate: fv.paymentMethod === 'Card' ? fv.expiryDate : null,
@@ -473,10 +425,6 @@ onSave() {
     cardType: fv.paymentMethod === 'Card' ? fv.cardType : null,
 
     totalAmount: this.getTotalToPay(),
-
-    // ===============================
-    // 🟦 PRODUITS 100% CORRECTS
-    // ===============================
    orderProducts: this.orderProductsArray.controls.map(p => ({
   productId: p.value.productId,
   quantity: p.value.quantity,
@@ -487,7 +435,7 @@ onSave() {
 
   };
 
-  console.log("📦 DTO FINAL :", dto);
+  console.log("DTO FINAL :", dto);
 
   this.isSaving = true;
 
@@ -499,19 +447,17 @@ onSave() {
   request.subscribe({
     next: () => {
       this.isSaving = false;
-      console.log("✅ SAVE OK");
+      console.log("SAVE OK");
       $('#orderModal').modal('hide');
       this.loadOrders();
     },
     error: (err) => {
       this.isSaving = false;
-      console.error("❌ BACKEND ERROR :", err);
-      console.error("📤 DTO AU MOMENT DE L'ERREUR :", dto);
-      alert('Erreur : ' + (err?.error || err?.message || err?.statusText));
+      console.error("BACKEND ERROR :", err);
     }
   });
 
-  console.log("========== 🟧 END onSave() 🟧 ==========");
+  console.log("END onSave()");
 }
 
 
@@ -522,7 +468,7 @@ onSave() {
         this.logFormErrors(control, `${prefix}${key}.`);
       } else {
         if (control?.invalid) {
-          console.error(`❌ Champ invalide : ${prefix}${key}`, control.errors);
+          console.error(`Invalid field : ${prefix}${key}`, control.errors);
         }
       }
     });
@@ -537,17 +483,15 @@ onSave() {
         this.trackInvalidControls(control, fullPath);
       } else {
         if (control?.invalid) {
-          console.error(`❌ INVALID → ${fullPath}`, control.errors);
+          console.error(`INVALID → ${fullPath}`, control.errors);
         }
-
-        // Only warn NULL/UNDEFINED for controls that have validators (required etc.)
         const hasValidators = !!control?.validator;
         if (hasValidators && (control?.value === null || control?.value === undefined)) {
-          console.warn(`⚠ NULL/UNDEFINED → ${fullPath}`);
+          console.warn(`NULL/UNDEFINED → ${fullPath}`);
         }
 
         if (typeof control?.value === "number" && isNaN(control.value)) {
-          console.warn(`⚠ NaN VALUE → ${fullPath}`);
+          console.warn(`NaN VALUE → ${fullPath}`);
         }
       }
     });
@@ -649,7 +593,7 @@ onSave() {
   this.orderService.generateInvoice(order.id).subscribe({
     next: () => {
       this.showToast("Invoice generated successfully!", "success");
-      this.loadOrders(); // 🔄 Recharge la liste
+      this.loadOrders(); 
     },
     error: (err) => {
       console.error("Invoice generation error", err);

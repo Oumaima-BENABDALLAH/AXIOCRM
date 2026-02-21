@@ -1,4 +1,4 @@
-// src/app/components/client/client-list/client-list.component.ts
+
 import { Component, OnInit, ElementRef } from '@angular/core';
 import { ClientService, Client } from 'src/app/services/client.service';
 import { UntypedFormControl, UntypedFormGroup, Validators, UntypedFormBuilder } from '@angular/forms';
@@ -17,18 +17,13 @@ declare var $: any;
   styleUrls: ['./client-list.component.css']
 })
 export class ClientListComponent implements OnInit {
-  // ✅ Data
   private clientsSubject = new BehaviorSubject<Client[]>([]);
   filteredClients$!: Observable<Client[]>;
   clients: Client[] = [];
   countries: Country[] = [];
-
-  // ✅ Filters
   filter = new UntypedFormControl('');
   statusFilter = new UntypedFormControl('');
   designationFilter = new UntypedFormControl('');
-
-  // ✅ UI & Form
   clientToDelete: Client | null = null;
   selectedClient: Client | null = null;
   clientForm!: UntypedFormGroup;
@@ -36,8 +31,6 @@ export class ClientListComponent implements OnInit {
   isSaving = false;
   isLoading = true;
   isViewMode = false;
-
-  // Dropdown lists
   statusList: string[] = ["Active", "Inactive", "Away", "Offline"];
   designationList: string[] = ["Manager", "Employee", "Intern", "Contractor", "Consultant"];
   departmentList: string[] = ["IT", "HR", "Finance", "Sales", "Marketing", "Operations"];
@@ -53,24 +46,20 @@ export class ClientListComponent implements OnInit {
   ngOnInit(): void {
     this.isLoading = true;
 
-    // Charger les clients
     this.clientService.getAll().subscribe({
       next: (clients) => {
         this.clients = clients;
         this.clientsSubject.next(clients);
         this.isLoading = false;
-        console.log("✅ Clients loaded successfully:", clients);
+        console.log("Clients loaded successfully:", clients);
       },
       error: (err) => {
-        console.error("❌ Erreur lors du chargement des clients :", err);
+        console.error("Error loading clients :", err);
         this.isLoading = false;
       }
     });
 
-    // Charger la liste des pays
     this. loadCountries();
-
-    // Initialisation
     this.initFilters();
     this.initForm();
   }
@@ -79,21 +68,20 @@ export class ClientListComponent implements OnInit {
        this.countryService.getCountries().subscribe({
       next: (countries) => {
         this.countries = countries;
-        console.log("🌍 Countries loaded:", countries);
+        console.log("Countries loaded:", countries);
       },
       error: (err) => {
-        console.error("❌ Erreur lors du chargement des pays :", err);
+        console.error("Error loading countries :", err);
       }
     });
   }
- // ✅ Voir les détails d’un client (affiche le modal en mode lecture seule)
  
    onView(client: Client) {
     this.isViewMode = true;
      const formatDate = (dateString: any) => {
      if (!dateString) return null;
        const d = new Date(dateString);
-       return d.toISOString().split('T')[0]; // ✅ garde seulement "YYYY-MM-DD"
+       return d.toISOString().split('T')[0]; 
      };
     this.clientForm.patchValue({
       id: client.id ?? 0,
@@ -118,10 +106,7 @@ export class ClientListComponent implements OnInit {
       occupationGroup: client.occupationGroup,
       department: client.department,
     });
-  
-    //  rendre le formulaire désactivé
     this.clientForm.disable();
-  
     $('#clientModal').modal('show');
   }
 
@@ -137,14 +122,11 @@ loadClient() {
       this.isLoading = false;
     },
     error: (err) => {
-      console.error('❌ Erreur lors du chargement des clients:', err);
+      console.error('Error loading clients', err);
       this.isLoading = false;
     }
   });
 }
-
-
-  // ✅ Observable combiné pour tous les filtres
   initFilters() {
     this.filteredClients$ = combineLatest([
       this.clientsSubject.asObservable(),
@@ -169,7 +151,6 @@ loadClient() {
     );
   }
 
-  // ✅ Formulaire
   initForm() {
     this.clientForm = this.fb.group({
       id: [0],
@@ -205,7 +186,6 @@ loadClient() {
     this.clientForm.get('fullName')?.setValue(`${name} ${lastName}`.trim(), { emitEvent: false });
   }
 
-  // ✅ CRUD
   onAdd() {
     this.clientForm.reset({ id: 0, phone: '' });
     this.avatarUrl = null;
@@ -216,8 +196,6 @@ loadClient() {
 onEdit(client: Client) {
   this.isViewMode = false;
   this.clientForm.enable();
-
-  // ✅ Conversion correcte des dates avant injection dans le formulaire
   this.clientForm.patchValue({
     ...client,
     phone: client.phone || '',
@@ -232,7 +210,6 @@ private normalizePhone(phone: any): string {
   if (!phone) return '';
   if (typeof phone === 'string') return phone.trim();
 
-  // Si le backend renvoie un objet
   if (typeof phone === 'object') {
     const dial = phone.dialCode || '';
     const num = phone.phoneNumber || '';
@@ -245,7 +222,7 @@ private formatDateForInput(dateValue: string |Date): string {
   
   const d = (typeof dateValue === 'string') ? new Date(dateValue) : dateValue;
   
-  if (isNaN(d.getTime())) return ''; // Sécurité en cas de date invalide
+  if (isNaN(d.getTime())) return ''; 
   
   const year = d.getFullYear();
   const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -253,84 +230,6 @@ private formatDateForInput(dateValue: string |Date): string {
   
   return `${year}-${month}-${day}`;
 }
-
-// save client
-
-/* saveClient() {
-  if (this.clientForm.invalid) {
-    this.clientForm.markAllAsTouched();
-    return;
-  }
-
-  this.isSaving = true;
-  const clientData = this.clientForm.getRawValue();
-
-  // --- normalize payload
- const payload: any = { ...clientData };
-  if (payload.phone && typeof payload.phone === 'object') {
-    payload.phone = payload.phone.phoneNumber || `${payload.phone.dialCode || ''}${payload.phone.phoneNumber || ''}`;
-  }
-  delete payload.fullName;
-  if (payload.dateOfBirth) payload.dateOfBirth = new Date(payload.dateOfBirth).toISOString();
-  if (payload.hireDate) payload.hireDate = new Date(payload.hireDate).toISOString();
-
-  const request$ = payload.id === 0
-    ? this.clientService.create(payload)
-    : this.clientService.update(payload);
-
-  request$.subscribe({
-    next: (savedClient) => {
-      this.isSaving = false;
-      if (!savedClient || !savedClient.id) {
-        console.warn('Backend did not return updated client, reloading list.');
-        this.loadClient();
-        this.closeModal();
-        return;
-      }
-      const updatedClients = [...this.clients];
-      if (payload.id === 0) {
-        updatedClients.push(savedClient);
-      } else {
-        const index = updatedClients.findIndex(c => c.id === savedClient.id);
-        if (index !== -1) updatedClients[index] = savedClient;
-      }
-      this.clients = updatedClients;
-      this.clientsSubject.next(updatedClients);
-      this.closeModal();
-    },
-    error: (err) => {
-      console.error('❌ Erreur lors de la sauvegarde du client:', err);
-      this.isSaving = false;
-
-      if (!err.error) {
-        alert('Erreur serveur : ' + (err.message || 'unknown'));
-        return;
-      }
-
-      const modelErrors = err.error.errors;
-      if (modelErrors) {
-        console.group('🔎 Détails des erreurs de validation .NET');
-        console.table(modelErrors);
-        console.groupEnd();
-        for (const field in modelErrors) {
-          if (!modelErrors.hasOwnProperty(field)) continue;
-          const key = field.split('.').pop()!;
-          const control = this.clientForm.get(key);
-          const messages = modelErrors[field] as string[];
-          if (control) {
-            control.setErrors({ server: messages.join(' | ') });
-          } else {
-            // message global
-            console.warn(`Server validation for ${key}:`, messages);
-          }
-        }
-        return;
-      }
-
-      alert('Erreur inconnue lors de la sauvegarde');
-    }
-  });
-}*/
 saveClient() {
   if (this.clientForm.invalid) {
     this.clientForm.markAllAsTouched();
@@ -342,18 +241,14 @@ saveClient() {
   const payload: any = { ...clientData };
 
   delete payload.fullName;
-
-  // 🔹 Convertir les dates en ISO
   if (payload.dateOfBirth) {
     payload.dateOfBirth = new Date(payload.dateOfBirth).toISOString();
   }
   if (payload.hireDate) {
     payload.hireDate = new Date(payload.hireDate).toISOString();
   }
-
-  // 🔹 Nettoyer le champ téléphone
   if (payload.phone) {
-    payload.phone = payload.phone.toString().replace(/\s+/g, ''); // supprime espaces éventuels
+    payload.phone = payload.phone.toString().replace(/\s+/g, ''); 
   }
 
   const request$ = payload.id === 0
@@ -368,31 +263,25 @@ saveClient() {
     },
     error: (err) => {
       this.isSaving = false;
-      console.error(' Erreur lors de la sauvegarde du client:', err);
+      console.error('Error while saving the client :', err);
     }
   });
 }
 
 private updateClientList(savedClient: any) {
   if (!savedClient) return;
-
-  // Chercher l'index du client existant
   const index = this.clients.findIndex(c => c.id === savedClient.id);
 
   if (index >= 0) {
-    // 🔹 Cas modification → remplacer l’ancien client
     this.clients[index] = { ...savedClient };
   } else {
-    // 🔹 Cas création → ajouter le nouveau client
     this.clients.unshift(savedClient);
   }
-
-  // 🔹 Notifier les abonnés (table, affichage, etc.)
   this.clientsSubject.next([...this.clients]);
 }
 
   onDelete(client: Client) {
-    if (confirm("Voulez-vous supprimer ce client ?")) {
+    if (confirm("Do you want to delete this client ?")) {
       this.clientService.delete(client.id!).subscribe(() => {
         const updated = this.clients.filter(c => c.id !== client.id);
         this.clients = updated;
@@ -401,7 +290,6 @@ private updateClientList(savedClient: any) {
     }
   }
 
-  // ✅ Modal
   openModal() {
     const modalEl = document.getElementById('clientModal');
     if (!modalEl) return;
@@ -416,7 +304,6 @@ private updateClientList(savedClient: any) {
     modal.hide();
   }
 
-  // ✅ Utils
   highlight(text: string, search: string): SafeHtml {
     if (!search) return text;
     const re = new RegExp(search, 'gi');

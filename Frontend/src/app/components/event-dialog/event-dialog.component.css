@@ -6,9 +6,6 @@
   overflow: hidden;
 }
 
-
-
-
 .dialog-body {
   padding: 16px;
   max-height: calc(90vh - 120px);
@@ -32,7 +29,7 @@ mat-form-field {
   width: 100%;
 }
 
-/* Color picker */
+
 .color-picker {
   height: 36px;
   width: 60px;
@@ -41,21 +38,21 @@ mat-form-field {
   cursor: pointer;
 }
 
-/* FOOTER */
+
 .dialog-footer {
   border-top: 1px solid #e0e0e0;
   padding: 12px 16px;
   display: flex;
   justify-content: space-between;
 }
-/* Row spéciale pour Start / End */
+
 .date-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-/* Chaque champ date */
+
 .date-field {
   display: flex;
   flex-direction: column;
@@ -91,7 +88,7 @@ mat-form-field {
   align-items: center;
   justify-content: space-between;
 
-  background-color: #1976d2; /* bleu Material */
+  background-color: #1976d2;
   color: white;
 
   padding: 14px 16px;

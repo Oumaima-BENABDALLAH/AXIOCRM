@@ -22,7 +22,6 @@ namespace ProductManager.API.Controllers
             _orderService = orderService;
         }
 
-        // GET ALL
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrderDto>>> GetAll()
         {
@@ -30,7 +29,6 @@ namespace ProductManager.API.Controllers
             return Ok(orders);
         }
 
-        // GET BY ID
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderDto>> GetById(int id)
         {
@@ -38,7 +36,6 @@ namespace ProductManager.API.Controllers
             return order == null ? NotFound() : Ok(order);
         }
 
-        // CREATE
         [HttpPost]
         public async Task<ActionResult<OrderDto>> Create([FromBody] OrderDto dto)
         {
@@ -46,7 +43,6 @@ namespace ProductManager.API.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
-        // UPDATE
         [HttpPut("{id}")]
         public async Task<ActionResult<OrderDto>> Update(int id, [FromBody] OrderDto dto)
         {
@@ -55,7 +51,6 @@ namespace ProductManager.API.Controllers
             return Ok(updated);
         }
 
-        // DELETE
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

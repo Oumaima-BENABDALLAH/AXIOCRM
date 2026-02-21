@@ -14,13 +14,11 @@ declare var $: any;
 })
 export class InvoiceComponent implements OnInit {
 
-  /** MODE LISTE */
   invoices: InvoiceDto[] = [];
   filteredInvoices$!: Observable<InvoiceDto[]>;
   filter = new FormControl('');
   selectedInvoice: InvoiceDto | null = null;
   selectedInvoiceModal: any = null;
-  /** MODE DETAIL (ancien code) */
   invoice!: InvoiceDto;
   loading = true;
   error = '';
@@ -35,15 +33,12 @@ export class InvoiceComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // Si URL contient un ID -> Mode DETAIL
     const invoiceId = Number(this.route.snapshot.paramMap.get('id'));
 
     if (invoiceId) {
-      this.loadInvoice(invoiceId);   // Mode DETAIL
+      this.loadInvoice(invoiceId);   
       return;
     }
-
-    // Sinon -> MODE LISTE
     this.loadInvoices();
 
    this.filteredInvoices$ = combineLatest([
@@ -61,17 +56,13 @@ export class InvoiceComponent implements OnInit {
   })
 );
   }
-
-  /** ----------------------------- */
-  /**             MODE LISTE        */
-  /** ----------------------------- */
  toggleActions(event: Event): void { event.stopPropagation(); const target = event.currentTarget as HTMLElement; target.classList.toggle('active'); }
 
   loadInvoices(): void {
     this.invoiceService.getAll().subscribe({
       next: (data) => {
         this.invoices = data;
-        this.refresh$.next();  // Refresh observable
+        this.refresh$.next();  
       },
       error: () => {
         this.error = "Unable to load invoices.";
@@ -99,8 +90,6 @@ export class InvoiceComponent implements OnInit {
 
 openInvoicePreview(invoice: any) {
   this.selectedInvoice = invoice;
-
-  // show modal
   $('#invoiceModal').modal('show');
 }
 
@@ -109,10 +98,6 @@ openInvoicePreview(invoice: any) {
   }
 
 
-
-  /** ----------------------------- */
-  /**         MODE DETAIL (ancien)  */
-  /** ----------------------------- */
 
   loadInvoice(id: number): void {
     this.loading = true;
@@ -135,8 +120,6 @@ openInvoicePreview(invoice: any) {
  downloadInvoice() {
   const element = document.querySelector('.invoice-card');
   if (!element) return;
-
-  // IMPORTANT : obtenir la fonction html2pdf correctement
   const h2p: any = (html2pdf as any).default || html2pdf;
 
   const options = {
