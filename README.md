@@ -29,7 +29,8 @@ Built from scratch with a focus on scalability, clean architecture and real-time
 *Comprehensive order processing with automated PDF invoice generation.*
 
 ### ⚙️ Automation Monitoring
-![Hangfire](screenshots/image_86c604.png)
+![Hangfire](screenshots/AXIOCRM_HANGFIRE.PNG)
+![Hangfire](screenshots/AXIOCRM_HANGFIREJOBS.PNG)
 *Hangfire dashboard tracking background jobs for email reminders and AI training.*
 
 ## Core Features
