@@ -1,4 +1,3 @@
-
 # AXIOCRM
 
 AXIOCRM is a modular, automation-driven CRM system designed to streamline sales workflows, enhance team productivity, and improve business visibility.
@@ -7,67 +6,53 @@ Built from scratch with a focus on scalability, clean architecture and real-time
 
 ## Tech Stack
 
-Backend:
+**Backend:** ASP.NET Core Web API, JWT, Hangfire, SignalR, SQL Server.
+**Frontend:** Angular 17, TypeScript, Modular Architecture.
 
-ASP.NET Core Web API
+## 📸 Visual Showcase
 
-JWT Authentication
+### 📊 Dashboard Analytics
+![Dashboard](screenshots/AXIOCRM_DASHBOARD.PNG)
+*Dynamic analytics tracking earnings, projects, and client growth.*
 
-Role-based Authorization
+### 📅 Smart Scheduler & Real-time Alerts
+![Scheduler](screenshots/AXIOCRM_SCHEDULER.PNG)
+*Meeting management featuring **SignalR** real-time toast notifications triggered by **Hangfire**.*
 
-Hangfire (Background Jobs)
+### 📋 Sales Pipeline (Kanban)
+![Kanban](screenshots/AXIOCRM_KANBAN.png)
+*Visual opportunity tracking with drag-and-drop workflow.*
 
-SignalR (Real-time Notifications)
+### 📄 Order Management & Invoicing
+![Orders](screenshots/AXIOCRM_ORDERS.PNG)
+![Invoices](screenshots/AXIOCRM_INVOICES.PNG)
+*Comprehensive order processing with automated PDF invoice generation.*
 
-SQL Server
-
-Frontend:
-
-Angular 17
-
-TypeScript
-
-Modular Component Architecture
-
-Responsive UI (HTML, CSS)
+### ⚙️ Automation Monitoring
+![Hangfire](screenshots/image_86c604.png)
+*Hangfire dashboard tracking background jobs for email reminders and AI training.*
 
 ## Core Features
 
-Secure authentication (JWT)
+* **Secure authentication (JWT)**
+* **Client, product and order management**
+* **Automated invoice generation** (PDF export & print)
+* **Sales pipeline** with Kanban drag & drop
+* **Smart meeting scheduler**
+* **Automatic email reminders** before meetings
+* **Real-time toast notifications** for administrators
+* **Centralized email tracking** with date filtering
+* **Dashboard analytics**
+* **AI module** (in progress)
 
-Client, product and order management
+## Architecture Principles
 
-Automated invoice generation (PDF export & print)
-
-Sales pipeline with Kanban drag & drop
-
-Smart meeting scheduler
-
-Automatic email reminders before meetings
-
-Real-time toast notifications for administrators
-
-Centralized email tracking with date filtering
-
-Dashboard analytics
-
-AI module (in progress)
-
-Architecture Principles
-
-Clean separation between API & UI
-
-Modular structure
-
-Event-driven notifications
-
-Background job processing
-
-Scalable design for future AI integration
+* Clean separation between API & UI
+* Modular structure
+* Event-driven notifications
+* Background job processing
+* Scalable design for future AI integration
 
 ## 🎯 Vision
 
-The goal of AXIOCRM is not just CRUD operations, but workflow automation and intelligent business management.
-
-Currently expanding toward AI-powered predictive insights.
-
+The goal of AXIOCRM is not just CRUD operations, but workflow automation and intelligent business management. Currently expanding toward AI-powered predictive insights.
