@@ -16,7 +16,7 @@ ngAfterViewInit(): void {
       clearInterval(interval);
 
       google.accounts.id.initialize({
-        client_id: '',
+        client_id: '1018179724908-d7l8b3kcqgubkg6vnco23jq0g9igrh23.apps.googleusercontent.com',
         callback: (response: any) => this.handleGoogleResponse(response)
       });
 

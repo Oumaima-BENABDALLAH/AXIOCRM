@@ -27,12 +27,7 @@ namespace ProductManager.API.Services
         {
             var query = _context.ScheduleEvents.AsQueryable();
 
-            if (!isAdmin)
-                query = query.Where(e => e.ResourceId == userId);
-
-            return await query
-                .Select(e => e.ToDto())
-                .ToListAsync();
+            return await query.Select(e => e.ToDto()).ToListAsync();
         }
 
         public async Task<ScheduleEventDto> CreateAsync(
@@ -40,8 +35,12 @@ namespace ProductManager.API.Services
             string userId,
             bool isAdmin)
         {
-            if (!isAdmin && dto.ResourceId != userId)
-                throw new UnauthorizedAccessException();
+            bool isOwnResource = string.Equals(dto.ResourceId, userId, StringComparison.OrdinalIgnoreCase);
+
+            if (!isAdmin && !string.IsNullOrEmpty(dto.ResourceId) && !isOwnResource)
+            {
+                throw new UnauthorizedAccessException("Accès refusé : Identifiants non correspondants.");
+            }
 
             var entity = new ScheduleEvent
             {
@@ -50,7 +49,7 @@ namespace ProductManager.API.Services
                 End = dto.End,
                 Description = dto.Description,
                 Color = dto.Color ?? "#3788d8",
-                ResourceId = dto.ResourceId
+                ResourceId = isAdmin ? dto.ResourceId : userId
             };
 
             _context.ScheduleEvents.Add(entity);
@@ -58,7 +57,6 @@ namespace ProductManager.API.Services
 
             return entity.ToDto();
         }
-
         public async Task<bool> UpdateAsync(
           int id,
           ScheduleEventDto dto,

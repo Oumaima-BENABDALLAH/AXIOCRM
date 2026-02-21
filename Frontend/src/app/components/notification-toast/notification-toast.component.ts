@@ -28,7 +28,7 @@ ngOnInit(): void {
     });
   this.notificationService.notification$.subscribe(data => {
     if (!data) return;
-  if (!this.isOnSchedulerPage()) return;
+ // if (!this.isOnSchedulerPage()) return;
     this.toasts.push(data);
   });
 }

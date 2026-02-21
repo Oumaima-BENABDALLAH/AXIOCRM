@@ -10,7 +10,7 @@ import { BaseChartDirective } from 'ng2-charts';
 export class ChartsSectionComponent {
   
   barChartData = {
-    labels: ['2017', '2018', '2019', '2020', '2021', '2022'],
+    labels: ['2020', '2021', '2022', '2023', '2024', '2025'],
     datasets: [
       {
         label: 'Total',
@@ -39,7 +39,7 @@ export class ChartsSectionComponent {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
     datasets: [
       {
-        label: '2020 Report',
+        label: '2022 Report',
         data: [30, 50, 40, 60, 35, 70, 50],
         borderColor: '#FF6384',
         backgroundColor: 'transparent',
@@ -47,7 +47,7 @@ export class ChartsSectionComponent {
         pointRadius: 4,
       },
       {
-        label: '2021 Report',
+        label: '2024 Report',
         data: [50, 60, 55, 40, 65, 60, 75],
         borderColor: '#36A2EB',
         backgroundColor: 'transparent',

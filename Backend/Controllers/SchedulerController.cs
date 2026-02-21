@@ -31,15 +31,20 @@ namespace ProductManager.API.Controllers
             return Ok(await _service.GetAllAsync(UserId, IsAdmin));
         }
 
-        
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ScheduleEventDto dto)
         {
-            var created = await _service.CreateAsync(dto, UserId, IsAdmin);
-            return Ok(created);
+            try
+            {
+                var created = await _service.CreateAsync(dto, UserId, IsAdmin);
+                return Ok(created);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Forbid(); 
+            }
         }
 
-        
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] ScheduleEventDto dto)
         {
