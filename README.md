@@ -12,7 +12,7 @@ Built from scratch with a focus on scalability, clean architecture and real-time
 ## 📸 Visual Showcase
 
 ### 🔐 Secure Authentication & Social Login
-![Authentication](AXIOCRM_AUTHJWT.PNG)
+![Authentication](AXIOCRM_AUTHJWT.png)
 *Multi-method authentication system including standard **JWT (JSON Web Tokens)** and **Google OAuth2** integration for a seamless user experience.*
 
 ### 📊 Dashboard Analytics
