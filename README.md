@@ -5,7 +5,7 @@ AXIOCRM is a modular, automation-driven CRM system designed to streamline sales 
 
 Built from scratch with a focus on scalability, clean architecture and real-time communication.
 
-## 🏗 Tech Stack
+## Tech Stack
 
 Backend:
 
@@ -31,7 +31,7 @@ Modular Component Architecture
 
 Responsive UI (HTML, CSS)
 
-## 🚀 Core Features
+## Core Features
 
 Secure authentication (JWT)
 
