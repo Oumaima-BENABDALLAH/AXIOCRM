@@ -53,7 +53,7 @@ Dashboard analytics
 
 AI module (in progress)
 
-⚙ Architecture Principles
+Architecture Principles
 
 Clean separation between API & UI
 
