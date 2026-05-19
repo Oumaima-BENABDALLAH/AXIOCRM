@@ -18,13 +18,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: 3. Restaurer les dépendances NuGet
-      run: dotnet restore Backend/ProductManager.API.csproj
+      run: dotnet restore Backend/ProductManager.API/ProductManager.API.sln
 
     - name: 4. Compiler l'application
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build Backend/ProductManager.API/ProductManager.API.sln --configuration Release --no-restore
 
     - name: 5. Exécuter les tests unitaires
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test Backend/ProductManager.API/ProductManager.API.sln --configuration Release --no-build --verbosity normal
 
   build-and-push-docker:
     needs: build-and-test # S'exécute uniquement si les tests passent
