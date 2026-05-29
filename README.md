@@ -7,10 +7,12 @@ Built from scratch with a focus on **Clean Architecture**, **CQRS**, **DDD**, an
 ## Tech Stack
 
 **Backend:** ASP.NET Core Web API, JWT, Hangfire, SignalR, SQL Server.
+
 **Frontend:** Angular 17, TypeScript, Modular Architecture.
+
 **Architecture:** Clean Architecture · CQRS (MediatR) · 
-Domain-Driven Design (Aggregates, Value Objects, 
-Domain Events)
+
+Domain-Driven Design (Aggregates, Value Objects, Domain Events)
 
 **Testing:** xUnit · TDD approach on core business logic
 
@@ -23,13 +25,21 @@ strict layer separation:
 
 AXIOCRM/
 ├── AXIOCRM.Domain/          # Entities, Aggregates, 
+
 │                              Value Objects, Domain Events
+
 ├── AXIOCRM.Application/     # CQRS Commands & Queries 
+
 │                              (MediatR), DTOs, Interfaces
+
 ├── AXIOCRM.Infrastructure/  # EF Core, SQL Server, 
+
 │                              Email, Hangfire
+
 ├── AXIOCRM.API/             # Controllers, Middleware, 
+
 │                              SignalR Hubs
+
 └── AXIOCRM.Tests/           # xUnit unit tests per module
 
 ## Core Features
