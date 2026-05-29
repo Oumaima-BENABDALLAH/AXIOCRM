@@ -24,8 +24,9 @@ The solution follows Clean Architecture principles with
 strict layer separation:
 
 AXIOCRM/
-├── AXIOCRM.Domain/                 # Entities, Aggregates, 
-│                                   Value Objects, Domain Events
+├── AXIOCRM.Domain/                      # Entities, Aggregates, 
+
+│                                        Value Objects, Domain Events
 
 ├── AXIOCRM.Application/     # CQRS Commands & Queries 
 
