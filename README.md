@@ -24,9 +24,8 @@ The solution follows Clean Architecture principles with
 strict layer separation:
 
 AXIOCRM/
-├── AXIOCRM.Domain/          # Entities, Aggregates, 
-
-│                              Value Objects, Domain Events
+├── AXIOCRM.Domain/                 # Entities, Aggregates, 
+│                                   Value Objects, Domain Events
 
 ├── AXIOCRM.Application/     # CQRS Commands & Queries 
 
@@ -86,6 +85,6 @@ AXIOCRM/
 ## 🎯 Vision
 
 AXIOCRM is not a CRUD demo. It is a real SaaS-oriented 
-product built to production standards — clean layers, 
+product built to production standards  clean layers, 
 tested business logic, automated workflows, and a 
 roadmap toward AI-powered insights.
