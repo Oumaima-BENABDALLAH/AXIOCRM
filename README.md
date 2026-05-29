@@ -2,12 +2,47 @@
 
 AXIOCRM is a modular, automation-driven CRM system designed to streamline sales workflows, enhance team productivity, and improve business visibility.
 
-Built from scratch with a focus on scalability, clean architecture and real-time communication.
+Built from scratch with a focus on **Clean Architecture**, **CQRS**, **DDD**, and real-time communication.
 
 ## Tech Stack
 
 **Backend:** ASP.NET Core Web API, JWT, Hangfire, SignalR, SQL Server.
 **Frontend:** Angular 17, TypeScript, Modular Architecture.
+**Architecture:** Clean Architecture · CQRS (MediatR) · 
+Domain-Driven Design (Aggregates, Value Objects, 
+Domain Events)
+
+**Testing:** xUnit · TDD approach on core business logic
+
+**DevOps:** Docker (local environment)
+
+## Architecture Overview
+
+The solution follows Clean Architecture principles with 
+strict layer separation:
+
+AXIOCRM/
+├── AXIOCRM.Domain/          # Entities, Aggregates, 
+│                              Value Objects, Domain Events
+├── AXIOCRM.Application/     # CQRS Commands & Queries 
+│                              (MediatR), DTOs, Interfaces
+├── AXIOCRM.Infrastructure/  # EF Core, SQL Server, 
+│                              Email, Hangfire
+├── AXIOCRM.API/             # Controllers, Middleware, 
+│                              SignalR Hubs
+└── AXIOCRM.Tests/           # xUnit unit tests per module
+
+## Core Features
+
+- Secure authentication (JWT & Google OAuth2)
+- Client, product and order management
+- Automated invoice generation (PDF export & print)
+- Sales pipeline with Kanban drag & drop
+- Smart meeting scheduler with automated email reminders
+- Real-time toast notifications via SignalR + Hangfire
+- Centralized email tracking with date filtering
+- Dashboard analytics
+- AI module (in progress)
 
 ## 📸 Visual Showcase
 
@@ -37,27 +72,10 @@ Built from scratch with a focus on scalability, clean architecture and real-time
 ![Hangfire](screenshots/AXIOCRM_HANGFIREJOBS.PNG)
 *Hangfire dashboard tracking background jobs for email reminders and AI training.*
 
-## Core Features
-
-* **Secure authentication (JWT)**
-* **Client, product and order management**
-* **Automated invoice generation** (PDF export & print)
-* **Sales pipeline** with Kanban drag & drop
-* **Smart meeting scheduler**
-* **Automatic email reminders** before meetings
-* **Real-time toast notifications** for administrators
-* **Centralized email tracking** with date filtering
-* **Dashboard analytics**
-* **AI module** (in progress)
-
-## Architecture Principles
-
-* Clean separation between API & UI
-* Modular structure
-* Event-driven notifications
-* Background job processing
-* Scalable design for future AI integration
 
 ## 🎯 Vision
 
-The goal of AXIOCRM is not just CRUD operations, but workflow automation and intelligent business management. Currently expanding toward AI-powered predictive insights.
+AXIOCRM is not a CRUD demo. It is a real SaaS-oriented 
+product built to production standards — clean layers, 
+tested business logic, automated workflows, and a 
+roadmap toward AI-powered insights.
