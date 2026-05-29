@@ -23,24 +23,14 @@ Domain-Driven Design (Aggregates, Value Objects, Domain Events)
 The solution follows Clean Architecture principles with 
 strict layer separation:
 
+```
 AXIOCRM/
-├── AXIOCRM.Domain/                      # Entities, Aggregates, 
-
-│                                        Value Objects, Domain Events
-
-├── AXIOCRM.Application/     # CQRS Commands & Queries 
-
-│                              (MediatR), DTOs, Interfaces
-
-├── AXIOCRM.Infrastructure/  # EF Core, SQL Server, 
-
-│                              Email, Hangfire
-
-├── AXIOCRM.API/             # Controllers, Middleware, 
-
-│                              SignalR Hubs
-
+├── AXIOCRM.Domain/          # Entities, Aggregates, Value Objects, Domain Events
+├── AXIOCRM.Application/     # CQRS Commands & Queries (MediatR), DTOs, Interfaces
+├── AXIOCRM.Infrastructure/  # EF Core, SQL Server, Email, Hangfire
+├── AXIOCRM.API/             # Controllers, Middleware, SignalR Hubs
 └── AXIOCRM.Tests/           # xUnit unit tests per module
+```
 
 ## Core Features
 
