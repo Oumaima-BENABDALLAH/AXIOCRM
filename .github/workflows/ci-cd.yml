@@ -18,13 +18,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: 3. Restaurer les dépendances NuGet
-      run: dotnet restore AXIOCRM.sln
+      run: dotnet restore Backend/ProductManager.API.sln
 
     - name: 4. Compiler l'application complète
-      run: dotnet build AXIOCRM.sln --configuration Release --no-restore
+      run: dotnet build Backend/ProductManager.API.sln --configuration Release --no-restore
 
     - name: 5. Exécuter les tests unitaires et d'intégration
-      run: dotnet test AXIOCRM.sln --configuration Release --no-build --verbosity normal
+      run: dotnet test Backend/ProductManager.API.sln --configuration Release --no-build --verbosity normal
 
   build-and-push-docker:
     needs: build-and-test # S'exécute uniquement si les tests passent
@@ -45,6 +45,6 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
-        file: ./Dockerfile # Utilise le Dockerfile principal situé à la racine du projet
+        file: ./Dockerfile # Utilise le Dockerfile situé à la racine globale
         push: true
         tags: ghcr.io/oumaima-benabdallah/axiocrm-api:latest
