@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main, master ] # Déclenche le pipeline à chaque push sur ces branches
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
