@@ -24,5 +24,5 @@ RUN dotnet publish "ProductManager.API.csproj" -c Release -o /app/publish /p:Use
 
 FROM base AS final
 WORKDIR /app
-COPY --with=publish /app/publish .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ProductManager.API.dll"]
