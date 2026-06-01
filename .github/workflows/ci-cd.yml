@@ -51,4 +51,4 @@ jobs:
         context: .
         file: ./Backend/Dockerfile # Utilise le Dockerfile situé dans le dossier Backend
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/axiocrm-backend:latest
+        tags: ghcr.io/oumaima-benabdallah/axiocrm-backend:latest
