@@ -43,12 +43,12 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }} # Jeton temporaire fourni automatiquement par GitHub Actions
+        password: ${{ secrets.GITHUB_TOKEN }}
 
     - name: 3. Build et Push de l'image Docker
       uses: docker/build-push-action@v5
       with:
         context: .
-        file: ./Dockerfile # Utilise le Dockerfile situé à la racine globale
+        file: ./Backend/Dockerfile # Utilise le Dockerfile situé dans le dossier Backend
         push: true
-        tags: ghcr.io/oumaima-benabdallah/axiocrm-api:latest
+        tags: ghcr.io/${{ github.repository_owner }}/axiocrm-backend:latest
