@@ -17,6 +17,7 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+<<<<<<< HEAD
     - name: 3. Restaurer les dépendances NuGet via la Solution
       run: dotnet restore Backend/ProductManager.API.sln
 
@@ -25,6 +26,16 @@ jobs:
 
     - name: 5. Exécuter les tests unitaires et d'intégration
       run: dotnet test Backend/ProductManager.API.sln --no-build --verbosity normal
+=======
+    - name: 3. Restaurer les dépendances NuGet
+      run: dotnet restore Backend/ProductManager.API/ProductManager.API.sln
+
+    - name: 4. Compiler l'application
+      run: dotnet build Backend/ProductManager.API/ProductManager.API.sln --configuration Release --no-restore
+
+    - name: 5. Exécuter les tests unitaires
+      run: dotnet test Backend/ProductManager.API/ProductManager.API.sln --configuration Release --no-build --verbosity normal
+>>>>>>> 50f9c92f37ad4e92406dfbb91b2eae309bb03187
 
   build-and-push-docker:
     needs: build-and-test # S'exécute uniquement si les tests passent
@@ -39,12 +50,22 @@ jobs:
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
+<<<<<<< HEAD
         password: ${{ secrets.GITHUB_TOKEN }}
+=======
+        password: ${{ secrets.GITHUB_TOKEN }} # Jeton temporaire fourni automatiquement par GitHub Actions
+>>>>>>> 50f9c92f37ad4e92406dfbb91b2eae309bb03187
 
     - name: 3. Build et Push de l'image Docker
       uses: docker/build-push-action@v5
       with:
         context: .
+<<<<<<< HEAD
         file: ./Backend/Dockerfile # Spécifie le bon chemin vers votre Dockerfile
         push: true
         tags: ghcr.io/oumaima-benabdallah/axiocrm-api:latest
+=======
+        file: ./Dockerfile
+        push: true
+        tags: ghcr.io/oumaima-benabdallah/axiocrm-api:latest
+>>>>>>> 50f9c92f37ad4e92406dfbb91b2eae309bb03187
