@@ -1,0 +1,50 @@
+name: CI/CD Pipeline AXIOCRM
+
+on:
+  push:
+    branches: [ main, master ] # Déclenche le pipeline à chaque push sur ces branches
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1. Récupérer le code du dépôt
+      uses: actions/checkout@v4
+
+    - name: 2. Configurer le SDK .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: 3. Restaurer les dépendances NuGet via la Solution
+      run: dotnet restore Backend/ProductManager.API.sln
+
+    - name: 4. Compiler l'application complète
+      run: dotnet build Backend/ProductManager.API.sln --configuration Release --no-restore
+
+    - name: 5. Exécuter les tests unitaires et d'intégration
+      run: dotnet test Backend/ProductManager.API.sln --no-build --verbosity normal
+
+  build-and-push-docker:
+    needs: build-and-test # S'exécute uniquement si les tests passent
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 1. Récupérer le code
+      uses: actions/checkout@v4
+
+    - name: 2. Connexion automatique à GHCR
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: 3. Build et Push de l'image Docker
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Backend/Dockerfile # Spécifie le bon chemin vers votre Dockerfile
+        push: true
+        tags: ghcr.io/oumaima-benabdallah/axiocrm-api:latest
