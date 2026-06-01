@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ProductManager.API.Models.dto;
-using ProductManager.API.Models;
-using ProductManager.API.Services;
-using ProductManager.API.Services.Interfaces;
+﻿using AXIOCRM.Application.DTOs;
+using AXIOCRM.Application.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace ProductManager.API.Controllers
 {

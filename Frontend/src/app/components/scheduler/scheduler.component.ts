@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit , OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { CalendarOptions } from '@fullcalendar/core';
@@ -8,15 +8,17 @@ import { EventService } from '../../services/Event.service';
 import { ScheduleEventDto } from '../../models/schedule-event.model';
 import { EventDialogComponent } from '../event-dialog/event-dialog.component';
 import { NotificationService } from '../../services/notification.service';
+import { Subscription } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-scheduler',
   templateUrl: './scheduler.component.html',
   styleUrls: ['./scheduler.component.css']
 })
-export class SchedulerComponent implements OnInit {
+export class SchedulerComponent implements OnInit , OnDestroy {
 
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
-
+  private notificationSub!: Subscription;
   calendarOptions: CalendarOptions = {
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
@@ -61,12 +63,27 @@ export class SchedulerComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private eventService: EventService,
-    private notificationService :NotificationService
+    private notificationService :NotificationService,
+    private snackBar: MatSnackBar
   ) {}
 
-  ngOnInit(): void {
-    this.loadEvents();
-  }
+ngOnInit(): void {
+  this.loadEvents();
+
+ 
+  this.notificationService.listenToNotifications((data: any) => {
+    console.log('Notification reçue EXCLUSIVEMENT sur le Scheduler');
+    this.snackBar.open(data.message || "Nouveau rappel !", "OK", {
+      duration: 5000,
+      panelClass: ['blue-snackbar'] 
+    });
+  });
+}
+
+ngOnDestroy(): void {
+  this.notificationService.stopListening();
+  console.log('Écoute SignalR arrêtée.');
+}
   openEditDialog(fcEvent: any) {
   const dialogRef = this.dialog.open(EventDialogComponent, {
     width: '650px',

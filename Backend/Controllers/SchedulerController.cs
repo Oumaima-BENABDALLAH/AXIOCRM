@@ -1,9 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using ProductManager.API.Models.dto;
-using ProductManager.API.Services.Interfaces;
+﻿using AXIOCRM.Application.DTOs;
+using AXIOCRM.Application.EventScheduler.Commands.CreateEvent;
+using AXIOCRM.Application.EventScheduler.Commands.DeleteEvent;
+using AXIOCRM.Application.EventScheduler.Commands.UpdateEvent;
+using AXIOCRM.Application.EventScheduler.Queries.GetAllEvents;
+using AXIOCRM.Application.EventScheduler.Queries.GetEventsById;
+using AXIOCRM.Application.Interfaces;
 using Hangfire;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ProductManager.API.Controllers
 {
@@ -12,11 +18,11 @@ namespace ProductManager.API.Controllers
     [Route("api/scheduler")]
     public class SchedulerController : ControllerBase
     {
-        private readonly IEventService _service;
 
-        public SchedulerController(IEventService service)
+        private readonly IMediator _mediator;
+        public SchedulerController(IMediator mediator)
         {
-            _service = service;
+            _mediator = mediator;
         }
 
         private string UserId =>
@@ -26,56 +32,46 @@ namespace ProductManager.API.Controllers
             User.IsInRole("Admin");
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<List<ScheduleEventDto>>> GetAll()
+            => await _mediator.Send(new GetAllEventsQuery());
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ScheduleEventDto>> GetById(int id)
         {
-            return Ok(await _service.GetAllAsync(UserId, IsAdmin));
+            var result = await _mediator.Send(new GetEventByIdQuery(id));
+            return result != null ? Ok(result) : NotFound();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] ScheduleEventDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateEventCommand command)
         {
             try
             {
-                var created = await _service.CreateAsync(dto, UserId, IsAdmin);
-                return Ok(created);
+                var result = await _mediator.Send(command);
+                return Ok(result);
             }
             catch (UnauthorizedAccessException)
             {
-                return Forbid(); 
+                return Forbid();
             }
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] ScheduleEventDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateEventCommand command)
         {
-            Console.WriteLine(" UPDATE API HIT ");
-            Console.WriteLine($"URL ID: {id}");
-            Console.WriteLine($"DTO ID: {dto.Id}");
-            Console.WriteLine($"Title: {dto.Title}");
-            Console.WriteLine($"Start: {dto.Start}");
-            Console.WriteLine($"End: {dto.End}");
-            Console.WriteLine($"Color: {dto.Color}");
-            Console.WriteLine($"ResourceId: {dto.ResourceId}");
-            if (id != dto.Id)
+            if (id != command.Id)
                 return BadRequest("ID mismatch");
 
-            var ok = await _service.UpdateAsync(id, dto, UserId, IsAdmin);
+            var ok = await _mediator.Send(command);
             return ok ? Ok() : NotFound();
         }
 
-       
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var ok = await _service.DeleteAsync(id, UserId, IsAdmin);
+            var ok = await _mediator.Send(new DeleteEventCommand(id));
             return ok ? Ok() : NotFound();
         }
 
-        [HttpGet("resources/commercials")]
-        public async Task<IActionResult> GetCommercials()
-        {
-            return Ok(await _service.GetCommercialsAsync());
-        }
-      
     }
 }

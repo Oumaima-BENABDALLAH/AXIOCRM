@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AXIOCRM.Application.DTOs;
+using AXIOCRM.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProductManager.API.Data;
-using ProductManager.API.Models.dto;
 
 namespace ProductManager.API.Controllers
 {

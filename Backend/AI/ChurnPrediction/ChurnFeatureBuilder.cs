@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
+using AXIOCRM.Infrastructure.Persistence;
 using Google;
 using Microsoft.EntityFrameworkCore;
-using ProductManager.API.Data;
+
 
 namespace ProductManager.API.AI.ChurnPrediction
 {

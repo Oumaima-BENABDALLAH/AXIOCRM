@@ -2,14 +2,17 @@
 using System.Security.Claims;
 using System.Text;
 using System.Web;
+using AXIOCRM.Application.Interfaces;
+using AXIOCRM.Domain.Entities;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using PAXIOCRM.Domain.Entities;
 using ProductManager.API.Models.AuthentificationJWT;
-using ProductManager.API.Services.Interfaces;
+
 
 namespace ProductManager.API.Controllers
 {

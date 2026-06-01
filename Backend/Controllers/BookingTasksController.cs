@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AXIOCRM.Application.DTOs;
+using AXIOCRM.Application.Interfaces;
+using AXIOCRM.Domain.Entities;
+using AXIOCRM.Domain.Entities.Kanban;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ProductManager.API.Models.AuthentificationJWT;
-using ProductManager.API.Models.dto;
-using ProductManager.API.Models.Kanban;
-using ProductManager.API.Services.Interfaces;
+
 using System.Security.Claims;
 
 namespace ProductManager.API.Controllers

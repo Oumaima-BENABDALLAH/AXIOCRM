@@ -1,10 +1,9 @@
-﻿using Google;
+﻿using AXIOCRM.Application.Interfaces;
+using AXIOCRM.Domain.Entities.Invoice;
+using Google;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProductManager.API.Data;
-using ProductManager.API.Models.Invoice;
-using ProductManager.API.Services;
-using ProductManager.API.Services.Interfaces;
+
 
 namespace ProductManager.API.Controllers
 {

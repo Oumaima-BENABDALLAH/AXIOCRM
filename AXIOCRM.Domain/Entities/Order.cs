@@ -1,0 +1,25 @@
+﻿
+
+namespace AXIOCRM.Domain.Entities
+{
+    public class Order
+    {
+        public int Id { get; set; }
+        public int ClientId { get; set; }
+        public Client? Client { get; set; } 
+        public DateTime OrderDate { get; set; }
+        public string PaymentMethod { get; set; } = "";
+        public decimal? CashAmount { get; set; }
+        public DateTime? PaymentDate { get; set; }
+        public int? DeliveryMethodId { get; set; } 
+        public string? CardNumber { get; set; }
+        public string? CardHolder { get; set; }
+        public string? ExpiryDate { get; set; }
+        public string? CVV { get; set; }
+        public decimal TotalAmount { get; set; }
+
+        public AXIOCRM.Domain.Entities.Invoice.Invoice? Invoice { get; set; }
+
+        public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
+    }
+}

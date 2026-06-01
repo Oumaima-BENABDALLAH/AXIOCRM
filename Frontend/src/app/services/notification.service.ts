@@ -17,7 +17,13 @@ export class NotificationService {
     console.log('NotificationService constructor');
     this.startConnection();
   }
+listenToNotifications(callback: (message: string) => void) {
+  this.hubConnection.on("ReceiveNotification", callback);
+}
 
+stopListening() {
+  this.hubConnection.off("ReceiveNotification");
+}
   private startConnection(): void {
 
     this.hubConnection = new signalR.HubConnectionBuilder()

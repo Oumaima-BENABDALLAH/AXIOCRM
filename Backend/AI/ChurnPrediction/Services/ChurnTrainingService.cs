@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AXIOCRM.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.ML;
 using ProductManager.API.AI.ChurnPrediction.Interfaces;
-using ProductManager.API.Data;
+
 
 namespace ProductManager.API.AI.ChurnPrediction.Services
 {

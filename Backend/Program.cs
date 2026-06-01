@@ -1,23 +1,40 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AXIOCRM.Application.Clients.Commands.CreateClient;
+using AXIOCRM.Application.Clients.Commands.DeleteClient;
+using AXIOCRM.Application.Clients.Commands.UpdateClient;
+using AXIOCRM.Application.Clients.Queries;
+using AXIOCRM.Application.EventScheduler.Commands.CreateEvent;
+using AXIOCRM.Application.EventScheduler.Commands.DeleteEvent;
+using AXIOCRM.Application.EventScheduler.Commands.UpdateEvent;
+using AXIOCRM.Application.EventScheduler.Queries.GetAllEvents;
+using AXIOCRM.Application.EventScheduler.Queries.GetEventsById;
+using AXIOCRM.Application.Interfaces;
+using AXIOCRM.Application.Orders.Commands.CreateOrder;
+using AXIOCRM.Application.Orders.Commands.DeleteOrder;
+using AXIOCRM.Application.Orders.Commands.UpdateOrder;
+using AXIOCRM.Application.Orders.Queries;
+using AXIOCRM.Application.Products.Commands.CreateProduct;
+using AXIOCRM.Application.Products.Commands.DeleteProduct;
+using AXIOCRM.Application.Products.Commands.UpdateProduct;
+using AXIOCRM.Application.Products.Queries;
+using AXIOCRM.Application.Services;
+using AXIOCRM.Domain.Entities;
+using AXIOCRM.Domain.Middleware;
+using AXIOCRM.Infrastructure.Hubs;
+using AXIOCRM.Infrastructure.Persistence;
+using AXIOCRM.Infrastructure.Security;
+using Hangfire;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using ProductManager.API.Data;
-using ProductManager.API.Hubs;
-using ProductManager.API.Middleware;
-using ProductManager.API.Models.AuthentificationJWT;
-using ProductManager.API.Services;
-using ProductManager.API.Services.Hangfire;
-using ProductManager.API.Services.Interfaces;
-using System.Text;
-using Hangfire;
-using ProductManager.API.Services.Kanban;
-using System.Security.Claims;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using ProductManager.API.AI.ChurnPrediction;
 using ProductManager.API.AI.ChurnPrediction.Interfaces;
 using ProductManager.API.AI.ChurnPrediction.Services;
-using ProductManager.API.AI.ChurnPrediction;
+using ProductManager.API.Services;
+using System.Security.Claims;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,14 +47,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 #endregion
 
 #region Services
-builder.Services.AddScoped<IClientService, ClientService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IEmailService, SmtpEmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDeliveryMethod, DeliveryMethodService>();
 builder.Services.AddScoped<IInvoiceService, InvoiceService>();
-builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<IEventReminderJob, EventReminderJob>();
 builder.Services.AddScoped <ICommercialEmailReminderJob, CommercialEmailReminderJob>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
@@ -47,6 +60,38 @@ builder.Services.AddScoped<IChurnTrainingService, ChurnTrainingService>();
 builder.Services.AddScoped<IChurnService, ChurnService>();
 IdentityModelEventSource.ShowPII = true;
 #endregion
+
+#region CORS
+builder.Services.AddScoped<CreateOrderCommandHandler>();
+builder.Services.AddScoped<GetOrdersQueryHandler>();
+builder.Services.AddScoped<GetOrderByIdQueryHandler>();
+builder.Services.AddScoped<DeleteOrderCommandHandler>();
+builder.Services.AddScoped<UpdateOrderCommandHandler>();
+
+//Products
+builder.Services.AddScoped<CreateProductCommandHandler>();
+builder.Services.AddScoped<GetProductByIdQueryHandler>();
+builder.Services.AddScoped<DeleteProductCommandHandler>();
+builder.Services.AddScoped<UpdateProductCommandHandler>();
+builder.Services.AddScoped<GetAllProductsQueryHandler>();
+
+// client
+builder.Services.AddScoped<CreateClientCommandHandler>();
+builder.Services.AddScoped<GetClientByIdQueryHandler>();
+builder.Services.AddScoped<DeleteClientCommandHandler>();
+builder.Services.AddScoped<UpdateClientCommandHandler>();
+builder.Services.AddScoped<GetClientsQueryHandler>();
+
+// Scheduler
+builder.Services.AddScoped<CreateEventCommandHandler>();
+builder.Services.AddScoped<GetEventByIdQueryHandler>();
+builder.Services.AddScoped<DeleteEventCommandHandler>();
+builder.Services.AddScoped<UpdateEventCommandHandler>();
+builder.Services.AddScoped<GetAllEventsQueryHandler>();
+
+
+#endregion
+
 
 #region Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

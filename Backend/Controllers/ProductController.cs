@@ -1,11 +1,20 @@
-﻿using System.Formats.Asn1;
-using System.Threading.Tasks;
+﻿using AXIOCRM.Application.DTOs;
+using AXIOCRM.Application.Interfaces;
+using AXIOCRM.Application.Orders.Commands.CreateOrder;
+using AXIOCRM.Application.Orders.Commands.DeleteOrder;
+using AXIOCRM.Application.Orders.Commands.UpdateOrder;
+using AXIOCRM.Application.Orders.Queries;
+using AXIOCRM.Application.Products.Commands.CreateProduct;
+using AXIOCRM.Application.Products.Commands.DeleteProduct;
+using AXIOCRM.Application.Products.Commands.UpdateProduct;
+using AXIOCRM.Application.Products.Queries;
+using AXIOCRM.Domain.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProductManager.API.Data;
-using ProductManager.API.Models;
-using ProductManager.API.Services.Interfaces;
+using System.Formats.Asn1;
+using System.Threading.Tasks;
+
 
 namespace ProductManager.API.Controllers
 {
@@ -14,61 +23,60 @@ namespace ProductManager.API.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly CreateProductCommandHandler _handler;
+        private readonly GetAllProductsQueryHandler _getProductHandler;
+        private readonly GetProductByIdQueryHandler _getProductByIdHandler;
+        private readonly DeleteProductCommandHandler _deleteProductCommandHandler;
+        private readonly UpdateProductCommandHandler _updateProductCommandHandler;
 
-        public ProductController(IProductService productService)
+        public ProductController(CreateProductCommandHandler handler ,
+                                  GetAllProductsQueryHandler getProductHandler,
+                                  GetProductByIdQueryHandler getProductByIdHandler,
+                                  DeleteProductCommandHandler deleteProductCommandHandler,
+                                  UpdateProductCommandHandler updateProductCommandHandler) 
         {
-            _productService = productService;
+            _handler = handler;
+            _getProductHandler = getProductHandler;
+            _getProductByIdHandler = getProductByIdHandler;
+            _deleteProductCommandHandler = deleteProductCommandHandler;
+            _updateProductCommandHandler = updateProductCommandHandler;
         }
-        private static ProductDTO ToDto(Product p) => new ProductDTO
-        {
-            Id = p.Id,
-            Name = p.Name,
-            Description = p.Description,
-            Price = p.Price,
-            StockQuantity = p.StockQuantity,
-            Sales = p.Sales,
-            Revenue = p.Revenue,
-            Status = p.Status,
-            ImageUrl = p.ImageUrl,
-            Color = p.Color
-
-        };
+     
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
         {
-            var products = await _productService.GetAllAsync();
-            return Ok(products.Select(ToDto).ToList());
+            var products = await _getProductHandler.HandleAsync();
+            return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductDTO>> GetById(int id)
         {
-            var product = await _productService.GetByIdAsync(id);
-            return product == null ? NotFound() : Ok(ToDto(product));
+            var product = await _getProductByIdHandler.HandleAsync(id);
+            return product == null ? NotFound() : Ok(product);
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> Create(Product product)
+        public async Task<ActionResult<ProductDTO>> Create([FromBody] CreateProductCommand command)
         {
-            var created = await _productService.CreateAsync(product);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, ToDto(created));
+            var created = await _handler.HandleAsync(command);
+            return Ok(created);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<ProductDTO>> Update(int id, Product product)
+        public async Task<ActionResult<ProductDTO>> Update(int id, [FromBody] UpdateProductCommand command)
         {
-            var updated = await _productService.UpdateAsync(id, product);
+            var updated = await _updateProductCommandHandler.HandleAsync(command);
             if (updated == null) return NotFound();
-            return Ok(ToDto(updated));
+            return Ok(updated);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var product = await _productService.DeleteAsync(id);
-            return product ? NoContent() : NotFound();
+            var removed = await _deleteProductCommandHandler.HandleAsync(id);
+            return removed ? NoContent() : NotFound();
         }
-
     }
+
 }

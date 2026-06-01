@@ -1,9 +1,8 @@
 ﻿using System.Reflection.Metadata.Ecma335;
+using AXIOCRM.Application.Interfaces;
+using AXIOCRM.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ProductManager.API.Data;
-using ProductManager.API.Models;
-using ProductManager.API.Services.Interfaces;
+
 
 namespace ProductManager.API.Controllers
 {
@@ -62,5 +61,6 @@ namespace ProductManager.API.Controllers
             return client ? NoContent() : NotFound();
         }
 
+       
     }
 }

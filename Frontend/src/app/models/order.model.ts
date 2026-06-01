@@ -41,7 +41,7 @@ export interface OrderDto {
   expiryDate?: string | null;
   cvv?: string | null;
   totalAmount: number;
-  deliveryMethodId?: number;             // 🔹 identifiant du mode de livraison
+  deliveryMethodId?: number;     
   deliveryMethod?: DeliveryMethodDto;
   orderProducts: OrderProductDto[];
   invoice?: InvoiceDto;
