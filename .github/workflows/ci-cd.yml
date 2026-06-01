@@ -18,13 +18,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: 3. Restaurer les dépendances NuGet
-      run: dotnet restore
+      run: dotnet restore AXIOCRM.sln
 
     - name: 4. Compiler l'application complète
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build AXIOCRM.sln --configuration Release --no-restore
 
     - name: 5. Exécuter les tests unitaires et d'intégration
-      run: dotnet test --configuration Release --no-build --verbosity normal
+      run: dotnet test AXIOCRM.sln --configuration Release --no-build --verbosity normal
 
   build-and-push-docker:
     needs: build-and-test # S'exécute uniquement si les tests passent
