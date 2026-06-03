@@ -6,7 +6,6 @@ on:
 
 permissions:
   contents: read
-  packages: write
 
 jobs:
   build-and-test:
@@ -33,7 +32,8 @@ jobs:
   build-and-push-docker:
     needs: build-and-test # S'exécute uniquement si les tests passent
     runs-on: ubuntu-latest
-    
+    permissions:
+      packages: write
     steps:
     - name: 1. Récupérer le code
       uses: actions/checkout@v4
