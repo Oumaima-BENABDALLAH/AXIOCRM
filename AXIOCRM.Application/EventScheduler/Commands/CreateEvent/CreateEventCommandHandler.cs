@@ -1,34 +1,39 @@
 ﻿using AXIOCRM.Application.DTOs;
-using AXIOCRM.Application.Interfaces;
 using AXIOCRM.Application.Mappings;
 using AXIOCRM.Domain.Entities.Scheduler;
+using AXIOCRM.Domain.Entities; 
 using AXIOCRM.Infrastructure.Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Identity; 
+using System.Security.Claims;
 
 namespace AXIOCRM.Application.EventScheduler.Commands.CreateEvent
 {
-
     public class CreateEventCommandHandler
     {
         private readonly AppDbContext _context;
-        private readonly IIdentityService _identityService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CreateEventCommandHandler(AppDbContext context, IIdentityService identityService)
+        public CreateEventCommandHandler(
+            AppDbContext context,
+            IHttpContextAccessor httpContextAccessor,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
-            _identityService = identityService;
+            _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
 
         public async Task<ScheduleEventDto> HandleAsync(CreateEventCommand command, CancellationToken cancellationToken)
         {
-            var currentUserId = await _identityService.GetCurrentUserIdAsync()
+          
+            var currentUserId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier)
                 ?? throw new UnauthorizedAccessException();
 
-            var isAdmin = await _identityService.IsInRoleAsync(currentUserId, "Admin");
+          
+            var user = await _userManager.FindByIdAsync(currentUserId);
+            var isAdmin = user != null && await _userManager.IsInRoleAsync(user, "Admin");
 
             var entity = new ScheduleEvent
             {

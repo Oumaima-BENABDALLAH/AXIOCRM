@@ -1,6 +1,7 @@
 ﻿using AXIOCRM.Application.DTOs;
 using AXIOCRM.Application.Interfaces;
 using AXIOCRM.Domain.Entities.Kanban;
+using AXIOCRM.Domain.Entities.Scheduler;
 using AXIOCRM.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,16 +12,13 @@ namespace AXIOCRM.Application.Services
     public class BookingTaskService : IBookingTaskService
     {
         private readonly AppDbContext _context;
-        private readonly IEventService _eventService;
         private readonly INotificationService _notificationService;
 
         public BookingTaskService(
             AppDbContext context,
-            IEventService eventService,
             INotificationService notificationService)
         {
             _context = context;
-            _eventService = eventService;
             _notificationService = notificationService;
         }
 
@@ -109,26 +107,18 @@ namespace AXIOCRM.Application.Services
             await _context.SaveChangesAsync();
             return true;
         }
-        public async Task<ScheduleEventDto> PlanifyAsync(
-            int taskId,
-            PlanifyTaskDto dto,
-            string userId,
-            bool isAdmin)
+        public async Task<ScheduleEventDto> PlanifyAsync(int taskId, PlanifyTaskDto dto, string userId, bool isAdmin)
         {
             var task = await _context.BookingTasks
                 .Include(t => t.Commercial)
                 .FirstOrDefaultAsync(t => t.Id == taskId);
 
-            if (task == null)
-                throw new Exception("Task not found");
+            if (task == null) throw new Exception("Task not found");
+            if (!isAdmin && task.CommercialId != userId) throw new UnauthorizedAccessException();
+            if (task.ScheduleEventId != null) throw new Exception("Task already planned");
 
-            if (!isAdmin && task.CommercialId != userId)
-                throw new UnauthorizedAccessException();
-
-            if (task.ScheduleEventId != null)
-                throw new Exception("Task already planned");
-
-            var ev = await _eventService.CreateAsync(new ScheduleEventDto
+            // 🛠️ Au lieu d'appeler _eventService, on crée directement l'entité Domain
+            var newEvent = new ScheduleEvent // Utilise le nom exact de ton entité Domain
             {
                 Title = task.Title,
                 Start = dto.Start,
@@ -136,22 +126,23 @@ namespace AXIOCRM.Application.Services
                 Color = dto.Color,
                 ResourceId = task.CommercialId,
                 Description = $"Planned from Kanban task #{task.Id}"
-            });
+            };
 
-            task.ScheduleEventId = ev.Id;
+            _context.ScheduleEvents.Add(newEvent);
+            await _context.SaveChangesAsync(); // Génère l'ID automatiquement
+
+            task.ScheduleEventId = newEvent.Id;
             task.Status = BookingTaskStatus.InProgress;
-
             await _context.SaveChangesAsync();
 
-            await _notificationService.NotifyUser(
-                task.CommercialId,
-                new NotificationDto
-                {
-                    Title = "Task planned",
-                    Message = $"Task '{task.Title}' has been scheduled"
-                });
+            await _notificationService.NotifyUser(task.CommercialId, new NotificationDto
+            {
+                Title = "Task planned",
+                Message = $"Task '{task.Title}' has been scheduled"
+            });
 
-            return ev;
+            // Retourne le DTO attendu
+            return new ScheduleEventDto { Id = newEvent.Id, Title = newEvent.Title /* ... mappe le reste */ };
         }
         public async Task<bool> DeleteAsync(int taskId, string userId, bool isAdmin)
         {

@@ -61,37 +61,39 @@ builder.Services.AddScoped<IChurnService, ChurnService>();
 IdentityModelEventSource.ShowPII = true;
 #endregion
 
-#region CORS
-builder.Services.AddScoped<CreateOrderCommandHandler>();
-builder.Services.AddScoped<GetOrdersQueryHandler>();
-builder.Services.AddScoped<GetOrderByIdQueryHandler>();
-builder.Services.AddScoped<DeleteOrderCommandHandler>();
-builder.Services.AddScoped<UpdateOrderCommandHandler>();
+//#region CORS
+//builder.Services.AddScoped<CreateOrderCommandHandler>();
+//builder.Services.AddScoped<GetOrdersQueryHandler>();
+//builder.Services.AddScoped<GetOrderByIdQueryHandler>();
+//builder.Services.AddScoped<DeleteOrderCommandHandler>();
+//builder.Services.AddScoped<UpdateOrderCommandHandler>();
 
-//Products
-builder.Services.AddScoped<CreateProductCommandHandler>();
-builder.Services.AddScoped<GetProductByIdQueryHandler>();
-builder.Services.AddScoped<DeleteProductCommandHandler>();
-builder.Services.AddScoped<UpdateProductCommandHandler>();
-builder.Services.AddScoped<GetAllProductsQueryHandler>();
+////Products
+//builder.Services.AddScoped<CreateProductCommandHandler>();
+//builder.Services.AddScoped<GetProductByIdQueryHandler>();
+//builder.Services.AddScoped<DeleteProductCommandHandler>();
+//builder.Services.AddScoped<UpdateProductCommandHandler>();
+//builder.Services.AddScoped<GetAllProductsQueryHandler>();
 
-// client
-builder.Services.AddScoped<CreateClientCommandHandler>();
-builder.Services.AddScoped<GetClientByIdQueryHandler>();
-builder.Services.AddScoped<DeleteClientCommandHandler>();
-builder.Services.AddScoped<UpdateClientCommandHandler>();
-builder.Services.AddScoped<GetClientsQueryHandler>();
+//// client
+//builder.Services.AddScoped<CreateClientCommandHandler>();
+//builder.Services.AddScoped<GetClientByIdQueryHandler>();
+//builder.Services.AddScoped<DeleteClientCommandHandler>();
+//builder.Services.AddScoped<UpdateClientCommandHandler>();
+//builder.Services.AddScoped<GetClientsQueryHandler>();
 
-// Scheduler
-builder.Services.AddScoped<CreateEventCommandHandler>();
-builder.Services.AddScoped<GetEventByIdQueryHandler>();
-builder.Services.AddScoped<DeleteEventCommandHandler>();
-builder.Services.AddScoped<UpdateEventCommandHandler>();
-builder.Services.AddScoped<GetAllEventsQueryHandler>();
+//// Scheduler
+//builder.Services.AddScoped<CreateEventCommandHandler>();
+//builder.Services.AddScoped<GetEventByIdQueryHandler>();
+//builder.Services.AddScoped<DeleteEventCommandHandler>();
+//builder.Services.AddScoped<UpdateEventCommandHandler>();
+//builder.Services.AddScoped<GetAllEventsQueryHandler>();
+//builder.Services.AddHttpContextAccessor();
 
-
-#endregion
-
+//#endregion
+builder.Services.AddHangfire(config => config
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHangfireServer();
 
 #region Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -224,49 +226,67 @@ builder.Services.AddSwaggerGen(c =>
 });
 #endregion
 
-#region Hangfire
-builder.Services.AddHangfire(config =>
-{
-    config.UseSqlServerStorage(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        new Hangfire.SqlServer.SqlServerStorageOptions
-        {
-            CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-            SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-            QueuePollInterval = TimeSpan.FromSeconds(15),
-            UseRecommendedIsolationLevel = true,
-            DisableGlobalLocks = true
-        });
-});
 
-builder.Services.AddHangfireServer(options =>
-{
-    options.WorkerCount = 5;
-});
-#endregion
 
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
-    var recurringJobManager = scope.ServiceProvider
-        .GetRequiredService<IRecurringJobManager>();
+    var services = scope.ServiceProvider;
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    var context = services.GetRequiredService<AppDbContext>();
 
-    recurringJobManager.AddOrUpdate<IEventReminderJob>(
-        "event-reminder-job",
-        job => job.CheckTodayEvents(),
-        Cron.Minutely
-    );
+    int retryCount = 0;
+    bool connected = false;
 
-    recurringJobManager.AddOrUpdate<ICommercialEmailReminderJob>(
-        "commercial-email-reminder",
-        job => job.SendEmailReminders(),
-        Cron.Minutely
-    );
-    recurringJobManager.AddOrUpdate<IChurnTrainingService>(
-       "churn-training",
-       x => x.TrainModelAsync(),
-       Cron.Weekly
-   );
+    while (retryCount < 10 && !connected)
+    {
+        try
+        {
+           
+            await context.Database.CanConnectAsync();
+            await context.Database.MigrateAsync(); 
+            connected = true;
+            logger.LogInformation("Connexion à SQL Server réussie !");
+        }
+        catch (Exception ex)
+        {
+            retryCount++;
+            logger.LogWarning($"SQL Server pas encore prêt... Tentative {retryCount}/10. Erreur: {ex.Message}");
+            await Task.Delay(5000); 
+        }
+    }
+  
+
+    if (connected)
+    {
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+        string[] roles = { "Admin", "Client", "User", "Manager", "Commercial" };
+        foreach (var role in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+        logger.LogInformation("Roles seed terminés.");
+        var recurringJobManager = services.GetRequiredService<IRecurringJobManager>();
+
+        // Exemple d'ajout ou de mise à jour d'un job récurrent
+        recurringJobManager.AddOrUpdate<IEventReminderJob>(
+            "nom-de-ton-job",
+            x => x.CheckTodayEvents(),
+            Cron.Daily); // ou Cron.Minutely, etc.
+
+        logger.LogInformation("Hangfire jobs initialisés avec succès.");
+    }
+    else
+    {
+        logger.LogCritical(" Impossible de configurer Hangfire : base de données inaccessible.");
+    }
+
+
+
 }
 #region Middleware pipeline
 if (app.Environment.IsDevelopment())
@@ -298,22 +318,6 @@ app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllers();
 #endregion
 
-#region Roles Seed
-app.Lifetime.ApplicationStarted.Register(async () =>
-{
-    using var scope = app.Services.CreateScope();
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    string[] roles = { "Admin", "Client", "User", "Manager", "Commercial" };
-
-    foreach (var role in roles)
-    {
-        if (!await roleManager.RoleExistsAsync(role))
-        {
-            await roleManager.CreateAsync(new IdentityRole(role));
-        }
-    }
-});
-#endregion
 
 app.Run();

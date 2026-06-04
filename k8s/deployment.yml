@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: axiocrm-backend-deployment
+  labels:
+    app: axiocrm-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: axiocrm-backend
+  template:
+    metadata:
+      labels:
+        app: axiocrm-backend
+    spec:
+      imagePullSecrets:
+      - name: ghcr-secret
+      initContainers:
+      - name: wait-for-db
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nc -z axiocrm-db-service 1433; do echo waiting for db; sleep 2; done;']
+      containers:
+      - name: axiocrm-api
+        image: ghcr.io/oumaima-benabdallah/axiocrm-backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        - name: ASPNETCORE_URLS
+          value: "http://+:8080"
+        - name: ConnectionStrings__DefaultConnection
+          value: "Server=axiocrm-db-service,1433;Database=ProductDb;User Id=sa;Password=SQLDEV*2025;TrustServerCertificate=True;"
+        - name: Jwt__Key
+          value: "L6vZH3i8dHRrUyNTYylt7U6iX4uFICeFIp5GgF7lRg4="
+        - name: Jwt__Issuer
+          value: "AXIOCRM"
+        - name: Jwt__Audience
+          value: "http://localhost:4200"
+        - name: Smtp__Host
+          value: "smtp.gmail.com"
+        - name: Smtp__Port
+          value: "587"
+        - name: Smtp__Username
+          value: "oumaimabenabdallah26@gmail.com"
+        - name: Smtp__Password
+          value: "zwvmpvcpmmdwgajd"
+        - name: Smtp__From
+          value: "oumaimabenabdallah26@gmail.com"
+        - name: Smtp__EnableSsl
+          value: "true"
+        - name: Frontend__ResetPasswordUrl
+          value: "http://localhost:4200/reset-password"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: axiocrm-backend-service
+spec:
+  type: NodePort
+  selector:
+    app: axiocrm-backend
+  ports:
+    - port: 80
+      targetPort: 8080
+      nodePort: 30080

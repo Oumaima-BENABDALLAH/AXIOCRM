@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AXIOCRM.Application\AXIOCRM.Application.csproj" />
+    <ProjectReference Include="..\AXIOCRM.Infrastructure\AXIOCRM.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

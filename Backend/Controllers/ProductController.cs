@@ -8,10 +8,8 @@ using AXIOCRM.Application.Products.Commands.CreateProduct;
 using AXIOCRM.Application.Products.Commands.DeleteProduct;
 using AXIOCRM.Application.Products.Commands.UpdateProduct;
 using AXIOCRM.Application.Products.Queries;
-using AXIOCRM.Domain.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Formats.Asn1;
 using System.Threading.Tasks;
 

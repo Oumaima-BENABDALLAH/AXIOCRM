@@ -2,7 +2,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+        "bootstrap"
+    ]
   },
   "files": [
     "src/main.ts",

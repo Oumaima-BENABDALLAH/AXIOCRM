@@ -17,7 +17,7 @@ declare var $: any;
   styleUrls: ['./client-list.component.css']
 })
 export class ClientListComponent implements OnInit {
-  private clientsSubject = new BehaviorSubject<Client[]>([]);
+  private readonly clientsSubject = new BehaviorSubject<Client[]>([]);
   filteredClients$!: Observable<Client[]>;
   clients: Client[] = [];
   countries: Country[] = [];
