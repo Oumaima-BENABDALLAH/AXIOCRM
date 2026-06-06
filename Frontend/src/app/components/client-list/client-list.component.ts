@@ -306,6 +306,12 @@ private updateClientList(savedClient: any) {
 
   highlight(text: string, search: string): SafeHtml {
     if (!search) return text;
+     const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+     const escapedText = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
     const re = new RegExp(search, 'gi');
     const result = text.replace(re, match => `<mark>${match}</mark>`);
     return this.sanitizer.bypassSecurityTrustHtml(result);
