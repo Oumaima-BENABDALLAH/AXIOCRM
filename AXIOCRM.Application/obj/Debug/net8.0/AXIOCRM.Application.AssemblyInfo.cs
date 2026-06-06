@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AXIOCRM.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f46be52110a1824de84e99e27ef41bf05fdefaee")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+922ebca2a491f4ed1a09e730819a5b4d50639be2")]
 [assembly: System.Reflection.AssemblyProductAttribute("AXIOCRM.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AXIOCRM.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

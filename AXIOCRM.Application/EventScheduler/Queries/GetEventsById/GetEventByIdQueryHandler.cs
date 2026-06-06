@@ -19,14 +19,12 @@ namespace AXIOCRM.Application.EventScheduler.Queries.GetEventsById
     public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, ScheduleEventDto?>
     {
         private readonly AppDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IIdentityService _identityService;
 
-        public GetEventByIdQueryHandler(AppDbContext context, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager)
+        public GetEventByIdQueryHandler(AppDbContext context, IIdentityService identityService)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
+            _identityService = identityService;
         }
 
         public async Task<ScheduleEventDto?> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
@@ -37,12 +35,12 @@ namespace AXIOCRM.Application.EventScheduler.Queries.GetEventsById
 
             if (ev == null) return null;
 
-            var currentUserId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = await _identityService.GetCurrentUserIdAsync()
+                                       ?? throw new UnauthorizedAccessException();
+
             if (string.IsNullOrEmpty(currentUserId)) throw new UnauthorizedAccessException();
 
-            var user = await _userManager.FindByIdAsync(currentUserId);
-            var isAdmin = user != null && await _userManager.IsInRoleAsync(user, "Admin");
-
+            var isAdmin = await _identityService.IsInRoleAsync(currentUserId, "Admin");
             if (!isAdmin && ev.ResourceId != currentUserId)
                 throw new UnauthorizedAccessException("Accès non autorisé à cet événement.");
 

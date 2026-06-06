@@ -17,16 +17,11 @@ namespace AXIOCRM.Application.EventScheduler.Commands.UpdateEvent
     public class UpdateEventCommandHandler : IRequestHandler<UpdateEventCommand, bool>
     {
         private readonly AppDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public UpdateEventCommandHandler(
-              AppDbContext context,
-              IHttpContextAccessor httpContextAccessor,
-              UserManager<ApplicationUser> userManager)
+        private readonly IIdentityService _identityService;
+        public UpdateEventCommandHandler(AppDbContext context, IIdentityService identityService)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
+            _identityService = identityService;
         }
 
         public async Task<bool> Handle(UpdateEventCommand request, CancellationToken cancellationToken)
@@ -37,12 +32,13 @@ namespace AXIOCRM.Application.EventScheduler.Commands.UpdateEvent
             if (existingEvent == null) return false;
 
             // Récupération ID utilisateur
-            var currentUserId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUserId = await _identityService.GetCurrentUserIdAsync()
+                                        ?? throw new UnauthorizedAccessException();
+
             if (string.IsNullOrEmpty(currentUserId)) throw new UnauthorizedAccessException();
 
             // Vérification Admin
-            var user = await _userManager.FindByIdAsync(currentUserId);
-            var isAdmin = user != null && await _userManager.IsInRoleAsync(user, "Admin");
+            var isAdmin = await _identityService.IsInRoleAsync(currentUserId, "Admin");
 
             if (!isAdmin && existingEvent.ResourceId != currentUserId)
             {
