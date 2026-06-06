@@ -51,7 +51,8 @@ namespace AXIOCRM.UnitTests
                     StockQuantity = 50,
                     Sales = 10,
                     ImageUrl = "http://example.com/image.jpg",
-                    Color = "Red"
+                    Color = "Red" ,
+                    OrderProducts = new List<OrderProduct>()
 
                 };
 
@@ -62,15 +63,18 @@ namespace AXIOCRM.UnitTests
             }
             using (var actContext = new AppDbContext(options))
             {
-                var handler = new GetOrderByIdQueryHandler(actContext);
+                var handler = new GetProductByIdQueryHandler(actContext);
 
                 // Act
                 var result = await handler.HandleAsync(generatedId);
 
                 // Assert
-                //result.Should().NotBeNull();
-                //  result!.Id.Should().Be(generatedId);
-                // result.TotalAmount.Should().Be(865m);
+                result.Should().NotBeNull();
+                result!.Id.Should().Be(generatedId);
+                result.Name.Should().Be("Test Product");      
+                result.Price.Should().Be(99.99m);              
+                result.StockQuantity.Should().Be(50);         
+                result.Description.Should().Be("A product for testing"); 
             }
         }
 
