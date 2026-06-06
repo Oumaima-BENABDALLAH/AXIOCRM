@@ -14,6 +14,7 @@ spec:
       labels:
         app: axiocrm-backend
     spec:
+      automountServiceAccountToken: false 
       imagePullSecrets:
       - name: ghcr-secret
       initContainers:
@@ -26,6 +27,14 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
+        resources:                          
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+            ephemeral-storage: "1Gi"
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Development"
@@ -53,11 +62,20 @@ spec:
         - name: Smtp__Port
           value: "587"
         - name: Smtp__Username
-          value: "oumaimabenabdallah26@gmail.com"
+          valueFrom:                        
+            secretKeyRef:
+              name: axiocrm-secrets
+              key: Smtp__Username
         - name: Smtp__Password
-          value: "zwvmpvcpmmdwgajd"
+          valueFrom:                       
+            secretKeyRef:
+              name: axiocrm-secrets
+              key: Smtp__Password
         - name: Smtp__From
-          value: "oumaimabenabdallah26@gmail.com"
+          valueFrom:
+            secretKeyRef:
+              name: axiocrm-secrets
+              key: Smtp__Username
         - name: Smtp__EnableSsl
           value: "true"
         - name: Frontend__ResetPasswordUrl
