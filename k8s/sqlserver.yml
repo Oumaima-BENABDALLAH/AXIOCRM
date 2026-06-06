@@ -14,16 +14,28 @@ spec:
       labels:
         app: axiocrm-db
     spec:
+      automountServiceAccountToken: false 
       containers:
       - name: mssql
         image: mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04
         ports:
         - containerPort: 1433
+        resources:                          
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+            ephemeral-storage: "1Gi"  
         env:
         - name: ACCEPT_EULA
           value: "Y"
         - name: MSSQL_SA_PASSWORD
-          value: "SQLDEV*2025" 
+          valueFrom:                       
+            secretKeyRef:
+              name: axiocrm-secrets
+              key: MSSQL_SA_PASSWORD
         volumeMounts:
         - name: mssql-storage
           mountPath: /var/opt/mssql # Chemin où SQL Server stocke les données
