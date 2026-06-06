@@ -32,11 +32,20 @@ spec:
         - name: ASPNETCORE_URLS
           value: "http://+:8080"
         - name: ConnectionStrings__DefaultConnection
-          value: "Server=axiocrm-db-service,1433;Database=ProductDb;User Id=sa;Password=SQLDEV*2025;TrustServerCertificate=True;"
+          valueFrom:
+            secretKeyRef:
+              name: axiocrm-secrets
+              key: ConnectionStrings__DefaultConnection
         - name: Jwt__Key
-          value: "L6vZH3i8dHRrUyNTYylt7U6iX4uFICeFIp5GgF7lRg4="
+          valueFrom:
+            secretKeyRef:
+              name: axiocrm-secrets
+              key: Jwt__Key
         - name: Jwt__Issuer
-          value: "AXIOCRM"
+          valueFrom:
+            secretKeyRef:
+              name: axiocrm-secrets
+              key: Jwt__Issuer
         - name: Jwt__Audience
           value: "http://localhost:4200"
         - name: Smtp__Host

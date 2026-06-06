@@ -16,3 +16,4 @@ Frontend/.angular/cache/
 .vscode/
 *.DS_Store
 
+k8s/secret.yml 
