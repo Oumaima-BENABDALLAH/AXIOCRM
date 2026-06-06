@@ -44,13 +44,23 @@ namespace AXIOCRM.UnitTests
             int generatedId;
             using (var arrangeContext = new AppDbContext(options))
             {
+                var client = new Client
+                {
+                    Name = "Test Client",
+                    Email = "test@test.com" ,
+                    Phone = "0600000000"
+                };
+                arrangeContext.Clients.Add(client);
+                await arrangeContext.SaveChangesAsync();
                 var order = new Order
                 {
-                    ClientId = 10,
+                    ClientId = client.Id,
                     OrderDate = DateTime.UtcNow,
                     PaymentMethod = "Cash",
-                    TotalAmount = 865m
+                    TotalAmount = 865m,
+                    OrderProducts = new List<OrderProduct>()
                 };
+
 
                 arrangeContext.Orders.Add(order);
                 await arrangeContext.SaveChangesAsync();
@@ -65,9 +75,9 @@ namespace AXIOCRM.UnitTests
                 var result = await handler.HandleAsync(generatedId);
 
                 // Assert
-                //result.Should().NotBeNull();
-              //  result!.Id.Should().Be(generatedId);
-               // result.TotalAmount.Should().Be(865m);
+               result.Should().NotBeNull();
+               result!.Id.Should().Be(generatedId);
+               result.TotalAmount.Should().Be(865m);
             }
         }
     }
