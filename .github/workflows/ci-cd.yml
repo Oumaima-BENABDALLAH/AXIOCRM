@@ -29,7 +29,7 @@ jobs:
     - name: 5. Exécuter les tests unitaires et d'intégration
       run: dotnet test Backend/ProductManager.API.sln --configuration Release --no-build --verbosity normal
 
-   # ─── JOB 2 : Frontend Angular (nouveau) ────────────────────────
+   # Frontend Angular 
   build-and-test-frontend:
     runs-on: ubuntu-latest
     steps:
@@ -47,7 +47,7 @@ jobs:
 
     - name: 3. Installer les dépendances
       working-directory: Frontend
-      run: npm ci
+      run: npm ci --legacy-peer-deps
 
     - name: 4. Build Angular
       working-directory: Frontend
