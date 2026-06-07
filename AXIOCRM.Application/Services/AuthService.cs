@@ -12,12 +12,12 @@ namespace AXIOCRM.Application.Services
     {
         private readonly IEmailService _emailService;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IConfiguration _configuration;
-        public AuthService(IEmailService emailService, UserManager<ApplicationUser> userManager, IConfiguration configuration)
+      
+        public AuthService(IEmailService emailService, UserManager<ApplicationUser> userManager)
         {
             _emailService = emailService;
             _userManager = userManager;
-            _configuration = configuration;
+            
         }
 
         public async Task SendResetLinkAsync(string email)
