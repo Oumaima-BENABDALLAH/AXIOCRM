@@ -312,8 +312,8 @@ private updateClientList(savedClient: any) {
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
-    const re = new RegExp(search, 'gi');
-    const result = text.replace(re, match => `<mark>${match}</mark>`);
+    const re = new RegExp(escapedSearch, 'gi');
+    const result = escapedText.replace(re, match => `<mark>${match}</mark>`);
     return this.sanitizer.bypassSecurityTrustHtml(result);
   }
 
