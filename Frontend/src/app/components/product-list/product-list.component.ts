@@ -105,8 +105,14 @@ trackById(index: number, item: ProductDto): number {
     if (!search) {
       return text;
     }
-    const re = new RegExp(search, 'gi');
-    const result = text.replace(re, (match) => `<mark>${match}</mark>`);
+     const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+     const escapedText = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+    const re = new RegExp(escapedSearch, 'gi');
+    const result = escapedText.replace(re, (match) => `<mark>${match}</mark>`);
     return this.sanitizer.bypassSecurityTrustHtml(result);
   }
 
