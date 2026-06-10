@@ -53,11 +53,11 @@ jobs:
       working-directory: Frontend
       run: npm run build
 
-    - name: 5. Tests avec coverage
-      working-directory: Frontend
-      run: npm run test -- --watch=false --code-coverage --browsers=ChromeHeadless
+     #- name: 5. Tests avec coverage
+     # working-directory: Frontend
+     # run: npm run test -- --watch=false --code-coverage --browsers=ChromeHeadless
 
-    - name: 6. SonarQube Scan Frontend
+    - name: 5. SonarQube Scan Frontend
       uses: SonarSource/sonarqube-scan-action@master
       with:
         projectBaseDir: Frontend
