@@ -17,7 +17,13 @@ Domain-Driven Design (Aggregates, Value Objects, Domain Events)
 **Testing:** xUnit · TDD approach on core business logic
 
 **DevOps:** Docker (local environment)
-
+ - GitHub Actions CI/CD pipelines
+ - Automated build and test execution
+ - Docker containerization
+ - Kubernetes deployment preparation
+ - SonarQube code quality analysis
+ - Automated quality gates
+   
 ## Architecture Overview
 
 The solution follows Clean Architecture principles with 
@@ -75,7 +81,4 @@ AXIOCRM/
 
 ## 🎯 Vision
 
-AXIOCRM is not a CRUD demo. It is a real SaaS-oriented 
-product built to production standards  clean layers, 
-tested business logic, automated workflows, and a 
-roadmap toward AI-powered insights.
+AXIOCRM is not a CRUD demo. It is a production-oriented SaaS platform built with Clean Architecture, CQRS, DDD, automated CI/CD pipelines, Docker containerization, code quality monitoring with SonarQube, and a roadmap toward AI-powered business insights.
